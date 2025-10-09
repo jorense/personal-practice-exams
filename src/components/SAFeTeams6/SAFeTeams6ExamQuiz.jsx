@@ -1,305 +1,331 @@
-import { useState, useEffect, useCallback } from 'react'
-import './SAFeTeams6ExamQuiz.module.css'
+import { useState, useEffect } from 'react'
+import styles from './SAFeTeams6ExamQuiz.module.css'
 import { safeTeams6Questions } from './SAFeTeams6Questions'
+import Results from '../shared/Results.jsx'
 
-function SAFeTeams6ExamQuiz({ onGoHome, onGoToExam, numberOfQuestions, darkMode }) {
-  // Shuffle and select questions
-  const [selectedQuestions, setSelectedQuestions] = useState([])
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+function SAFeTeams6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45, autoShowExplanation = false }) {
+  const [currentQuestion, setCurrentQuestion] = useState(0)
   const [selectedAnswers, setSelectedAnswers] = useState({})
-  const [showExplanation, setShowExplanation] = useState(false)
-  const [quizComplete, setQuizComplete] = useState(false)
-  const [score, setScore] = useState(0)
-  const [flaggedQuestions, setFlaggedQuestions] = useState(new Set())
-  const [reviewMode, setReviewMode] = useState(false)
+  const [revealedAnswers, setRevealedAnswers] = useState({})
+  const [collapsedExplanations, setCollapsedExplanations] = useState({})
+  const [timeRemaining, setTimeRemaining] = useState(3600) // 60 minutes in seconds
   const [showResults, setShowResults] = useState(false)
+  const [totalTimeUsed, setTotalTimeUsed] = useState(0)
+  const [examSubmitted, setExamSubmitted] = useState(false)
+  const [shuffledQuestions, setShuffledQuestions] = useState([])
 
-  // Initialize quiz questions
+  // Utility function to shuffle array
+  const shuffleArray = (array) => {
+    const shuffled = [...array]
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+    }
+    return shuffled
+  }
+
+  // Utility function to shuffle question options and update correct answer index
+  const shuffleQuestionOptions = (question) => {
+    const optionIndices = [0, 1, 2, 3].map(i => ({ index: i, option: question.options[i] }))
+    const shuffledOptions = shuffleArray(optionIndices)
+    
+    const newQuestion = {
+      ...question,
+      options: shuffledOptions.map(item => item.option),
+      correctAnswer: shuffledOptions.findIndex(item => item.index === question.correctAnswer),
+      originalCorrectAnswer: question.correctAnswer, // Keep track for explanations
+      optionMapping: shuffledOptions.map(item => item.index) // Keep track of original positions
+    }
+    
+    return newQuestion
+  }
+
+  // Initialize shuffled questions on component mount
   useEffect(() => {
-    const shuffled = [...safeTeams6Questions].sort(() => Math.random() - 0.5)
-    const selected = shuffled.slice(0, numberOfQuestions)
-    setSelectedQuestions(selected)
+    const shuffled = shuffleArray(safeTeams6Questions)
+    const selectedQuestions = shuffled.slice(0, numberOfQuestions)
+    // Shuffle the options for each question to prevent visual patterns
+    const questionsWithShuffledOptions = selectedQuestions.map(shuffleQuestionOptions)
+    setShuffledQuestions(questionsWithShuffledOptions)
   }, [numberOfQuestions])
 
-  // Get current question
-  const currentQuestion = selectedQuestions[currentQuestionIndex]
-
-  const handleAnswerSelect = (answerIndex) => {
-    if (reviewMode) return
-    
-    setSelectedAnswers({
-      ...selectedAnswers,
-      [currentQuestionIndex]: answerIndex
-    })
-    setShowExplanation(false)
-  }
-
-  const handleNext = () => {
-    if (currentQuestionIndex < selectedQuestions.length - 1) {
-      setCurrentQuestionIndex(currentQuestionIndex + 1)
-      setShowExplanation(false)
+  // Timer effect
+  useEffect(() => {
+    if (timeRemaining > 0 && !examSubmitted) {
+      const timer = setTimeout(() => setTimeRemaining(timeRemaining - 1), 1000)
+      return () => clearTimeout(timer)
+    } else if (timeRemaining === 0 && !examSubmitted) {
+      handleSubmitExam()
     }
-  }
+  }, [timeRemaining, examSubmitted])
 
-  const handlePrevious = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1)
-      setShowExplanation(false)
-    }
-  }
-
-  const handleShowExplanation = () => {
-    setShowExplanation(true)
-  }
-
-  const handleFlag = () => {
-    const newFlagged = new Set(flaggedQuestions)
-    if (flaggedQuestions.has(currentQuestionIndex)) {
-      newFlagged.delete(currentQuestionIndex)
-    } else {
-      newFlagged.add(currentQuestionIndex)
-    }
-    setFlaggedQuestions(newFlagged)
-  }
-
-  const handleFinishQuiz = () => {
-    let correctCount = 0
-    selectedQuestions.forEach((question, index) => {
-      if (selectedAnswers[index] === question.correctAnswer) {
-        correctCount++
+  useEffect(() => {
+    if (shuffledQuestions.length > 0 && autoShowExplanation) {
+      const currentQ = shuffledQuestions[currentQuestion];
+      if (revealedAnswers[currentQ?.id]) {
+        setCollapsedExplanations(prev => ({
+          ...prev,
+          [currentQ.id]: false
+        }))
       }
-    })
-    setScore(correctCount)
-    setQuizComplete(true)
-    setShowResults(true)
+    }
+  }, [currentQuestion, revealedAnswers, autoShowExplanation, shuffledQuestions])
+
+  const formatTime = (seconds) => {
+    const hours = Math.floor(seconds / 3600)
+    const minutes = Math.floor((seconds % 3600) / 60)
+    const secs = seconds % 60
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
   }
 
-  const handleReviewAnswers = () => {
-    setReviewMode(true)
-    setCurrentQuestionIndex(0)
-    setShowResults(false)
+  const handleAnswerSelect = (optionIndex) => {
+    if (examSubmitted) return
+    
+    const question = shuffledQuestions[currentQuestion]
+    setSelectedAnswers(prev => ({
+      ...prev,
+      [question.id]: optionIndex
+    }))
+    
+    setRevealedAnswers(prev => ({
+      ...prev,
+      [question.id]: true
+    }))
+
+    if (autoShowExplanation) {
+      setCollapsedExplanations(prev => ({
+        ...prev,
+        [question.id]: false
+      }))
+    }
   }
 
-  const handleRetakeQuiz = () => {
-    // Reset all state
-    const shuffled = [...safeTeams6Questions].sort(() => Math.random() - 0.5)
-    const selected = shuffled.slice(0, numberOfQuestions)
-    setSelectedQuestions(selected)
-    setCurrentQuestionIndex(0)
-    setSelectedAnswers({})
-    setShowExplanation(false)
-    setQuizComplete(false)
-    setScore(0)
-    setFlaggedQuestions(new Set())
-    setReviewMode(false)
-    setShowResults(false)
+  const toggleExplanation = (questionId) => {
+    setCollapsedExplanations(prev => ({
+      ...prev,
+      [questionId]: !prev[questionId]
+    }))
   }
 
-  const jumpToQuestion = (index) => {
-    setCurrentQuestionIndex(index)
-    setShowExplanation(false)
-    setShowResults(false)
+  const goToQuestion = (index) => {
+    setCurrentQuestion(index)
   }
 
-  // Show results view
-  if (showResults && quizComplete) {
-    const percentage = Math.round((score / selectedQuestions.length) * 100)
-    const passed = percentage >= 70
+  const nextQuestion = () => {
+    if (currentQuestion < shuffledQuestions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1)
+    }
+  }
 
+  const previousQuestion = () => {
+    if (currentQuestion > 0) {
+      setCurrentQuestion(currentQuestion - 1)
+    }
+  }
+
+  const handleSubmitExam = () => {
+    setTotalTimeUsed(3600 - timeRemaining)
+    setExamSubmitted(true)
+  }
+
+  if (shuffledQuestions.length === 0) {
     return (
-      <div className={`quiz-container ${darkMode ? 'dark' : ''}`}>
-        <header className="quiz-header">
-          <div className="header-content">
-            <h1>SAFe for Teams 6.0 Practice Exam Results</h1>
-            <button onClick={onGoToExam} className="nav-button">← Back to Exam</button>
-          </div>
-        </header>
-
-        <main className="results-container">
-          <div className="results-summary">
-            <div className={`score-display ${passed ? 'passed' : 'failed'}`}>
-              <div className="score-circle">
-                <span className="score-number">{percentage}%</span>
-                <span className="score-label">{passed ? 'PASSED' : 'NEEDS IMPROVEMENT'}</span>
-              </div>
-            </div>
-
-            <div className="score-details">
-              <div className="detail-item">
-                <span className="label">Correct Answers:</span>
-                <span className="value">{score} / {selectedQuestions.length}</span>
-              </div>
-              <div className="detail-item">
-                <span className="label">Percentage:</span>
-                <span className="value">{percentage}%</span>
-              </div>
-              <div className="detail-item">
-                <span className="label">Passing Score:</span>
-                <span className="value">70%</span>
-              </div>
-            </div>
-
-            <div className="results-actions">
-              <button onClick={handleReviewAnswers} className="review-button">
-                📝 Review Answers
-              </button>
-              <button onClick={handleRetakeQuiz} className="retake-button">
-                🔄 Retake Quiz
-              </button>
-              <button onClick={onGoHome} className="home-button">
-                🏠 Go Home
-              </button>
-            </div>
-          </div>
-        </main>
+      <div className={styles.loadingContainer}>
+        <div className={styles.loading}>
+          <h2>Preparing your exam...</h2>
+          <div className={styles.spinner}></div>
+        </div>
       </div>
     )
   }
 
-  if (!currentQuestion) {
+  if (examSubmitted) {
     return (
-      <div className={`quiz-container ${darkMode ? 'dark' : ''}`}>
-        <div className="loading">Loading questions...</div>
-      </div>
+      <Results
+        title="SAFe for Teams 6.0 Results"
+        questions={shuffledQuestions}
+        selectedAnswers={selectedAnswers}
+        totalTimeSec={totalTimeUsed}
+        timeLimitSec={3600}
+        passThreshold={70}
+        onGoHome={onGoHome}
+        onStudyMore={onGoBackToExam}
+        onRetakeIncorrect={() => {
+          // Reset exam state for retake
+          setExamSubmitted(false)
+          setCurrentQuestion(0)
+          setSelectedAnswers({})
+          setRevealedAnswers({})
+          setCollapsedExplanations({})
+          setTimeRemaining(3600)
+          setTotalTimeUsed(0)
+        }}
+      />
     )
   }
+
+  const currentQ = shuffledQuestions[currentQuestion]
+  const isAnswered = selectedAnswers[currentQ.id] !== undefined
+  const isRevealed = revealedAnswers[currentQ.id]
+  const selectedOption = selectedAnswers[currentQ.id]
+  const isExplanationCollapsed = collapsedExplanations[currentQ.id] !== false
+
+  const answeredCount = Object.keys(selectedAnswers).length
+  const progressPercent = (answeredCount / shuffledQuestions.length) * 100
 
   return (
-    <div className={`quiz-container ${darkMode ? 'dark' : ''}`}>
-      <header className="quiz-header">
-        <div className="header-content">
-          <div className="quiz-progress">
-            <span>Question {currentQuestionIndex + 1} of {selectedQuestions.length}</span>
-            <div className="progress-bar">
-              <div 
-                className="progress-fill" 
-                style={{ width: `${((currentQuestionIndex + 1) / selectedQuestions.length) * 100}%` }}
-              ></div>
+    <div className={styles.quizContainer}>
+      <header className={styles.quizHeader}>
+        <div className={styles.quizHeaderContent}>
+          <div className={styles.quizInfo}>
+            <div className={styles.examTitle}>SAFe for Teams 6.0 Practice Exam</div>
+            <div className={styles.questionCounter}>
+              Question {currentQuestion + 1} of {shuffledQuestions.length}
             </div>
           </div>
-          <button onClick={onGoToExam} className="nav-button">← Exit Quiz</button>
+        
+          <div className={styles.timerSection}>
+            <div className={styles.timer}>
+              <span className={styles.timerLabel}>Time Remaining:</span>
+              <span className={`${styles.timerValue} ${timeRemaining < 600 ? styles.timerWarning : ''}`}>
+                {formatTime(timeRemaining)}
+              </span>
+            </div>
+          </div>
+
+          <div className={styles.headerActions}>
+            <button onClick={onGoHome} className={styles.backButton}>
+              ← Back to Home
+            </button>
+            <button 
+              onClick={handleSubmitExam} 
+              className={styles.submitButton}
+              disabled={answeredCount === 0}
+            >
+              Submit Exam ({answeredCount}/{shuffledQuestions.length})
+            </button>
+          </div>
         </div>
       </header>
 
-      <aside className="question-navigator">
-        <h3>Questions</h3>
-        <div className="question-grid">
-          {selectedQuestions.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => jumpToQuestion(index)}
-              className={`question-nav-button ${
-                index === currentQuestionIndex ? 'current' : ''
-              } ${
-                selectedAnswers.hasOwnProperty(index) ? 'answered' : ''
-              } ${
-                flaggedQuestions.has(index) ? 'flagged' : ''
-              } ${
-                reviewMode && selectedAnswers[index] === selectedQuestions[index].correctAnswer ? 'correct' : ''
-              } ${
-                reviewMode && selectedAnswers.hasOwnProperty(index) && selectedAnswers[index] !== selectedQuestions[index].correctAnswer ? 'incorrect' : ''
-              }`}
-            >
-              {index + 1}
-              {flaggedQuestions.has(index) && <span className="flag-indicator">🚩</span>}
-            </button>
-          ))}
-        </div>
-      </aside>
+      <div className={styles.progressBar}>
+        <div 
+          className={styles.progressFill} 
+          style={{ width: `${progressPercent}%` }}
+        ></div>
+      </div>
 
-      <main className="quiz-main">
-        <div className="question-container">
-          <div className="question-header">
-            <div className="question-meta">
-              <span className="domain-tag">{currentQuestion.domain}</span>
-              <span className="difficulty-tag">{currentQuestion.difficulty}</span>
-              <button 
-                onClick={handleFlag}
-                className={`flag-button ${flaggedQuestions.has(currentQuestionIndex) ? 'flagged' : ''}`}
-              >
-                🚩 {flaggedQuestions.has(currentQuestionIndex) ? 'Unflag' : 'Flag'}
-              </button>
+      <main className={styles.quizContent}>
+        <div className={styles.questionSection}>
+          <div className={styles.questionCard}>
+            <div className={styles.questionHeader}>
+              <div className={styles.questionMeta}>
+                <span className={styles.domain}>{currentQ.domain}</span>
+                <span className={styles.difficulty}>{currentQ.difficulty}</span>
+              </div>
             </div>
-          </div>
+            
+            <h2 className={styles.questionText}>{currentQ.question}</h2>
+            
+            <div className={styles.optionsContainer}>
+              {currentQ.options.map((option, index) => {
+                const isSelected = selectedOption === index
+                const isCorrect = index === currentQ.correctAnswer
+                const showResult = isRevealed
+                
+                let optionClass = styles.option
+                if (showResult) {
+                  if (isCorrect) {
+                    optionClass += ` ${styles.correct}`
+                  } else if (isSelected && !isCorrect) {
+                    optionClass += ` ${styles.incorrect}`
+                  }
+                } else if (isSelected) {
+                  optionClass += ` ${styles.selected}`
+                }
 
-          <div className="question-text">
-            <h2>{currentQuestion.question}</h2>
-          </div>
-
-          <div className="answers-container">
-            {currentQuestion.options.map((option, index) => (
-              <button
-                key={index}
-                onClick={() => handleAnswerSelect(index)}
-                disabled={reviewMode}
-                className={`answer-option ${
-                  selectedAnswers[currentQuestionIndex] === index ? 'selected' : ''
-                } ${
-                  showExplanation || reviewMode ? (
-                    index === currentQuestion.correctAnswer ? 'correct' : 
-                    selectedAnswers[currentQuestionIndex] === index ? 'incorrect' : ''
-                  ) : ''
-                }`}
-              >
-                <span className="option-letter">{String.fromCharCode(65 + index)}</span>
-                <span className="option-text">{option}</span>
-              </button>
-            ))}
-          </div>
-
-          {(showExplanation || reviewMode) && (
-            <div className="explanation-container">
-              <h3>Explanation:</h3>
-              <p>{currentQuestion.explanation}</p>
+                return (
+                  <button
+                    key={index}
+                    className={optionClass}
+                    onClick={() => handleAnswerSelect(index)}
+                    disabled={examSubmitted}
+                  >
+                    <span className={styles.optionLetter}>
+                      {index + 1}
+                    </span>
+                    <span className={styles.optionText}>{option}</span>
+                    {showResult && isCorrect && (
+                      <span className={styles.checkMark}>✓</span>
+                    )}
+                    {showResult && isSelected && !isCorrect && (
+                      <span className={styles.xMark}>✗</span>
+                    )}
+                  </button>
+                )
+              })}
             </div>
-          )}
 
-          <div className="quiz-controls">
-            <div className="navigation-controls">
-              <button 
-                onClick={handlePrevious}
-                disabled={currentQuestionIndex === 0}
-                className="nav-control"
-              >
-                ← Previous
-              </button>
-              
-              {!reviewMode && (
-                <button 
-                  onClick={handleShowExplanation}
-                  disabled={!selectedAnswers.hasOwnProperty(currentQuestionIndex) || showExplanation}
-                  className="explanation-button"
+            {isRevealed && (
+              <div className={styles.explanationSection}>
+                <button
+                  className={styles.explanationToggle}
+                  onClick={() => toggleExplanation(currentQ.id)}
                 >
-                  Show Explanation
+                  {isExplanationCollapsed ? '▼' : '▲'} Explanation
                 </button>
-              )}
-              
-              <button 
-                onClick={handleNext}
-                disabled={currentQuestionIndex === selectedQuestions.length - 1}
-                className="nav-control"
-              >
-                Next →
-              </button>
-            </div>
-
-            {!reviewMode && currentQuestionIndex === selectedQuestions.length - 1 && (
-              <button 
-                onClick={handleFinishQuiz}
-                className="finish-button"
-                disabled={Object.keys(selectedAnswers).length < selectedQuestions.length}
-              >
-                Finish Quiz
-              </button>
-            )}
-
-            {reviewMode && (
-              <div className="review-controls">
-                <button onClick={() => setShowResults(true)} className="back-to-results">
-                  ← Back to Results
-                </button>
+                
+                {!isExplanationCollapsed && (
+                  <div className={styles.explanationContent}>
+                    <p>{currentQ.explanation}</p>
+                  </div>
+                )}
               </div>
             )}
+          </div>
+        </div>
+
+        <div className={styles.navigationSection}>
+          <div className={styles.questionNavigation}>
+            <button
+              onClick={previousQuestion}
+              disabled={currentQuestion === 0}
+              className={styles.navButton}
+            >
+              ← Previous
+            </button>
+            
+            <span className={styles.questionInfo}>
+              {currentQuestion + 1} / {shuffledQuestions.length}
+            </span>
+            
+            <button
+              onClick={nextQuestion}
+              disabled={currentQuestion === shuffledQuestions.length - 1}
+              className={styles.navButton}
+            >
+              Next →
+            </button>
+          </div>
+
+          <div className={styles.questionGrid}>
+            {shuffledQuestions.map((_, index) => {
+              const questionId = shuffledQuestions[index].id
+              const isAnswered = selectedAnswers[questionId] !== undefined
+              const isCurrent = index === currentQuestion
+              
+              return (
+                <button
+                  key={index}
+                  className={`${styles.questionNumber} ${
+                    isCurrent ? styles.current : ''
+                  } ${isAnswered ? styles.answered : ''}`}
+                  onClick={() => goToQuestion(index)}
+                >
+                  {index + 1}
+                </button>
+              )
+            })}
           </div>
         </div>
       </main>

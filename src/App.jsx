@@ -119,9 +119,9 @@ function AppContent() {
     return (
       <SAFeTeams6ExamQuiz 
         onGoHome={goHome} 
-        onGoToExam={goBackToSAFeTeams6} 
+        onGoBackToExam={goBackToSAFeTeams6} 
         numberOfQuestions={numberOfQuestions} 
-        darkMode={theme === 'dark'} 
+        autoShowExplanation={autoShowExplanation} 
       />
     )
   }

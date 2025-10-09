@@ -3,7 +3,7 @@ import styles from './LeadingSAFe6ExamQuiz.module.css'
 import { leadingSAFe6Questions } from './LeadingSAFe6Questions.js'
 import Results from '../shared/Results.jsx'
 
-function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 40, autoShowExplanation = false }) {
+function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45, autoShowExplanation = false }) {
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [selectedAnswers, setSelectedAnswers] = useState({})
   const [revealedAnswers, setRevealedAnswers] = useState({})
@@ -24,11 +24,29 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 40
     return shuffled
   }
 
+  // Utility function to shuffle question options and update correct answer index
+  const shuffleQuestionOptions = (question) => {
+    const optionIndices = [0, 1, 2, 3].map(i => ({ index: i, option: question.options[i] }))
+    const shuffledOptions = shuffleArray(optionIndices)
+    
+    const newQuestion = {
+      ...question,
+      options: shuffledOptions.map(item => item.option),
+      correctAnswer: shuffledOptions.findIndex(item => item.index === question.correctAnswer),
+      originalCorrectAnswer: question.correctAnswer, // Keep track for explanations
+      optionMapping: shuffledOptions.map(item => item.index) // Keep track of original positions
+    }
+    
+    return newQuestion
+  }
+
   // Initialize shuffled questions on component mount
   useEffect(() => {
     const shuffled = shuffleArray(leadingSAFe6Questions)
     const selectedQuestions = shuffled.slice(0, numberOfQuestions)
-    setShuffledQuestions(selectedQuestions)
+    // Shuffle the options for each question to prevent visual patterns
+    const questionsWithShuffledOptions = selectedQuestions.map(shuffleQuestionOptions)
+    setShuffledQuestions(questionsWithShuffledOptions)
   }, [numberOfQuestions])
 
   // Timer effect
@@ -176,8 +194,8 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 40
           </div>
 
           <div className={styles.headerActions}>
-            <button onClick={onGoBackToExam} className={styles.backButton}>
-              ← Back to Exam
+            <button onClick={onGoHome} className={styles.backButton}>
+              ← Back to Home
             </button>
             <button 
               onClick={handleSubmitExam} 
@@ -234,7 +252,7 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 40
                     disabled={examSubmitted}
                   >
                     <span className={styles.optionLetter}>
-                      {String.fromCharCode(65 + index)}
+                      {index + 1}
                     </span>
                     <span className={styles.optionText}>{option}</span>
                     {showResult && isCorrect && (
