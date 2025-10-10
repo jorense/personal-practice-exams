@@ -11,9 +11,22 @@ const STATIC_CACHE_URLS = [
   '/static/js/bundle.js',
   '/static/css/main.css',
   '/manifest.json',
+  // New PNG Favicon Files
+  '/favicon.ico',
+  '/favicon-16x16.png',
+  '/favicon-32x32.png',
+  '/apple-touch-icon.png',
+  '/android-chrome-192x192.png',
+  '/android-chrome-512x512.png',
+  // Legacy SVG Fallbacks
   '/icon-192x192.png',
   '/icon-512x512.png',
-  '/apple-touch-icon.png'
+  '/icon-192x192.svg',
+  '/icon-512x512.svg',
+  '/icon-192x192-maskable.svg',
+  '/apple-touch-icon.svg',
+  '/favicon-16x16.svg',
+  '/favicon-32x32.svg'
 ];
 
 // API endpoints and dynamic content to cache
