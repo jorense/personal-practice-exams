@@ -1,33 +1,61 @@
 import { useState, useEffect } from 'react'
 import { ThemeProvider, useTheme } from './contexts/ThemeContext.jsx'
+import { ProgressProvider, useProgress } from './contexts/ProgressContext.jsx'
 import LeadingSAFe6Exam from './components/LeadingSAFe6/LeadingSAFe6Exam.jsx'
 import LeadingSAFe6ExamQuiz from './components/LeadingSAFe6/LeadingSAFe6ExamQuiz.jsx'
 import SAFeTeams6Exam from './components/SAFeTeams6/SAFeTeams6Exam.jsx'
 import SAFeTeams6ExamQuiz from './components/SAFeTeams6/SAFeTeams6ExamQuiz.jsx'
+import Dashboard from './components/Dashboard/Dashboard.jsx'
+import Achievements from './components/Achievements/Achievements.jsx'
+import SmartReview from './components/SmartReview/SmartReview.jsx'
+import AchievementNotification from './components/Achievements/AchievementNotification.jsx'
 import StudyMaterials from './StudyMaterials.jsx'
 import './App.css'
 
 function App() {
   return (
     <ThemeProvider>
-      <AppContent />
+      <ProgressProvider>
+        <AppContent />
+      </ProgressProvider>
     </ThemeProvider>
   )
 }
 
 function AppContent() {
   const { theme, setLightTheme, setDarkTheme, autoShowExplanation, setAutoShowExplanation } = useTheme()
+  const { achievements, getNewAchievements } = useProgress()
   const [currentPage, setCurrentPage] = useState('home')
   const [studyExamType, setStudyExamType] = useState('Leading SAFe 6')
+  const [achievementNotification, setAchievementNotification] = useState(null)
   const [numberOfQuestions, setNumberOfQuestions] = useState(() => {
     const savedQuestionCount = localStorage.getItem('lace-studio-question-count')
-    return savedQuestionCount ? Number(savedQuestionCount) : 40
+    const count = savedQuestionCount ? Number(savedQuestionCount) : 45
+    // Migration: Update old default of 40 to new default of 45
+    return count === 40 ? 45 : count
   })
 
   // Save numberOfQuestions to localStorage whenever it changes
   useEffect(() => {
     localStorage.setItem('lace-studio-question-count', numberOfQuestions.toString())
   }, [numberOfQuestions])
+
+  // One-time migration effect to update localStorage for migrated users
+  useEffect(() => {
+    const savedQuestionCount = localStorage.getItem('lace-studio-question-count')
+    if (savedQuestionCount === '40') {
+      localStorage.setItem('lace-studio-question-count', '45')
+    }
+  }, [])
+
+  // Watch for new achievements and show notifications
+  useEffect(() => {
+    const newAchievements = getNewAchievements()
+    if (newAchievements.length > 0) {
+      // Show the first new achievement
+      setAchievementNotification(newAchievements[0])
+    }
+  }, [achievements, getNewAchievements])
 
   const startExam = (examType) => {
     if (examType === 'Leading SAFe 6') {
@@ -58,6 +86,18 @@ function AppContent() {
     setCurrentPage('settings')
   }
 
+  const goToDashboard = () => {
+    setCurrentPage('dashboard')
+  }
+
+  const goToAchievements = () => {
+    setCurrentPage('achievements')
+  }
+
+  const goToSmartReview = () => {
+    setCurrentPage('smart-review')
+  }
+
   const goToExams = () => {
     setCurrentPage('exams')
   }
@@ -86,6 +126,9 @@ function AppContent() {
         onGoToStudyMaterials={() => goToStudyMaterials('Leading SAFe 6')} 
         onStartQuiz={startLeadingSAFe6Quiz} 
         numberOfQuestions={numberOfQuestions} 
+        autoShowExplanation={autoShowExplanation}
+        onNumberOfQuestionsChange={setNumberOfQuestions}
+        onAutoShowExplanationChange={setAutoShowExplanation}
       />
     )
   }
@@ -110,6 +153,9 @@ function AppContent() {
         onGoToStudyMaterials={() => goToStudyMaterials('SAFe for Teams 6.0')} 
         onStartQuiz={startSAFeTeams6Quiz} 
         numberOfQuestions={numberOfQuestions} 
+        autoShowExplanation={autoShowExplanation}
+        onNumberOfQuestionsChange={setNumberOfQuestions}
+        onAutoShowExplanationChange={setAutoShowExplanation}
       />
     )
   }
@@ -129,6 +175,19 @@ function AppContent() {
   // Study Materials Page
   if (currentPage === 'study-materials') {
     return <StudyMaterials onGoHome={goBackToExam} examType={studyExamType} />
+  }
+
+  // Analytics Page
+  if (currentPage === 'dashboard') {
+    return <Dashboard onGoHome={goHome} />
+  }
+
+  if (currentPage === 'achievements') {
+    return <Achievements onGoHome={goHome} />
+  }
+
+  if (currentPage === 'smart-review') {
+    return <SmartReview onGoHome={goHome} onStartExam={startExam} />
   }
 
   // Settings Page
@@ -193,10 +252,12 @@ function AppContent() {
                 >
                   <option value={10}>10 Questions</option>
                   <option value={20}>20 Questions</option>
-                  <option value={40}>40 Questions (Default)</option>
+                  <option value={40}>40 Questions</option>
+                  <option value={45}>45 Questions (Default)</option>
                   <option value={50}>50 Questions</option>
                   <option value={100}>100 Questions</option>
-                  <option value={200}>200 Questions (Complete Bank)</option>
+                  <option value={185}>185 Questions (SAFe Teams 6.0 Complete)</option>
+                  <option value={200}>200 Questions (Leading SAFe 6 Complete)</option>
                 </select>
               </div>
               <div className="settings-info">
@@ -333,6 +394,9 @@ function AppContent() {
           </div>
           <nav className="nav">
             <button onClick={goToExams} className="nav-button">Exams</button>
+            <button onClick={goToDashboard} className="nav-button dashboard-button">📊 Dashboard</button>
+            <button onClick={goToAchievements} className="nav-button achievements-button">🏆 Achievements</button>
+            <button onClick={goToSmartReview} className="nav-button smart-review-button">🎯 Smart Review</button>
             <button onClick={goToSettings} className="nav-button settings-button">⚙️ Settings</button>
           </nav>
         </div>
@@ -425,6 +489,12 @@ function AppContent() {
       <footer className="footer">
         <p>&copy; 2025 LACE Studio Practice Exams. Empowering Agile professionals worldwide.</p>
       </footer>
+
+      {/* Achievement Notification */}
+      <AchievementNotification
+        achievement={achievementNotification}
+        onClose={() => setAchievementNotification(null)}
+      />
     </>
   )
 }

@@ -1,8 +1,27 @@
 import { useTheme } from '../../contexts/ThemeContext.jsx';
 import styles from './LeadingSAFe6Exam.module.css'
 
-function LeadingSAFe6Exam({ onGoHome, onGoToStudyMaterials, onStartQuiz, numberOfQuestions = 40 }) {
-  const { autoShowExplanation } = useTheme();
+function LeadingSAFe6Exam({ 
+  onGoHome, 
+  onGoToStudyMaterials, 
+  onStartQuiz, 
+  numberOfQuestions = 45,
+  autoShowExplanation = false,
+  onNumberOfQuestionsChange,
+  onAutoShowExplanationChange
+}) {
+  const { theme } = useTheme();
+
+  // Calculate timer information based on question count
+  const getTimerInfo = () => {
+    if (numberOfQuestions <= 45) {
+      return "90 minutes"
+    } else if (numberOfQuestions <= 100) {
+      return `${numberOfQuestions * 2} minutes`
+    } else {
+      return "Unlimited time"
+    }
+  }
 
   return (
     <div className={styles.examContainer}>
@@ -30,7 +49,7 @@ function LeadingSAFe6Exam({ onGoHome, onGoToStudyMaterials, onStartQuiz, numberO
             </div>
             <div className={styles.detailCard}>
               <h3>⏱️ Time Limit</h3>
-              <p>90 minutes</p>
+              <p>{getTimerInfo()}</p>
             </div>
             <div className={styles.detailCard}>
               <h3>🎯 Passing Score</h3>
@@ -39,6 +58,49 @@ function LeadingSAFe6Exam({ onGoHome, onGoToStudyMaterials, onStartQuiz, numberO
             <div className={styles.detailCard}>
               <h3>🔄 Retakes</h3>
               <p>Unlimited attempts</p>
+            </div>
+          </div>
+
+          {/* Exam Settings Panel */}
+          <div className={styles.examSettings}>
+            <h2>⚙️ Exam Settings</h2>
+            <div className={styles.settingsGrid}>
+              <div className={styles.settingCard}>
+                <h4>Number of Questions</h4>
+                <select 
+                  value={numberOfQuestions} 
+                  onChange={(e) => onNumberOfQuestionsChange && onNumberOfQuestionsChange(Number(e.target.value))}
+                  className={styles.settingSelect}
+                >
+                  <option value={10}>10 Questions</option>
+                  <option value={20}>20 Questions</option>
+                  <option value={40}>40 Questions</option>
+                  <option value={45}>45 Questions (Default)</option>
+                  <option value={50}>50 Questions</option>
+                  <option value={100}>100 Questions</option>
+                  <option value={200}>200 Questions (Complete Bank)</option>
+                </select>
+                <p className={styles.settingDescription}>
+                  Choose how many questions you want to practice with
+                </p>
+              </div>
+              <div className={styles.settingCard}>
+                <h4>Auto-Show Explanations</h4>
+                <label className={styles.checkboxLabel}>
+                  <input 
+                    type="checkbox" 
+                    checked={autoShowExplanation}
+                    onChange={(e) => onAutoShowExplanationChange && onAutoShowExplanationChange(e.target.checked)}
+                    className={styles.settingCheckbox}
+                  />
+                  <span className={styles.checkboxText}>
+                    Automatically show detailed explanations
+                  </span>
+                </label>
+                <p className={styles.settingDescription}>
+                  When enabled, explanations are shown automatically for each question
+                </p>
+              </div>
             </div>
           </div>
 
@@ -112,7 +174,14 @@ function LeadingSAFe6Exam({ onGoHome, onGoToStudyMaterials, onStartQuiz, numberO
                 <span className={styles.tipIcon}>⏰</span>
                 <div>
                   <h4>Manage Your Time</h4>
-                  <p>You have 90 minutes for {numberOfQuestions} questions. Pace yourself accordingly.</p>
+                  <p>
+                    {numberOfQuestions <= 45 
+                      ? `You have 90 minutes for ${numberOfQuestions} questions. This matches the real exam format.`
+                      : numberOfQuestions <= 100 
+                      ? `You have ${numberOfQuestions * 2} minutes for ${numberOfQuestions} questions (2 minutes per question).`
+                      : `No time limit for ${numberOfQuestions} questions. Take your time to learn thoroughly.`
+                    }
+                  </p>
                 </div>
               </div>
               <div className={styles.tipCard}>

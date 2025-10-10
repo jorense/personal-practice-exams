@@ -2,13 +2,33 @@ import { useState, useEffect } from 'react'
 import styles from './LeadingSAFe6ExamQuiz.module.css'
 import { leadingSAFe6Questions } from './LeadingSAFe6Questions.js'
 import Results from '../shared/Results.jsx'
+import { useProgress } from '../../contexts/ProgressContext.jsx'
 
 function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45, autoShowExplanation = false }) {
+  const { recordSession } = useProgress()
+
+  // Adaptive timer calculation function
+  const calculateTimerDuration = (questionCount) => {
+    if (questionCount <= 45) {
+      // Certification mode: 90 minutes (5400 seconds)
+      return 5400
+    } else if (questionCount <= 100) {
+      // Practice mode: 2 minutes per question (120 seconds each)
+      return questionCount * 120
+    } else {
+      // Study mode: No timer (0 = unlimited)
+      return 0
+    }
+  }
+
+  const initialTimer = calculateTimerDuration(numberOfQuestions)
+  const hasTimer = initialTimer > 0
+
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [selectedAnswers, setSelectedAnswers] = useState({})
   const [revealedAnswers, setRevealedAnswers] = useState({})
   const [collapsedExplanations, setCollapsedExplanations] = useState({})
-  const [timeRemaining, setTimeRemaining] = useState(5400) // 90 minutes in seconds
+  const [timeRemaining, setTimeRemaining] = useState(initialTimer)
   const [showResults, setShowResults] = useState(false)
   const [totalTimeUsed, setTotalTimeUsed] = useState(0)
   const [examSubmitted, setExamSubmitted] = useState(false)
@@ -49,15 +69,15 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
     setShuffledQuestions(questionsWithShuffledOptions)
   }, [numberOfQuestions])
 
-  // Timer effect
+  // Timer effect - only runs when timer is enabled
   useEffect(() => {
-    if (timeRemaining > 0 && !examSubmitted) {
+    if (hasTimer && timeRemaining > 0 && !examSubmitted) {
       const timer = setTimeout(() => setTimeRemaining(timeRemaining - 1), 1000)
       return () => clearTimeout(timer)
-    } else if (timeRemaining === 0 && !examSubmitted) {
+    } else if (hasTimer && timeRemaining === 0 && !examSubmitted) {
       handleSubmitExam()
     }
-  }, [timeRemaining, examSubmitted])
+  }, [hasTimer, timeRemaining, examSubmitted])
 
   useEffect(() => {
     if (shuffledQuestions.length > 0 && autoShowExplanation) {
@@ -124,7 +144,46 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
   }
 
   const handleSubmitExam = () => {
-    setTotalTimeUsed(5400 - timeRemaining)
+    const timeUsed = hasTimer ? (initialTimer - timeRemaining) : 0
+    setTotalTimeUsed(timeUsed)
+
+    // Calculate score and domain performance
+    let correctAnswers = 0
+    const domainPerformance = {}
+    
+    shuffledQuestions.forEach((question) => {
+      const isCorrect = selectedAnswers[question.id] === question.correctAnswer
+      if (isCorrect) correctAnswers++
+      
+      // Track domain performance
+      const domain = question.domain || 'General'
+      if (!domainPerformance[domain]) {
+        domainPerformance[domain] = { correct: 0, total: 0 }
+      }
+      domainPerformance[domain].total++
+      if (isCorrect) domainPerformance[domain].correct++
+    })
+
+    const score = Math.round((correctAnswers / shuffledQuestions.length) * 100)
+
+    // Get incorrect questions for smart review
+    const incorrectQuestions = shuffledQuestions.filter((question) =>
+      selectedAnswers[question.id] !== question.correctAnswer
+    )
+
+    // Record the session
+    recordSession({
+      examType: 'Leading SAFe 6',
+      score: score,
+      totalQuestions: shuffledQuestions.length,
+      correctAnswers: correctAnswers,
+      timeUsed: timeUsed,
+      timeLimitSec: initialTimer,
+      domainPerformance: domainPerformance,
+      incorrectQuestions: incorrectQuestions,
+      date: new Date().toISOString()
+    })
+
     setExamSubmitted(true)
   }
 
@@ -157,7 +216,7 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
           setSelectedAnswers({})
           setRevealedAnswers({})
           setCollapsedExplanations({})
-          setTimeRemaining(5400)
+          setTimeRemaining(initialTimer)
           setTotalTimeUsed(0)
         }}
       />
@@ -184,14 +243,25 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
             </div>
           </div>
         
-          <div className={styles.timerSection}>
-            <div className={styles.timer}>
-              <span className={styles.timerLabel}>Time Remaining:</span>
-              <span className={`${styles.timerValue} ${timeRemaining < 600 ? styles.timerWarning : ''}`}>
-                {formatTime(timeRemaining)}
-              </span>
+          {hasTimer ? (
+            <div className={styles.timerSection}>
+              <div className={styles.timer}>
+                <span className={styles.timerLabel}>Time Remaining:</span>
+                <span className={`${styles.timerValue} ${timeRemaining < 600 ? styles.timerWarning : ''}`}>
+                  {formatTime(timeRemaining)}
+                </span>
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className={styles.timerSection}>
+              <div className={styles.timer}>
+                <span className={styles.timerLabel}>Study Mode:</span>
+                <span className={styles.timerValue}>
+                  Unlimited Time
+                </span>
+              </div>
+            </div>
+          )}
 
           <div className={styles.headerActions}>
             <button onClick={onGoHome} className={styles.backButton}>

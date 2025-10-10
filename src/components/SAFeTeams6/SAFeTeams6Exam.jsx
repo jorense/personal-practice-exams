@@ -1,8 +1,42 @@
 import { useTheme } from '../../contexts/ThemeContext.jsx';
 import styles from './SAFeTeams6Exam.module.css'
 
-function SAFeTeams6Exam({ onGoHome, onGoToStudyMaterials, onStartQuiz, numberOfQuestions = 40 }) {
-  const { autoShowExplanation } = useTheme();
+function SAFeTeams6Exam({ 
+  onGoHome, 
+  onGoToStudyMaterials, 
+  onStartQuiz, 
+  numberOfQuestions = 45,
+  autoShowExplanation = false,
+  onNumberOfQuestionsChange,
+  onAutoShowExplanationChange
+}) {
+  const { theme } = useTheme();
+
+  // Calculate timer info for display
+  const getTimerInfo = () => {
+    if (numberOfQuestions <= 45) {
+      return {
+        duration: "90 minutes",
+        mode: "Certification Mode",
+        description: "Matches real exam timing"
+      }
+    } else if (numberOfQuestions <= 100) {
+      const minutes = Math.round((numberOfQuestions * 120) / 60)
+      return {
+        duration: `${minutes} minutes`,
+        mode: "Practice Mode", 
+        description: "2 minutes per question"
+      }
+    } else {
+      return {
+        duration: "Unlimited",
+        mode: "Study Mode",
+        description: "No time pressure"
+      }
+    }
+  }
+
+  const timerInfo = getTimerInfo();
 
   return (
     <div className={styles.examContainer}>
@@ -29,8 +63,11 @@ function SAFeTeams6Exam({ onGoHome, onGoToStudyMaterials, onStartQuiz, numberOfQ
               <p>{numberOfQuestions} practice questions</p>
             </div>
             <div className={styles.detailCard}>
-              <h3>⏱️ Time Limit</h3>
-              <p>90 minutes</p>
+              <h3>⏱️ {timerInfo.mode}</h3>
+              <p>{timerInfo.duration}</p>
+              <small style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>
+                {timerInfo.description}
+              </small>
             </div>
             <div className={styles.detailCard}>
               <h3>🎯 Passing Score</h3>
@@ -39,6 +76,49 @@ function SAFeTeams6Exam({ onGoHome, onGoToStudyMaterials, onStartQuiz, numberOfQ
             <div className={styles.detailCard}>
               <h3>🔄 Retakes</h3>
               <p>Unlimited attempts</p>
+            </div>
+          </div>
+
+          {/* Exam Settings Panel */}
+          <div className={styles.examSettings}>
+            <h2>⚙️ Exam Settings</h2>
+            <div className={styles.settingsGrid}>
+              <div className={styles.settingCard}>
+                <h4>Number of Questions</h4>
+                <select 
+                  value={numberOfQuestions} 
+                  onChange={(e) => onNumberOfQuestionsChange && onNumberOfQuestionsChange(Number(e.target.value))}
+                  className={styles.settingSelect}
+                >
+                  <option value={10}>10 Questions</option>
+                  <option value={20}>20 Questions</option>
+                  <option value={40}>40 Questions</option>
+                  <option value={45}>45 Questions (Default)</option>
+                  <option value={50}>50 Questions</option>
+                  <option value={100}>100 Questions</option>
+                  <option value={185}>185 Questions (Complete Bank)</option>
+                </select>
+                <p className={styles.settingDescription}>
+                  Choose how many questions you want to practice with
+                </p>
+              </div>
+              <div className={styles.settingCard}>
+                <h4>Auto-Show Explanations</h4>
+                <label className={styles.checkboxLabel}>
+                  <input 
+                    type="checkbox" 
+                    checked={autoShowExplanation}
+                    onChange={(e) => onAutoShowExplanationChange && onAutoShowExplanationChange(e.target.checked)}
+                    className={styles.settingCheckbox}
+                  />
+                  <span className={styles.checkboxText}>
+                    Automatically show detailed explanations
+                  </span>
+                </label>
+                <p className={styles.settingDescription}>
+                  When enabled, explanations are shown automatically for each question
+                </p>
+              </div>
             </div>
           </div>
 
@@ -92,7 +172,12 @@ function SAFeTeams6Exam({ onGoHome, onGoToStudyMaterials, onStartQuiz, numberOfQ
                 <span className={styles.tipIcon}>⏰</span>
                 <div>
                   <h4>Manage Your Time</h4>
-                  <p>You have 90 minutes for {numberOfQuestions} questions. Pace yourself accordingly.</p>
+                  <p>
+                    {timerInfo.duration === "Unlimited" 
+                      ? "No time limit - take your time to study each question thoroughly."
+                      : `You have ${timerInfo.duration} for ${numberOfQuestions} questions. ${timerInfo.description}.`
+                    }
+                  </p>
                 </div>
               </div>
               <div className={styles.tipCard}>
