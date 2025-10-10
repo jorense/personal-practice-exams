@@ -527,3 +527,14 @@
     padding: 1rem;
   }
 }
+
+/* Partial credit styling for multi-select questions */
+.partialCredit {
+  background: var(--warning-color, #ff9500);
+  color: white;
+  padding: 0.125rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-left: 0.5rem;
+}

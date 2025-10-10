@@ -22,10 +22,45 @@ export default function Results({
     
     const perQuestion = questions.map(q => {
       const selected = selectedAnswers[q.id]
-      const isCorrect = selected === q.correctAnswer
-      if (isCorrect) {
-        correct += 1
+      let isCorrect = false
+      let questionScore = 0
+      let selectedAnswerText = ''
+      let correctAnswerText = ''
+
+      if (q.questionType === 'multiple') {
+        // Multi-select question handling
+        const userSelections = selected || []
+        const correctAnswers = q.correctAnswers || []
+        
+        if (userSelections.length > 0) {
+          const correctSelected = userSelections.filter(idx => correctAnswers.includes(idx)).length
+          const incorrectSelected = userSelections.filter(idx => !correctAnswers.includes(idx)).length
+          
+          // Calculate question score (0 to 1)
+          questionScore = Math.max(0, (correctSelected - incorrectSelected) / correctAnswers.length)
+          isCorrect = questionScore >= 1.0
+        }
+        
+        // Format selected answers
+        if (userSelections.length > 0) {
+          selectedAnswerText = userSelections.map(idx => `${String.fromCharCode(65 + idx)}. ${q.options[idx]}`).join(', ')
+        } else {
+          selectedAnswerText = 'Not answered'
+        }
+        
+        // Format correct answers
+        correctAnswerText = correctAnswers.map(idx => `${String.fromCharCode(65 + idx)}. ${q.options[idx]}`).join(', ')
       } else {
+        // Single-select question handling (existing logic)
+        isCorrect = selected === q.correctAnswer
+        questionScore = isCorrect ? 1 : 0
+        selectedAnswerText = selected !== undefined ? `${String.fromCharCode(65 + selected)}. ${q.options[selected]}` : 'Not answered'
+        correctAnswerText = `${String.fromCharCode(65 + q.correctAnswer)}. ${q.options[q.correctAnswer]}`
+      }
+
+      correct += questionScore
+      
+      if (questionScore < 1.0) {
         incorrectQuestions.push(q)
       }
 
@@ -34,16 +69,15 @@ export default function Results({
         domainResults[q.domain] = { correct: 0, total: 0 }
       }
       domainResults[q.domain].total += 1
-      if (isCorrect) {
-        domainResults[q.domain].correct += 1
-      }
+      domainResults[q.domain].correct += questionScore
 
       return {
         question: q,
         selected,
         isCorrect,
-        selectedAnswer: selected !== undefined ? q.options[selected] : 'Not answered',
-        correctAnswer: q.options[q.correctAnswer]
+        questionScore,
+        selectedAnswer: selectedAnswerText,
+        correctAnswer: correctAnswerText
       }
     })
 
@@ -189,8 +223,13 @@ export default function Results({
                     <div className={styles.questionHeader}>
                       <span className={styles.questionNumber}>Q{index + 1}</span>
                       <span className={`${styles.resultIcon} ${result.isCorrect ? styles.correctIcon : styles.incorrectIcon}`}>
-                        {result.isCorrect ? '✓' : '✗'}
+                        {result.isCorrect ? '✓' : result.questionScore > 0 ? '◐' : '✗'}
                       </span>
+                      {result.question.questionType === 'multiple' && result.questionScore < 1 && result.questionScore > 0 && (
+                        <span className={styles.partialCredit}>
+                          {Math.round(result.questionScore * 100)}%
+                        </span>
+                      )}
                     </div>
                     
                     <div className={styles.questionContent}>

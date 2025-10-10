@@ -57,15 +57,19 @@ export const leadingSAFe6Questions = [
   },
   {
     id: 5,
-    question: "What does the 'I' in the INVEST criteria stand for when writing user stories?",
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE letters in the INVEST criteria are correctly defined? (Select exactly 3 answers)",
     options: [
-      "Integrated, meaning that user stories should be seamlessly connected with other stories to form cohesive functionality blocks",
-      "Independent, meaning that user stories should be developable and deliverable without relying on other stories for completion",
-      "Innovative, meaning that user stories should introduce new capabilities or creative solutions to existing customer problems",
-      "Iterative, meaning that user stories should be designed to be refined and improved through multiple development cycles"
+      "I = Independent (stories can be developed without dependencies)",
+      "N = Negotiable (details can be discussed and refined)",
+      "V = Verifiable (stories have clear acceptance criteria)", 
+      "E = Integrated (stories connect seamlessly with others)",
+      "S = Small (stories fit within a single iteration)",
+      "T = Testable (stories can be validated through testing)"
     ],
-    correctAnswer: 1,
-    explanation: "In the INVEST criteria, 'I' stands for Independent. This means that user stories should be written so they can be developed and delivered independently of other stories, reducing dependencies and enabling more flexible planning and delivery.",
+    correctAnswers: [0, 1, 4], // Independent, Negotiable, Small
+    explanation: "INVEST criteria: Independent (no dependencies), Negotiable (details can be discussed), Valuable, Estimable, Small (fits in iteration), Testable. Stories should be independent, not integrated.",
     domain: "Supporting Team Execution",
     difficulty: "Foundation"
   },
@@ -197,15 +201,19 @@ export const leadingSAFe6Questions = [
   },
   {
     id: 15,
-    question: "In SAFe, what does 'built-in quality' refer to?",
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE practices are key components of 'built-in quality' in SAFe? (Select exactly 3 answers)",
     options: [
-      "Quality assurance activities performed at the end of development cycles to validate deliverables before customer release",
-      "Quality practices integrated throughout the development process including continuous testing, integration, and automated validation",
-      "External quality audits conducted by third-party organizations to ensure compliance with industry standards and regulations",
-      "Quality metrics and measurement systems reported to management for governance and strategic decision-making purposes"
+      "Continuous integration and automated testing throughout development",
+      "Quality assurance activities performed only at the end of development cycles",
+      "Test-driven development and behavior-driven development practices",
+      "External quality audits conducted by third-party organizations",
+      "Pair programming and collaborative code reviews",
+      "Quality metrics reporting to management for governance purposes"
     ],
-    correctAnswer: 1,
-    explanation: "Built-in quality refers to quality practices that are integrated throughout the development process rather than being added at the end. This includes practices like continuous integration, test-driven development, and pair programming.",
+    correctAnswers: [0, 2, 4], // CI/automated testing, TDD/BDD, Pair programming/code reviews
+    explanation: "Built-in quality in SAFe includes practices integrated throughout development: continuous integration with automated testing, test-driven/behavior-driven development, and collaborative practices like pair programming and code reviews. These prevent defects rather than finding them later.",
     domain: "Establishing Team Agility",
     difficulty: "Foundation"
   },
@@ -337,15 +345,19 @@ export const leadingSAFe6Questions = [
   },
   {
     id: 25,
-    question: "What is the primary purpose of the Innovation and Planning (IP) Iteration?",
+    questionType: "multiple",
+    selectCount: 3,
+    question: "What are the THREE primary purposes of the Innovation and Planning (IP) Iteration? (Select exactly 3 answers)",
     options: [
-      "To develop new product features",
-      "To provide a buffer for teams to complete work and conduct PI Planning",
-      "To conduct customer interviews and market research",
-      "To perform system maintenance and updates"
+      "Provide buffer time for teams to complete remaining PI work",
+      "Develop new product features for customer delivery",
+      "Conduct PI Planning preparation and execution for the next increment",
+      "Perform only system maintenance and technical debt reduction",
+      "Enable innovation, learning, and improvement activities",
+      "Conduct comprehensive customer interviews and market research"
     ],
-    correctAnswer: 1,
-    explanation: "The Innovation and Planning (IP) Iteration provides a buffer for teams to complete any remaining work from the PI and conduct PI Planning for the next increment. It also allows time for innovation, learning, and improvement activities.",
+    correctAnswers: [0, 2, 4], // Buffer time, PI Planning, Innovation/learning
+    explanation: "The IP Iteration serves three key purposes: providing buffer time to complete PI work, enabling PI Planning activities for the next increment, and allowing teams time for innovation, learning, and improvement activities. It's not primarily for feature development or extensive market research.",
     domain: "Supporting Program Execution",
     difficulty: "Foundation"
   },
@@ -477,15 +489,19 @@ export const leadingSAFe6Questions = [
   },
   {
     id: 35,
-    question: "What role does the Scrum Master play in supporting program execution?",
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE roles does the Scrum Master play in supporting program execution? (Select exactly 3 answers)",
     options: [
-      "Making technical decisions for the team",
-      "Facilitating team events and removing impediments",
-      "Managing the product backlog",
-      "Assigning work to individual team members"
+      "Facilitating team events and Scrum ceremonies",
+      "Making all technical and architectural decisions for the team",
+      "Removing impediments that block team progress",
+      "Managing and prioritizing the product backlog items",
+      "Coaching the team on Agile and SAFe practices",
+      "Assigning specific work tasks to individual team members daily"
     ],
-    correctAnswer: 1,
-    explanation: "The Scrum Master facilitates team events and removes impediments that block the team's progress. They serve the team by coaching agile practices and helping create an environment where the team can be successful.",
+    correctAnswers: [0, 2, 4], // Facilitating events, Removing impediments, Coaching
+    explanation: "The Scrum Master supports program execution by facilitating team events, removing impediments that block progress, and coaching the team on Agile and SAFe practices. They do not make technical decisions, manage backlogs, or assign individual tasks.",
     domain: "Supporting Program Execution",
     difficulty: "Foundation"
   },
@@ -617,17 +633,20 @@ export const leadingSAFe6Questions = [
   },
   {
     id: 45,
-    question: "Which SAFe principle emphasizes the importance of understanding and optimizing the full value stream?",
+    questionType: "multiple",
+    selectCount: 2,
+    question: "Which TWO SAFe principles directly relate to optimizing flow and value delivery? (Select exactly 2 answers)",
     options: [
-      "SAFe Principle #6: Visualize and limit Work in Process, reduce batch sizes, and manage queue lengths",
-      "SAFe Principle #2: Apply systems thinking to understand and optimize the flow of value across the entire organization",
-      "SAFe Principle #4: Build incrementally with fast, integrated learning cycles to validate assumptions and reduce risk",
-      "SAFe Principle #8: Unlock the intrinsic motivation of knowledge workers through autonomy, mastery, and purpose"
+      "Principle #2: Apply systems thinking to understand and optimize value flow",
+      "Principle #8: Unlock intrinsic motivation through autonomy, mastery, and purpose",
+      "Principle #6: Visualize and limit WIP, reduce batch sizes, manage queue lengths",
+      "Principle #10: Organize around value to optimize flow and reduce handoffs",
+      "Principle #4: Build incrementally with fast integrated learning cycles"
     ],
-    correctAnswer: 1,
-    explanation: "SAFe Principle #2 'Apply systems thinking' emphasizes understanding the entire system and optimizing the whole rather than sub-optimizing individual parts. This includes understanding dependencies, delays, and flow across the complete value stream.",
+    correctAnswers: [0, 2], // Systems thinking and Visualize/limit WIP
+    explanation: "Principle #2 (Apply systems thinking) and Principle #6 (Visualize and limit WIP) both directly focus on optimizing flow. Systems thinking helps understand the whole value stream, while visualizing and limiting WIP manages flow constraints and bottlenecks.",
     domain: "Applying SAFe Principles",
-    difficulty: "Foundation"
+    difficulty: "Intermediate"
   },
   
   // Additional questions from extended set (46-65)
@@ -759,17 +778,21 @@ export const leadingSAFe6Questions = [
   },
   {
     id: 55,
-    question: "How should Product Owners collaborate with other Product Owners in a SAFe implementation?",
+    questionType: "multiple",
+    selectCount: 3,
+    question: "What are THREE key ways Product Owners should collaborate in a SAFe implementation? (Select exactly 3 answers)",
     options: [
-      "Product Owners should work independently on their team backlogs without coordinating with other Product Owners to maintain team autonomy",
-      "Product Owners should collaborate actively to align priorities, manage dependencies, and ensure coherent solution delivery across teams",
-      "Product Owners should delegate all cross-team coordination responsibilities to Scrum Masters and focus solely on their individual team needs",
-      "Product Owners should meet quarterly to review high-level strategy but avoid day-to-day coordination that might slow down individual team progress"
+      "Align priorities across teams to ensure coherent value delivery",
+      "Work independently to maintain complete team autonomy",
+      "Manage and coordinate dependencies between team backlogs",
+      "Delegate all coordination to Scrum Masters and RTE",
+      "Participate in PI Planning and ART Sync events together",
+      "Meet only quarterly for high-level strategic reviews"
     ],
-    correctAnswer: 1,
-    explanation: "In SAFe, Product Owners must collaborate closely to ensure alignment across teams, manage dependencies, and deliver coherent solutions. This collaboration is essential for successful ART execution and value delivery.",
+    correctAnswers: [0, 2, 4], // Align priorities, Manage dependencies, Participate in PI Planning
+    explanation: "Product Owners in SAFe collaborate by aligning priorities across teams, actively managing dependencies between backlogs, and participating together in key ART events like PI Planning and ART Sync to ensure coordinated value delivery.",
     domain: "Agile Product Delivery",
-    difficulty: "intermediate"
+    difficulty: "Intermediate"
   },
   {
     id: 56,
@@ -929,17 +952,20 @@ export const leadingSAFe6Questions = [
   },
   {
     id: 67,
-    question: "How should Lean-Agile Leaders measure the effectiveness of their leadership during a SAFe implementation?",
+    questionType: "multiple",
+    selectCount: 2,
+    question: "Which TWO of the following are core values of SAFe? (Select exactly 2 answers)",
     options: [
-      "By tracking the number of SAFe events attended and ensuring all prescribed ceremonies are conducted according to official framework guidelines",
-      "Through employee engagement, team autonomy, flow of value delivery, and the organization's ability to adapt to changing market conditions",
-      "By monitoring individual team velocity metrics and comparing performance rankings across all Agile Release Trains in the organization",
-      "Through strict adherence to predetermined timelines and budget allocations while maintaining detailed documentation of all process deviations"
+      "Alignment - Ensuring all levels of the organization are working toward common goals",
+      "Transparency - Making work and progress visible across the organization", 
+      "Compliance - Following all established processes and documentation requirements",
+      "Built-in Quality - Ensuring quality is embedded in every step of development",
+      "Predictability - Maintaining consistent delivery schedules across all teams"
     ],
-    correctAnswer: 1,
-    explanation: "Lean-Agile Leadership effectiveness should be measured through leading indicators like employee engagement and team empowerment, as well as lagging indicators like value flow and organizational adaptability. These reflect the true health of the transformation.",
-    domain: "Lean-Agile Leadership",
-    difficulty: "advanced"
+    correctAnswers: [0, 3], // Alignment and Built-in Quality
+    explanation: "The four core values of SAFe are: Alignment, Built-in Quality, Transparency, and Program Execution. Compliance and Predictability, while important, are not among the four core values.",
+    domain: "Applying SAFe Principles",
+    difficulty: "Foundation"
   },
   {
     id: 68,
@@ -1181,17 +1207,21 @@ export const leadingSAFe6Questions = [
   },
   {
     id: 85,
-    question: "How should leaders approach the challenge of scaling Agile practices across different organizational cultures?",
+    questionType: "multiple",
+    selectCount: 3,
+    question: "What are THREE key approaches leaders should use when scaling Agile practices across different organizational cultures? (Select exactly 3 answers)",
     options: [
-      "By implementing identical practices uniformly across all organizational units to ensure consistency and standardization throughout the company",
-      "Through understanding cultural contexts, adapting practices while preserving principles, and respecting existing strengths within different areas",
-      "By focusing implementation efforts on the most receptive organizational units while avoiding areas that demonstrate resistance to change",
-      "Through replacement of existing cultural elements with new SAFe-based organizational culture elements without regard for historical context"
+      "Understand and respect existing cultural contexts and strengths",
+      "Implement identical practices uniformly across all units",
+      "Adapt SAFe practices while preserving core Lean-Agile principles",
+      "Focus only on the most receptive units and avoid resistant areas",
+      "Build on existing organizational strengths rather than replacing them",
+      "Replace all existing culture with new SAFe-based elements immediately"
     ],
-    correctAnswer: 1,
-    explanation: "Successful scaling requires cultural sensitivity, adapting practices to fit context while preserving core principles, and building on existing organizational strengths rather than completely replacing existing culture.",
+    correctAnswers: [0, 2, 4], // Understand contexts, Adapt practices/preserve principles, Build on strengths
+    explanation: "Effective scaling requires understanding cultural contexts, adapting practices while preserving core principles, and building on existing organizational strengths. This approach respects diversity while ensuring consistent Lean-Agile transformation.",
     domain: "Lean-Agile Leadership",
-    difficulty: "advanced"
+    difficulty: "Advanced"
   },
   {
     id: 86,
@@ -1321,17 +1351,21 @@ export const leadingSAFe6Questions = [
   },
   {
     id: 95,
-    question: "How should Lean-Agile Leaders approach the balance between individual recognition and team success?",
+    questionType: "multiple",
+    selectCount: 2,
+    question: "How should Lean-Agile Leaders balance individual recognition and team success? (Select exactly 2 answers)",
     options: [
-      "By focusing exclusively on individual achievements and performance metrics to motivate personal excellence and competitive improvement",
-      "Through recognition of both individual contributions and team achievements while emphasizing how individual success contributes to team outcomes",
-      "By avoiding all individual recognition and focusing solely on team achievements to prevent competition and maintain collaborative culture",
-      "Through rotation of recognition opportunities to ensure all team members receive equal acknowledgment regardless of their actual contributions"
+      "Focus exclusively on individual achievements to motivate competition",
+      "Recognize individual contributions that advance team outcomes",
+      "Avoid all individual recognition to maintain team focus only",
+      "Celebrate team achievements while highlighting individual excellence",
+      "Rotate recognition equally regardless of actual contributions",
+      "Emphasize competition between individuals for motivation"
     ],
-    correctAnswer: 1,
-    explanation: "Effective leaders recognize both individual contributions and team success, showing how individual excellence contributes to team outcomes. This motivates individuals while reinforcing the importance of collaboration.",
+    correctAnswers: [1, 3], // Recognize individual contributions to team outcomes, Celebrate team + individual excellence
+    explanation: "Effective leaders recognize individual contributions that advance team outcomes and celebrate team achievements while highlighting individual excellence. This creates motivation while reinforcing collaboration and shared success.",
     domain: "Lean-Agile Leadership",
-    difficulty: "intermediate"
+    difficulty: "Intermediate"
   },
   {
     id: 96,
@@ -1869,17 +1903,21 @@ export const leadingSAFe6Questions = [
   },
   {
     id: 134,
-    question: "How do effective teams manage the complexity of modern software systems?",
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Select the THREE main benefits of implementing SAFe in large organizations: (Select exactly 3 answers)",
     options: [
-      "By avoiding complex technical approaches and limiting system functionality to maintain simplicity and reduce development overhead",
-      "Through modular design, clear interfaces, comprehensive testing, and practices that make complexity manageable and understandable",
-      "By assigning system complexity management to specialized architecture teams while keeping development teams focused on simple components",
-      "Through detailed upfront design and comprehensive documentation that captures all system complexity before development begins"
+      "Faster time-to-market through coordinated delivery across multiple teams",
+      "Complete elimination of all traditional project management roles and responsibilities", 
+      "Increased productivity and employee engagement through empowered teams",
+      "Higher quality products through built-in quality practices and continuous integration",
+      "Guaranteed return on investment within the first quarter of implementation",
+      "Reduced dependency management complexity through value stream coordination"
     ],
-    correctAnswer: 1,
-    explanation: "Teams manage complexity through good design practices like modularity, clear interfaces, comprehensive testing, and approaches that make complex systems understandable and maintainable.",
-    domain: "Team and Technical Agility",
-    difficulty: "advanced"
+    correctAnswers: [0, 2, 3], // Faster time-to-market, Increased productivity, Higher quality
+    explanation: "SAFe provides faster time-to-market, increased productivity and engagement, and higher quality through built-in practices. It doesn't eliminate all traditional roles or guarantee immediate ROI.",
+    domain: "Applying SAFe Principles", 
+    difficulty: "Intermediate"
   },
   {
     id: 135,
@@ -2487,17 +2525,22 @@ export const leadingSAFe6Questions = [
   },
   {
     id: 178,
-    question: "How do successful teams approach product retirement and sunset planning?",
+    questionType: "multiple", 
+    selectCount: 4,
+    question: "Which of the following are valid SAFe Lean-Agile Principles? (Select ALL that apply - 4 answers)",
     options: [
-      "By avoiding product retirement discussions until technical maintenance becomes impossible or customer usage drops to zero",
-      "Through proactive planning, clear customer communication, migration paths, and consideration of customer impact throughout the retirement process",
-      "By immediately discontinuing support for products that no longer generate significant revenue to focus resources on growth opportunities",
-      "Through delegation of retirement decisions to technical teams based solely on maintenance costs and system complexity considerations"
+      "Take an economic view",
+      "Apply systems thinking", 
+      "Assume variability; preserve options",
+      "Build incrementally with fast, integrated learning cycles",
+      "Base milestones on objective evaluation of working systems",
+      "Visualize and limit WIP, reduce batch sizes, and manage queue lengths",
+      "Apply cadence, synchronize with cross-domain planning"
     ],
-    correctAnswer: 1,
-    explanation: "Effective product retirement involves proactive planning, transparent customer communication, viable migration paths, and careful consideration of customer impact throughout the process.",
-    domain: "Agile Product Delivery",
-    difficulty: "advanced"
+    correctAnswers: [0, 1, 2, 3], // First 4 are actual SAFe principles
+    explanation: "The first four options represent actual SAFe Lean-Agile Principles (#1-4). The last three options, while related to Lean-Agile practices, are not among the specific 10 SAFe principles.",
+    domain: "Applying SAFe Principles",
+    difficulty: "Advanced"
   },
   {
     id: 179,
@@ -2808,5 +2851,706 @@ export const leadingSAFe6Questions = [
     explanation: "Effective transition involves collaborative planning, thorough knowledge transfer, and shared responsibility for ensuring solution success continues in production environments.",
     domain: "Enterprise Solution Delivery",
     difficulty: "advanced"
+  },
+  // Multi-select questions for 30% distribution (Questions 201-260)
+  {
+    id: 201,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE are key components of Lean-Agile Leadership? (Select exactly 3 answers)",
+    options: [
+      "Leading by example and demonstrating Lean-Agile values",
+      "Commanding and controlling all team decisions",
+      "Empowering teams to self-organize and make decisions",
+      "Micromanaging daily activities and task assignments",
+      "Creating a culture of continuous learning and improvement",
+      "Maintaining strict hierarchical authority structures"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Lean-Agile Leadership involves leading by example, empowering teams, and fostering continuous learning. It moves away from command-and-control approaches.",
+    domain: "Lean-Agile Leadership",
+    difficulty: "Foundation"
+  },
+  {
+    id: 202,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO primary benefits of PI Planning? (Select exactly 2 answers)",
+    options: [
+      "Creates alignment across all teams in the ART",
+      "Eliminates all dependencies between teams permanently",
+      "Establishes clear objectives for the Program Increment",
+      "Guarantees delivery of all planned features without changes",
+      "Reduces communication needs between teams to zero"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "PI Planning creates alignment across teams and establishes clear PI objectives. It doesn't eliminate dependencies or guarantee unchanging delivery.",
+    domain: "Planning Program Increments",
+    difficulty: "Foundation"
+  },
+  {
+    id: 203,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE practices support DevOps and Release on Demand? (Select exactly 3 answers)",
+    options: [
+      "Continuous Integration and Continuous Deployment",
+      "Manual testing and approval processes for all releases",
+      "Infrastructure as Code and automated environments",
+      "Feature flags and dark launches for controlled rollouts",
+      "Quarterly release cycles with extensive documentation",
+      "Separate development and operations teams with no collaboration"
+    ],
+    correctAnswers: [0, 2, 3],
+    explanation: "DevOps practices include CI/CD, Infrastructure as Code, and feature flags for controlled releases. Manual processes and team separation work against DevOps principles.",
+    domain: "Agile Product Delivery",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 204,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO key aspects of Systems Thinking in SAFe? (Select exactly 2 answers)",
+    options: [
+      "Understanding the whole system rather than optimizing parts",
+      "Focusing only on individual team performance metrics",
+      "Recognizing the impact of decisions across the value stream",
+      "Isolating teams to prevent interference with their work",
+      "Prioritizing local optimization over global outcomes"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Systems Thinking involves understanding the whole system and recognizing decision impacts across the value stream, not local optimization.",
+    domain: "Applying SAFe Principles",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 205,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE are characteristics of high-performing Agile teams? (Select exactly 3 answers)",
+    options: [
+      "Cross-functional skills and shared ownership",
+      "Individual accountability with minimal collaboration",
+      "Continuous learning and improvement mindset",
+      "Strict role boundaries and specialized responsibilities",
+      "Self-organizing with minimal external direction",
+      "Dependency on external resources for all decisions"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "High-performing teams have cross-functional skills, continuous learning mindset, and self-organizing capabilities. They avoid strict boundaries and external dependencies.",
+    domain: "Building High-Performing Teams",
+    difficulty: "Foundation"
+  },
+  {
+    id: 206,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO main purposes of the Inspect and Adapt workshop? (Select exactly 2 answers)",
+    options: [
+      "Demonstrate completed features to stakeholders",
+      "Identify and plan improvements for the next PI",
+      "Assign blame for any delivery shortfalls or issues",
+      "Celebrate achievements and team successes",
+      "Create detailed documentation of all activities"
+    ],
+    correctAnswers: [1, 3],
+    explanation: "I&A workshop focuses on identifying improvements for the next PI and celebrating achievements. It's not about blame or extensive documentation.",
+    domain: "Supporting Program Execution",
+    difficulty: "Foundation"
+  },
+  {
+    id: 207,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE elements comprise the SAFe House of Lean foundation? (Select exactly 3 answers)",
+    options: [
+      "Leadership and management support structures",
+      "Individual performance and competition metrics",
+      "Lean-Agile mindset and principles application",
+      "Traditional project management methodologies",
+      "SAFe Core Values and implementation guidance",
+      "Hierarchical command and control systems"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "The House of Lean foundation includes Leadership, Lean-Agile mindset, and SAFe Core Values. It excludes traditional management and competition.",
+    domain: "Lean-Agile Leadership",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 208,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO key benefits of limiting Work in Process (WIP)? (Select exactly 2 answers)",
+    options: [
+      "Increases team productivity by allowing parallel work streams",
+      "Improves flow and reduces context switching overhead",
+      "Enables teams to work on more features simultaneously",
+      "Reveals bottlenecks and impediments in the system",
+      "Allows for maximum resource utilization at all times"
+    ],
+    correctAnswers: [1, 3],
+    explanation: "Limiting WIP improves flow by reducing context switching and reveals system bottlenecks. It doesn't increase parallel work or maximize utilization.",
+    domain: "Applying SAFe Principles",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 209,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE practices support continuous value delivery? (Select exactly 3 answers)",
+    options: [
+      "Batch-and-queue processing for efficiency",
+      "Small batch sizes to enable fast feedback",
+      "Continuous integration and testing practices",
+      "Lengthy approval processes for quality assurance",
+      "Frequent releases to gather customer feedback",
+      "Comprehensive documentation before any delivery"
+    ],
+    correctAnswers: [1, 2, 4],
+    explanation: "Continuous value delivery requires small batches, continuous integration/testing, and frequent releases. Large batches and lengthy processes impede flow.",
+    domain: "Agile Product Delivery",
+    difficulty: "Foundation"
+  },
+  {
+    id: 210,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO primary roles of the Release Train Engineer (RTE)? (Select exactly 2 answers)",
+    options: [
+      "Making all technical decisions for the ART teams",
+      "Facilitating ART events and processes",
+      "Writing user stories and acceptance criteria",
+      "Removing impediments and escalating issues",
+      "Managing individual team member performance"
+    ],
+    correctAnswers: [1, 3],
+    explanation: "The RTE facilitates ART events/processes and removes impediments. They don't make technical decisions or manage individual performance.",
+    domain: "Supporting Program Execution",
+    difficulty: "Foundation"
+  },
+  {
+    id: 211,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE are benefits of Agile architecture? (Select exactly 3 answers)",
+    options: [
+      "Supports incremental development and delivery",
+      "Requires complete upfront design specification",
+      "Enables emergent design and refactoring",
+      "Prevents any changes once implementation begins",
+      "Balances intentional architecture with emergent design",
+      "Eliminates all technical debt permanently"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Agile architecture supports incremental development, enables emergent design, and balances intentional with emergent architecture. It doesn't require complete upfront design.",
+    domain: "Establishing Team Agility",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 212,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO characteristics of effective Product Owners? (Select exactly 2 answers)",
+    options: [
+      "Deep understanding of customer needs and market demands",
+      "Complete technical expertise in all development technologies",
+      "Authority to make content and priority decisions",
+      "Ability to write all code and perform all testing",
+      "Full control over team resource allocation and assignments"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Effective Product Owners understand customer needs and have authority for content/priority decisions. They don't need technical expertise or resource control.",
+    domain: "Agile Product Delivery",
+    difficulty: "Foundation"
+  },
+  {
+    id: 213,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE practices support team autonomy in SAFe? (Select exactly 3 answers)",
+    options: [
+      "Teams define their own Definition of Done",
+      "Management assigns all work and tasks daily",
+      "Teams participate in estimation and planning",
+      "All decisions require management approval",
+      "Teams organize themselves around the work",
+      "Strict adherence to identical processes across all teams"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Team autonomy includes defining their DoD, participating in estimation/planning, and self-organizing. Management assignment and approval reduce autonomy.",
+    domain: "Building High-Performing Teams",
+    difficulty: "Foundation"
+  },
+  {
+    id: 214,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO key aspects of value stream mapping? (Select exactly 2 answers)",
+    options: [
+      "Visualizes the flow of materials and information",
+      "Focuses only on individual team activities",
+      "Identifies waste and improvement opportunities",
+      "Eliminates all customer touchpoints from analysis",
+      "Prioritizes local optimization over system flow"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Value stream mapping visualizes flow and identifies waste/improvement opportunities. It considers the entire system, not just individual teams.",
+    domain: "Lean-Agile Leadership",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 215,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE elements support psychological safety in teams? (Select exactly 3 answers)",
+    options: [
+      "Encouraging experimentation and learning from failures",
+      "Punishing all mistakes to prevent future errors",
+      "Creating an environment where team members feel safe to speak up",
+      "Establishing blame cultures to ensure accountability",
+      "Supporting diverse perspectives and open dialogue",
+      "Maintaining strict hierarchy and limited communication"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Psychological safety requires encouraging experimentation, safe communication, and diverse perspectives. Punishment and blame cultures destroy safety.",
+    domain: "Building High-Performing Teams",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 216,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO benefits of frequent integration? (Select exactly 2 answers)",
+    options: [
+      "Reduces integration risks and conflicts",
+      "Eliminates all need for testing activities",
+      "Provides faster feedback on system changes",
+      "Prevents any defects from entering the codebase",
+      "Guarantees 100% system availability at all times"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Frequent integration reduces risks and provides fast feedback. It doesn't eliminate testing needs or guarantee perfection.",
+    domain: "Establishing Team Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 217,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE are characteristics of Lean portfolio management? (Select exactly 3 answers)",
+    options: [
+      "Aligns strategy and execution through value streams",
+      "Focuses on detailed project tracking and control",
+      "Funds value streams instead of individual projects",
+      "Maintains traditional project-based budgeting",
+      "Applies Lean principles to investment decisions",
+      "Eliminates all oversight and governance activities"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Lean portfolio management aligns strategy/execution, funds value streams, and applies Lean principles. It moves away from project-based approaches.",
+    domain: "Lean Portfolio Management",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 218,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO key practices for managing technical debt? (Select exactly 2 answers)",
+    options: [
+      "Ignoring technical debt to focus on new features",
+      "Regular refactoring and code improvement activities",
+      "Accumulating debt indefinitely without addressing it",
+      "Making technical debt visible and prioritizing reduction",
+      "Delegating all debt management to separate teams"
+    ],
+    correctAnswers: [1, 3],
+    explanation: "Managing technical debt requires regular refactoring and making debt visible for prioritization. Ignoring or accumulating debt creates problems.",
+    domain: "Establishing Team Agility",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 219,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE practices support customer-centricity in product development? (Select exactly 3 answers)",
+    options: [
+      "Regular customer feedback and validation sessions",
+      "Building features without customer input to save time",
+      "Using design thinking and customer journey mapping",
+      "Assuming customer needs without direct research",
+      "Implementing continuous deployment for faster delivery",
+      "Prioritizing internal preferences over customer value"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Customer-centricity requires regular feedback, design thinking/journey mapping, and continuous deployment for fast value delivery. Assumptions and internal preferences reduce focus on customers.",
+    domain: "Agile Product Delivery",
+    difficulty: "Foundation"
+  },
+  {
+    id: 220,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO benefits of cross-functional teams? (Select exactly 2 answers)",
+    options: [
+      "Reduces dependencies on external resources",
+      "Eliminates all need for specialized expertise",
+      "Increases team flexibility and responsiveness",
+      "Prevents team members from learning new skills",
+      "Guarantees identical skill levels across all members"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Cross-functional teams reduce external dependencies and increase flexibility. They don't eliminate specialization or prevent learning.",
+    domain: "Building High-Performing Teams",
+    difficulty: "Foundation"
+  },
+  {
+    id: 221,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE are SAFe Core Values? (Select exactly 3 answers)",
+    options: [
+      "Alignment across all organizational levels",
+      "Individual achievement and competition",
+      "Built-in Quality throughout development",
+      "Hierarchical decision-making processes",
+      "Transparency in all communications",
+      "Rigid adherence to original plans"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "SAFe Core Values include Alignment, Built-in Quality, and Transparency, plus Program Execution. Individual competition and rigid plans oppose SAFe values.",
+    domain: "Applying SAFe Principles",
+    difficulty: "Foundation"
+  },
+  {
+    id: 222,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO characteristics of effective ART launch? (Select exactly 2 answers)",
+    options: [
+      "Comprehensive training for all ART members",
+      "Immediate perfect execution without any adjustments",
+      "Strong leadership support and commitment",
+      "Complete elimination of all existing processes",
+      "Guaranteed delivery of all initial commitments"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Effective ART launch requires comprehensive training and strong leadership support. Perfect execution and elimination of all processes aren't realistic.",
+    domain: "Supporting Program Execution",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 223,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE practices support continuous improvement? (Select exactly 3 answers)",
+    options: [
+      "Regular retrospectives and improvement planning",
+      "Maintaining status quo to avoid disruption",
+      "Experimentation with new approaches and practices",
+      "Avoiding all changes to preserve stability",
+      "Learning from failures and adapting approaches",
+      "Strict adherence to original methods only"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Continuous improvement requires retrospectives, experimentation, and learning from failures. Maintaining status quo and avoiding changes prevent improvement.",
+    domain: "Lean-Agile Leadership",
+    difficulty: "Foundation"
+  },
+  {
+    id: 224,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO benefits of servant leadership? (Select exactly 2 answers)",
+    options: [
+      "Empowers teams to make decisions and solve problems",
+      "Maintains strict control over all team activities",
+      "Develops people and helps them grow professionally",
+      "Eliminates all team accountability and responsibility",
+      "Prevents teams from taking any initiative"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Servant leadership empowers teams and develops people. It doesn't maintain strict control or eliminate accountability.",
+    domain: "Lean-Agile Leadership",
+    difficulty: "Foundation"
+  },
+  {
+    id: 225,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE elements support effective communication in distributed teams? (Select exactly 3 answers)",
+    options: [
+      "Regular video conferences and face-to-face interactions",
+      "Relying solely on email for all communications",
+      "Shared collaboration tools and information radiators",
+      "Limiting communication to formal status reports only",
+      "Creating multiple communication channels and touchpoints",
+      "Restricting information sharing to management levels"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Distributed teams need video conferences, shared tools, and multiple communication channels. Email-only and restricted communication limit effectiveness.",
+    domain: "Building High-Performing Teams",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 226,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO key aspects of economic prioritization? (Select exactly 2 answers)",
+    options: [
+      "Considers cost of delay and opportunity costs",
+      "Prioritizes based solely on development effort",
+      "Evaluates business value and customer impact",
+      "Focuses only on technical complexity factors",
+      "Ignores market timing and competitive factors"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Economic prioritization considers cost of delay and evaluates business value/customer impact. Technical effort alone isn't sufficient.",
+    domain: "Applying SAFe Principles",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 227,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE practices enhance team collaboration? (Select exactly 3 answers)",
+    options: [
+      "Pair programming and collaborative development",
+      "Individual work assignments with minimal interaction",
+      "Shared team spaces and collaboration areas",
+      "Isolated workstations preventing communication",
+      "Daily stand-ups and regular team synchronization",
+      "Separate goals and individual performance metrics"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Team collaboration requires pair programming, shared spaces, and daily synchronization. Individual isolation and separate goals reduce collaboration.",
+    domain: "Building High-Performing Teams",
+    difficulty: "Foundation"
+  },
+  {
+    id: 228,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO characteristics of effective user stories? (Select exactly 2 answers)",
+    options: [
+      "Written from the user's perspective and needs",
+      "Contains complete technical implementation details",
+      "Focused on delivering specific business value",
+      "Includes comprehensive system architecture specifications",
+      "Written exclusively by technical team members"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Effective user stories are written from user perspective and focus on business value. They don't contain technical details or architecture specs.",
+    domain: "Supporting Team Execution",
+    difficulty: "Foundation"
+  },
+  {
+    id: 229,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE are benefits of decentralized decision-making? (Select exactly 3 answers)",
+    options: [
+      "Faster response to local issues and opportunities",
+      "Complete elimination of all management oversight",
+      "Better decisions with local knowledge and context",
+      "Reduced accountability for decision outcomes",
+      "Increased organizational agility and responsiveness",
+      "Elimination of all coordination between teams"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Decentralized decisions enable faster response, better local decisions, and increased agility. It doesn't eliminate oversight or accountability.",
+    domain: "Lean-Agile Leadership",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 230,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO key practices for managing flow? (Select exactly 2 answers)",
+    options: [
+      "Visualizing work and workflow states",
+      "Maximizing work in process to utilize all capacity",
+      "Limiting WIP to improve flow efficiency",
+      "Hiding bottlenecks to maintain team morale",
+      "Ignoring cycle time and throughput metrics"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Managing flow requires visualizing work and limiting WIP. Maximizing WIP and hiding bottlenecks impede flow.",
+    domain: "Applying SAFe Principles",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 231,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE support Innovation and Planning Iteration activities? (Select exactly 3 answers)",
+    options: [
+      "Hackathons and innovation time for creative solutions",
+      "Exclusive focus on completing delayed features only",
+      "PI Planning preparation and retrospective activities",
+      "Elimination of all learning and development time",
+      "Technical debt reduction and system improvements",
+      "Restriction of activities to feature development only"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "IP Iteration supports innovation/hackathons, PI planning activities, and technical debt reduction. It's not just for delayed features.",
+    domain: "Supporting Program Execution",
+    difficulty: "Foundation"
+  },
+  {
+    id: 232,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO characteristics of Systems and Solution Architecture? (Select exactly 2 answers)",
+    options: [
+      "Supports both intentional and emergent design",
+      "Requires complete upfront specification of all details",
+      "Enables architectural runway for future development",
+      "Prevents any changes once initial design is complete",
+      "Focuses solely on current feature implementation"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Systems architecture supports both intentional and emergent design and enables architectural runway. Complete upfront specification isn't required.",
+    domain: "Enterprise Solution Delivery",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 233,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE are characteristics of effective metrics in SAFe? (Select exactly 3 answers)",
+    options: [
+      "Focus on outcomes rather than just outputs",
+      "Measure individual performance for ranking purposes",
+      "Support continuous improvement and learning",
+      "Create competition between teams and individuals",
+      "Provide actionable insights for decision-making",
+      "Punish teams for any performance variations"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Effective metrics focus on outcomes, support improvement, and provide actionable insights. Individual ranking and punishment reduce effectiveness.",
+    domain: "Lean-Agile Leadership",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 234,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO benefits of cadence and synchronization? (Select exactly 2 answers)",
+    options: [
+      "Reduces variability and creates predictable rhythms",
+      "Eliminates all need for coordination between teams",
+      "Enables effective planning and integration points",
+      "Prevents any changes to established schedules",
+      "Guarantees identical velocity across all teams"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Cadence reduces variability and enables effective planning/integration. It doesn't eliminate coordination needs or guarantee identical velocity.",
+    domain: "Supporting Program Execution",
+    difficulty: "Foundation"
+  },
+  {
+    id: 235,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE practices support quality in Agile development? (Select exactly 3 answers)",
+    options: [
+      "Test-driven development and automated testing",
+      "Delaying all testing until the end of development",
+      "Continuous integration and continuous deployment",
+      "Manual testing as the only quality assurance method",
+      "Pair programming and code reviews",
+      "Skipping quality practices to increase delivery speed"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Quality practices include TDD/automated testing, CI/CD, and pair programming/reviews. Delaying testing and skipping quality reduce effectiveness.",
+    domain: "Establishing Team Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 236,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO key aspects of customer development? (Select exactly 2 answers)",
+    options: [
+      "Understanding customer problems and needs deeply",
+      "Assuming customer requirements without validation",
+      "Validating solutions with real customer feedback",
+      "Building features without customer involvement",
+      "Focusing solely on internal stakeholder preferences"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Customer development requires understanding problems/needs and validating solutions with feedback. Assumptions and internal focus reduce effectiveness.",
+    domain: "Agile Product Delivery",
+    difficulty: "Foundation"
+  },
+  {
+    id: 237,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE elements support organizational agility? (Select exactly 3 answers)",
+    options: [
+      "Lean-Agile leadership and culture transformation",
+      "Rigid hierarchical structures and control systems",
+      "Cross-functional teams and value stream organization",
+      "Strict departmental boundaries and silos",
+      "Continuous learning and adaptation capabilities",
+      "Resistance to change and traditional approaches"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Organizational agility requires Lean-Agile leadership, cross-functional organization, and continuous learning. Rigid structures and silos reduce agility.",
+    domain: "Organizational Agility",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 238,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO characteristics of effective retrospectives? (Select exactly 2 answers)",
+    options: [
+      "Focus on identifying specific improvement actions",
+      "Assign blame for any problems or failures",
+      "Create psychological safety for open dialogue",
+      "Avoid discussing any sensitive or difficult topics",
+      "Generate extensive documentation without follow-through"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Effective retrospectives focus on improvement actions and create psychological safety. Blame assignment and topic avoidance reduce effectiveness.",
+    domain: "Building High-Performing Teams",
+    difficulty: "Foundation"
+  },
+  {
+    id: 239,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE support effective Portfolio Kanban implementation? (Select exactly 3 answers)",
+    options: [
+      "Clear policies for work item flow and progression",
+      "Unlimited work in process to maximize throughput",
+      "Regular review and prioritization of portfolio items",
+      "Hiding work items from stakeholder visibility",
+      "Measurement of flow metrics and cycle times",
+      "Complex approval processes for all work items"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Portfolio Kanban needs clear policies, regular reviews, and flow metrics. Unlimited WIP and complex approvals impede effectiveness.",
+    domain: "Lean Portfolio Management",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 240,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO benefits of Solution Trains? (Select exactly 2 answers)",
+    options: [
+      "Coordinates multiple ARTs for large solutions",
+      "Eliminates all dependencies between ARTs",
+      "Manages complex solution-level integration",
+      "Reduces all ARTs to identical capabilities",
+      "Prevents any communication between ARTs"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Solution Trains coordinate multiple ARTs and manage complex integration. They don't eliminate dependencies or reduce ART diversity.",
+    domain: "Enterprise Solution Delivery",
+    difficulty: "Advanced"
   }
 ]
