@@ -8,7 +8,9 @@ function SAFeTeams6Exam({
   numberOfQuestions = 45,
   autoShowExplanation = false,
   onNumberOfQuestionsChange,
-  onAutoShowExplanationChange
+  onAutoShowExplanationChange,
+  examMode = 'exam',
+  onExamModeChange
 }) {
   const { theme } = useTheme();
 
@@ -100,6 +102,22 @@ function SAFeTeams6Exam({
                 </select>
                 <p className={styles.settingDescription}>
                   Choose how many questions you want to practice with
+                </p>
+              </div>
+              <div className={styles.settingCard}>
+                <h4>Exam Mode</h4>
+                <select 
+                  value={examMode} 
+                  onChange={(e) => onExamModeChange && onExamModeChange(e.target.value)}
+                  className={styles.settingSelect}
+                >
+                  <option value="exam">🎓 Exam Mode (Realistic Simulation)</option>
+                  <option value="practice">📚 Practice Mode (Enhanced Learning)</option>
+                </select>
+                <p className={styles.settingDescription}>
+                  {examMode === 'exam' 
+                    ? 'Single-select questions only (matches real SAFe exam format)' 
+                    : 'Mix of single-select (70%) and multi-select (30%) questions for deeper learning'}
                 </p>
               </div>
               <div className={styles.settingCard}>

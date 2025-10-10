@@ -13,6 +13,7 @@ import SmartReview from './components/SmartReview/SmartReview.jsx'
 import StudyCompanion from './components/StudyCompanion/StudyCompanion.jsx'
 import NotificationSettings from './components/NotificationSettings/NotificationSettings.jsx'
 import AchievementNotification from './components/Achievements/AchievementNotification.jsx'
+import TimingAnalyticsPage from './components/shared/TimingAnalyticsPage.jsx'
 import StudyMaterials from './StudyMaterials.jsx'
 import './App.css'
 import './pwa-styles.css'
@@ -113,6 +114,10 @@ function AppContent() {
 
   const goToNotifications = () => {
     setCurrentPage('notifications')
+  }
+
+  const goToTiming = () => {
+    setCurrentPage('timing')
   }
 
   const goToExams = () => {
@@ -222,6 +227,11 @@ function AppContent() {
 
   if (currentPage === 'notifications') {
     return <NotificationSettings onGoHome={goHome} />
+  }
+
+  // Timing Analytics Page
+  if (currentPage === 'timing') {
+    return <TimingAnalyticsPage onGoHome={goHome} />
   }
 
   // Settings Page
@@ -450,6 +460,9 @@ function AppContent() {
             </button>
             <button onClick={goToStudyCompanion} className="nav-button study-companion-button">
               <span className="nav-icon">🧠</span><span>AI</span>
+            </button>
+            <button onClick={goToTiming} className="nav-button timing-button">
+              <span className="nav-icon">⏱️</span><span>Timing</span>
             </button>
             <button onClick={goToNotifications} className="nav-button notifications-button">
               <span className="nav-icon">🔔</span><span>Alerts</span>

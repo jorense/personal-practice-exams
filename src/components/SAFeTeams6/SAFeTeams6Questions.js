@@ -201,15 +201,19 @@ export const safeTeams6Questions = [
   },
   {
     id: 15,
-    question: "What is the main purpose of refactoring in Agile development?",
+    questionType: "multiple",
+    selectCount: 3,
+    question: "What are THREE key purposes of refactoring in Agile development? (Select exactly 3 answers)",
     options: [
-      "To add new functionality and features to the existing system architecture and codebase",
-      "To improve code structure and maintainability without changing external behavior or functionality",
-      "To fix critical bugs and defects in the existing codebase and functionality implementation",
-      "To optimize system performance and enhance runtime execution characteristics across all components"
+      "Improve code structure and organization without changing behavior",
+      "Add new functionality and features to the existing system",
+      "Enhance code maintainability and readability for future changes",
+      "Fix critical bugs and defects in existing functionality",
+      "Reduce technical debt and improve code quality",
+      "Optimize system performance for all runtime scenarios"
     ],
-    correctAnswer: 1,
-    explanation: "Refactoring improves the internal structure and readability of code without changing its external behavior. This makes code easier to understand, modify, and extend while reducing technical debt and maintenance costs over time.",
+    correctAnswers: [0, 2, 4], // Improve structure, Enhance maintainability, Reduce technical debt
+    explanation: "Refactoring serves three main purposes: improving code structure and organization, enhancing maintainability and readability, and reducing technical debt. It does not add functionality, fix bugs, or primarily focus on performance optimization.",
     domain: "Team and Technical Agility",
     difficulty: "Foundation"
   },
@@ -341,15 +345,19 @@ export const safeTeams6Questions = [
   },
   {
     id: 25,
-    question: "How does Customer Journey Mapping support Agile Product Delivery?",
+    questionType: "multiple",
+    selectCount: 3,
+    question: "How does Customer Journey Mapping support Agile Product Delivery? (Select exactly 3 answers)",
     options: [
-      "By creating detailed technical specifications for all system integrations and data flows",
-      "By visualizing customer interactions and identifying opportunities for value creation and improvement",
-      "By establishing comprehensive project timelines and resource allocation across development teams",
-      "By documenting all regulatory compliance requirements and quality assurance standards"
+      "Visualizes customer interactions across all touchpoints and channels",
+      "Creates detailed technical specifications for system integrations",
+      "Identifies pain points and opportunities for value improvement",
+      "Establishes comprehensive project timelines and resource allocation",
+      "Reveals moments of delight in the customer experience",
+      "Documents regulatory compliance and quality assurance standards"
     ],
-    correctAnswer: 1,
-    explanation: "Customer Journey Mapping visualizes how customers interact with products and services over time, helping teams identify pain points, moments of delight, and opportunities for creating additional value and improving the overall customer experience.",
+    correctAnswers: [0, 2, 4], // Visualize interactions, Identify pain points, Reveal moments of delight
+    explanation: "Customer Journey Mapping supports Agile delivery by visualizing customer interactions, identifying pain points and improvement opportunities, and revealing moments of delight. It's not about technical specs, timelines, or compliance documentation.",
     domain: "Agile Product Delivery",
     difficulty: "Intermediate"
   },
@@ -481,16 +489,19 @@ export const safeTeams6Questions = [
   },
   {
     id: 35,
-    question: "What is a Solution Train in SAFe?",
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO key characteristics of a Solution Train in SAFe? (Select exactly 2 answers)",
     options: [
-      "A single Agile Release Train focused on delivering one specific product or solution",
-      "A collection of Agile Release Trains working together to deliver a large solution",
-      "A training program designed to educate teams on large-scale solution development practices",
-      "A project management methodology for coordinating work across multiple geographic locations"
+      "Collection of multiple Agile Release Trains working together",
+      "Single ART focused on delivering one specific product",
+      "Enables delivery of large and complex solutions",
+      "Training program for large-scale development practices",
+      "Project management methodology for geographic coordination"
     ],
-    correctAnswer: 1,
-    explanation: "A Solution Train is a collection of Agile Release Trains (ARTs) and suppliers working together to deliver a large and complex solution that requires coordination beyond what a single ART can provide. It enables scaling beyond the ART level.",
-    domain: "Enterprise Solution Delivery",
+    correctAnswers: [0, 2], // Collection of ARTs, Enables large solutions
+    explanation: "A Solution Train is characterized by being a collection of multiple ARTs and suppliers working together to deliver large and complex solutions that require coordination beyond a single ART's capability.",
+    domain: "Enterprise Solution Delivery", 
     difficulty: "Advanced"
   },
   {
@@ -621,15 +632,19 @@ export const safeTeams6Questions = [
   },
   {
     id: 45,
-    question: "What is the ultimate goal of implementing SAFe in an organization?",
+    questionType: "multiple",
+    selectCount: 3,
+    question: "What are THREE key outcomes that SAFe implementation aims to achieve? (Select exactly 3 answers)",
     options: [
-      "To standardize all development processes and eliminate variation across teams and departments",
-      "To achieve business agility that enables sustainable competitive advantage in the marketplace",
-      "To reduce development costs while maintaining current quality and delivery standards",
-      "To implement industry best practices that ensure compliance with regulations and standards"
+      "Achieve business agility for competitive advantage",
+      "Standardize all processes to eliminate team variation",
+      "Respond quickly to market changes and opportunities",
+      "Reduce development costs while maintaining current standards",
+      "Deliver continuous value to customers with quality",
+      "Implement industry best practices for regulatory compliance"
     ],
-    correctAnswer: 1,
-    explanation: "The ultimate goal of SAFe implementation is to achieve business agility - the ability to compete and thrive in the digital age by quickly responding to market changes and opportunities while delivering continuous value to customers and stakeholders with quality and sustainability.",
+    correctAnswers: [0, 2, 4], // Business agility, Respond to market changes, Deliver continuous value
+    explanation: "SAFe implementation aims to achieve business agility for competitive advantage, enable quick responses to market changes, and deliver continuous value with quality. It's not about standardizing everything or just cost reduction.",
     domain: "Business Agility",
     difficulty: "Foundation"
   },
@@ -859,17 +874,20 @@ export const safeTeams6Questions = [
   },
   {
     id: 62,
-    question: "What is Portfolio Kanban in SAFe?",
+    questionType: "multiple",
+    selectCount: 2,
+    question: "Which TWO of the following are primary responsibilities of a Scrum Master in SAFe? (Select exactly 2 answers)",
     options: [
-      "A project management tool for tracking individual team productivity and performance metrics",
-      "A method for visualizing, managing, and governing the flow of portfolio epics",
-      "A comprehensive documentation system for maintaining all business requirements and specifications",
-      "A resource allocation system for distributing budget and personnel across multiple projects"
+      "Facilitating team events and removing impediments",
+      "Making all technical decisions for the development team",
+      "Coaching the team on Agile and SAFe practices",
+      "Assigning tasks to individual team members daily",
+      "Managing the team's budget and resource allocation"
     ],
-    correctAnswer: 1,
-    explanation: "Portfolio Kanban is a method for visualizing, managing, and governing the flow of portfolio epics from idea through implementation. It applies Lean principles to portfolio management, ensuring value flow and strategic alignment.",
-    domain: "Business Agility",
-    difficulty: "Intermediate"
+    correctAnswers: [0, 2], // Facilitating events and Coaching
+    explanation: "The Scrum Master's primary responsibilities include facilitating team events, removing impediments, and coaching the team on Agile and SAFe practices. They do not make technical decisions or assign individual tasks.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
   },
   {
     id: 63,
@@ -1041,15 +1059,18 @@ export const safeTeams6Questions = [
   },
   {
     id: 75,
-    question: "What is Customer Journey Mapping in SAFe?",
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO key aspects of Customer Journey Mapping in SAFe? (Select exactly 2 answers)",
     options: [
-      "A comprehensive project management tool for tracking customer requirements throughout development",
-      "A visualization of customer interactions with products and services over time",
-      "A detailed analysis of customer demographics and market segmentation for targeting strategies",
-      "A compliance framework for ensuring all customer data is handled according to regulations"
+      "Visualizes customer interactions with products over time",
+      "Tracks customer requirements throughout development",
+      "Identifies pain points and improvement opportunities",
+      "Analyzes customer demographics and market segmentation",
+      "Ensures compliance with customer data regulations"
     ],
-    correctAnswer: 1,
-    explanation: "Customer Journey Mapping visualizes how customers interact with products and services over time, helping identify pain points, opportunities for improvement, and moments of delight to enhance the overall customer experience.",
+    correctAnswers: [0, 2], // Visualizes interactions, Identifies pain points
+    explanation: "Customer Journey Mapping visualizes customer interactions with products and services over time and identifies pain points and improvement opportunities to enhance customer experience. It's not about requirements tracking or compliance.",
     domain: "Agile Product Delivery",
     difficulty: "Intermediate"
   },
@@ -1181,15 +1202,19 @@ export const safeTeams6Questions = [
   },
   {
     id: 85,
-    question: "What is the role of feature flags in product delivery?",
+    questionType: "multiple",
+    selectCount: 3,
+    question: "What are THREE key roles of feature flags in product delivery? (Select exactly 3 answers)",
     options: [
-      "To create comprehensive documentation for all product features and capabilities",
-      "To enable controlled rollout of features and quick rollback if issues arise",
-      "To establish detailed approval processes for all new feature development activities",
-      "To track feature usage and generate detailed analytics reports for management"
+      "Enable controlled rollout of features to specific user segments",
+      "Create comprehensive documentation for all product features",
+      "Provide quick rollback capability if issues arise",
+      "Establish detailed approval processes for feature development",
+      "Support safe deployment and experimentation practices",
+      "Generate detailed analytics reports for management"
     ],
-    correctAnswer: 1,
-    explanation: "Feature flags enable controlled rollout of features to specific user segments and provide the ability to quickly disable features if issues arise, supporting safer deployments and experimentation.",
+    correctAnswers: [0, 2, 4], // Controlled rollout, Quick rollback, Safe deployment/experimentation
+    explanation: "Feature flags enable controlled feature rollouts to specific users, provide quick rollback capabilities when issues arise, and support safe deployment and experimentation practices. They're not about documentation or approval processes.",
     domain: "Agile Product Delivery",
     difficulty: "Intermediate"
   },
@@ -1727,17 +1752,21 @@ export const safeTeams6Questions = [
   },
   {
     id: 124,
-    question: "How should SAFe teams approach legacy system integration?",
+    questionType: "multiple", 
+    selectCount: 3,
+    question: "Select the THREE key elements of Built-in Quality in SAFe teams: (Select exactly 3 answers)",
     options: [
-      "Replace all legacy systems completely before implementing any new development or functionality",
-      "Create integration strategies that enable gradual evolution while maintaining business continuity",
-      "Avoid all integration with legacy systems to prevent technical debt and complexity issues",
-      "Assign legacy integration exclusively to specialized teams with deep knowledge of older systems"
+      "Test-Driven Development (TDD) and Behavior-Driven Development (BDD)",
+      "Continuous Integration and Continuous Deployment (CI/CD)",
+      "Pair programming and code reviews",
+      "Daily status meetings with management",
+      "Architecture and design practices",
+      "Comprehensive documentation for every feature"
     ],
-    correctAnswer: 1,
-    explanation: "SAFe teams create integration strategies that enable gradual evolution of legacy systems while maintaining business continuity, using patterns like strangler fig and incremental modernization.",
+    correctAnswers: [0, 1, 4], // TDD/BDD, CI/CD, Architecture practices
+    explanation: "Built-in Quality in SAFe includes development practices (TDD/BDD), continuous practices (CI/CD), and architecture/design practices. Daily status meetings and comprehensive documentation are not core elements of built-in quality.",
     domain: "Team and Technical Agility",
-    difficulty: "Advanced"
+    difficulty: "Intermediate"
   },
   {
     id: 125,
@@ -2591,6 +2620,830 @@ export const safeTeams6Questions = [
     correctAnswer: 1,
     explanation: "The ultimate objective of SAFe is to achieve business agility - the ability to compete and thrive by quickly responding to market changes and delivering continuous value to customers while maintaining quality and fostering innovation.",
     domain: "Business Agility",
+    difficulty: "Foundation"
+  },
+  // Multi-select questions for 30% distribution (Questions 186-232)
+  {
+    id: 186,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE are key elements of team retrospectives? (Select exactly 3 answers)",
+    options: [
+      "What went well during the iteration",
+      "Assigning blame for any problems or failures",
+      "What could be improved for next iteration", 
+      "Avoiding discussion of sensitive topics",
+      "Specific actions for improvement implementation",
+      "Creating extensive documentation without follow-up"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Effective retrospectives focus on what went well, improvement opportunities, and specific actions. Blame and avoidance reduce effectiveness.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 187,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO characteristics of effective Daily Stand-ups? (Select exactly 2 answers)",
+    options: [
+      "Time-boxed to 15 minutes or less",
+      "Detailed status reports to management",
+      "Focus on coordination and impediment identification",
+      "Comprehensive project planning sessions",
+      "Individual performance evaluation meetings"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Effective stand-ups are time-boxed and focus on coordination/impediments. They're not status reports or planning sessions.",
+    domain: "Team and Technical Agility", 
+    difficulty: "Foundation"
+  },
+  {
+    id: 188,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE practices support test automation? (Select exactly 3 answers)",
+    options: [
+      "Automated unit testing and test-driven development",
+      "Manual testing as the primary quality assurance method",
+      "Continuous integration with automated test execution",
+      "Delaying all testing until feature completion",
+      "Automated acceptance testing and behavior-driven development",
+      "Testing only at the end of development cycles"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Test automation includes unit testing/TDD, CI with automated execution, and automated acceptance testing/BDD. Manual-only and delayed testing limit automation benefits.",
+    domain: "Team and Technical Agility",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 189,
+    questionType: "multiple", 
+    selectCount: 2,
+    question: "What are TWO benefits of pair programming? (Select exactly 2 answers)",
+    options: [
+      "Improved code quality through real-time review",
+      "Doubled productivity by having two people write code",
+      "Enhanced knowledge sharing between team members",
+      "Reduced need for any testing activities",
+      "Elimination of all defects in the codebase"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Pair programming improves quality through real-time review and enhances knowledge sharing. It doesn't double productivity or eliminate all defects.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 190,
+    questionType: "multiple",
+    selectCount: 3, 
+    question: "Which THREE are characteristics of effective user story acceptance criteria? (Select exactly 3 answers)",
+    options: [
+      "Clearly define when the story is complete and done",
+      "Include comprehensive technical implementation details",
+      "Testable and verifiable through concrete examples",
+      "Written exclusively by developers without input",
+      "Focus on business value and user outcomes",
+      "Contain complete system architecture specifications"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Effective acceptance criteria define completion, are testable, and focus on business value. They don't include technical details or architecture specs.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 191,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO key practices for managing work in process? (Select exactly 2 answers)",
+    options: [
+      "Visualizing all work items and their current status",
+      "Maximizing WIP to utilize all available team capacity",
+      "Setting WIP limits to improve flow and focus",
+      "Hiding bottlenecks to maintain team morale",
+      "Ignoring cycle time and throughput metrics completely"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "WIP management requires visualizing work and setting limits to improve flow. Maximizing WIP and hiding bottlenecks impede effectiveness.",
+    domain: "Team and Technical Agility",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 192,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE support effective iteration planning? (Select exactly 3 answers)",
+    options: [
+      "Clear iteration goals and objectives",
+      "Detailed task assignments for every team member",
+      "Realistic capacity planning based on team velocity",
+      "Complete technical specifications for all stories",
+      "Team commitment to iteration scope and outcomes",
+      "Management direction for all work priorities"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Effective iteration planning needs clear goals, realistic capacity planning, and team commitment. Detailed assignments and management direction reduce team autonomy.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 193,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO characteristics of emergent design? (Select exactly 2 answers)",
+    options: [
+      "Design evolves based on learning and feedback",
+      "Complete upfront design specification required",
+      "Supports refactoring and continuous improvement",
+      "Prevents any changes once implementation begins",
+      "Requires detailed architecture before development"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Emergent design evolves through learning and supports refactoring. Complete upfront specification and change prevention oppose emergent approaches.",
+    domain: "Team and Technical Agility",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 194,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE practices enhance code quality? (Select exactly 3 answers)",
+    options: [
+      "Regular code reviews and peer feedback",
+      "Individual coding without any collaboration",
+      "Refactoring to improve code structure and maintainability",
+      "Avoiding all changes to existing code",
+      "Following coding standards and best practices",
+      "Skipping testing to increase development speed"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Code quality requires reviews, refactoring, and standards. Individual coding and avoiding changes reduce quality improvement opportunities.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 195,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO benefits of continuous integration? (Select exactly 2 answers)",
+    options: [
+      "Early detection of integration conflicts and issues",
+      "Elimination of all need for testing activities",
+      "Faster feedback on code changes and quality",
+      "Guaranteed bug-free code in all circumstances",
+      "Complete prevention of all system defects"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "CI provides early conflict detection and faster feedback. It doesn't eliminate testing needs or guarantee perfection.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 196,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE are benefits of cross-functional collaboration? (Select exactly 3 answers)",
+    options: [
+      "Reduced dependencies on external resources",
+      "Elimination of all specialized expertise needs",
+      "Faster problem-solving through diverse perspectives",
+      "Individual accountability without team coordination",
+      "Improved knowledge sharing across disciplines",
+      "Strict role boundaries preventing collaboration"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Cross-functional collaboration reduces dependencies, enables faster problem-solving, and improves knowledge sharing. It doesn't eliminate specialization or coordination.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 197,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO characteristics of effective sprint reviews? (Select exactly 2 answers)",
+    options: [
+      "Demonstration of working software to stakeholders",
+      "Detailed technical architecture presentations",
+      "Gathering feedback for future development priorities",
+      "Performance evaluation of individual team members",
+      "Comprehensive project status reporting to management"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Sprint reviews demonstrate working software and gather stakeholder feedback. They're not technical presentations or performance evaluations.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 198,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE support effective backlog management? (Select exactly 3 answers)",
+    options: [
+      "Regular grooming and refinement activities",
+      "Complete detailed specifications for all items upfront",
+      "Prioritization based on business value and risk",
+      "Avoiding stakeholder input on priorities",
+      "Just-in-time elaboration of upcoming work",
+      "Static prioritization that never changes"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Effective backlog management includes grooming, value-based prioritization, and just-in-time elaboration. Complete upfront specs and static prioritization reduce agility.",
+    domain: "Agile Product Delivery",
+    difficulty: "Foundation"
+  },
+  {
+    id: 199,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO key aspects of Definition of Done? (Select exactly 2 answers)",
+    options: [
+      "Shared understanding of completion criteria across the team",
+      "Individual interpretation by each developer",
+      "Includes quality standards and acceptance requirements",
+      "Focuses only on coding completion without testing",
+      "Changes randomly without team consultation"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Definition of Done requires shared understanding and includes quality standards. Individual interpretation and focus only on coding reduce effectiveness.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 200,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE practices support sustainable pace? (Select exactly 3 answers)",
+    options: [
+      "Realistic workload planning and capacity management",
+      "Continuous overtime and extended working hours",
+      "Regular breaks and time for learning and improvement",
+      "Pressure to deliver regardless of team capacity",
+      "Balanced work-life integration for team members",
+      "Unrealistic deadlines and impossible commitments"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Sustainable pace requires realistic planning, regular breaks, and work-life balance. Continuous overtime and pressure create unsustainable conditions.",
+    domain: "Team and Technical Agility", 
+    difficulty: "Foundation"
+  },
+  {
+    id: 201,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO benefits of behavior-driven development? (Select exactly 2 answers)",
+    options: [
+      "Improved collaboration between technical and business teams",
+      "Elimination of all manual testing requirements",
+      "Clear specification of expected system behavior",
+      "Guaranteed bug-free software delivery",
+      "Complete automation of all development activities"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "BDD improves collaboration and provides clear behavior specifications. It doesn't eliminate manual testing or guarantee perfection.",
+    domain: "Team and Technical Agility",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 202,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE are characteristics of high-performing teams? (Select exactly 3 answers)",
+    options: [
+      "Psychological safety and trust among members",
+      "Individual competition and performance ranking",
+      "Shared goals and collective accountability",
+      "Strict hierarchy and limited communication",
+      "Continuous learning and skill development",
+      "Blame culture for addressing mistakes"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "High-performing teams have psychological safety, shared goals, and continuous learning. Competition and blame culture reduce team performance.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 203,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO key practices for technical debt management? (Select exactly 2 answers)",
+    options: [
+      "Making technical debt visible and measurable",
+      "Ignoring debt to focus solely on new features",
+      "Regular refactoring and debt reduction activities",
+      "Accumulating debt indefinitely without concern",
+      "Delegating all debt decisions to management only"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Technical debt management requires visibility and regular reduction activities. Ignoring debt or delegating decisions reduces effectiveness.",
+    domain: "Team and Technical Agility",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 204,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE support effective team communication? (Select exactly 3 answers)",
+    options: [
+      "Face-to-face conversations when possible",
+      "Exclusive reliance on email for all communications",
+      "Information radiators and visual management",
+      "Restricting information to management levels only",
+      "Regular team meetings and synchronization points",
+      "Individual work with minimal team interaction"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Effective communication uses face-to-face conversation, visual management, and regular meetings. Email-only and restricted information reduce effectiveness.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 205,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO characteristics of servant leadership? (Select exactly 2 answers)",
+    options: [
+      "Focuses on developing and serving team members",
+      "Maintains strict control over all team decisions",
+      "Removes impediments and enables team success",
+      "Makes all technical decisions for the team",
+      "Avoids any involvement in team activities"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Servant leadership focuses on developing people and removing impediments. Strict control and decision-making reduce servant leadership effectiveness.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 206,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE practices support continuous delivery? (Select exactly 3 answers)",
+    options: [
+      "Automated testing and deployment pipelines",
+      "Manual approval processes for every release",
+      "Small batch sizes and frequent releases",
+      "Large releases with extensive testing phases",
+      "Feature flags for controlled rollouts",
+      "Quarterly release cycles with comprehensive documentation"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Continuous delivery uses automation, small batches, and feature flags. Manual processes and large batches impede continuous delivery.",
+    domain: "Team and Technical Agility",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 207,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO benefits of team estimation? (Select exactly 2 answers)",
+    options: [
+      "Shared understanding of work complexity and effort",
+      "Exact prediction of delivery dates and times",
+      "Team ownership and commitment to the estimates",
+      "Elimination of all uncertainty in planning",
+      "Guarantee of perfect estimate accuracy"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Team estimation creates shared understanding and ownership. It doesn't provide exact predictions or eliminate uncertainty.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 208,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE are elements of effective team retrospectives? (Select exactly 3 answers)",
+    options: [
+      "Safe environment for honest feedback and discussion",
+      "Blame assignment for problems and failures",
+      "Identification of specific improvement experiments",
+      "Avoidance of difficult or controversial topics",
+      "Action planning with clear ownership and timelines",
+      "Extensive documentation without implementation follow-through"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Effective retrospectives need safety, improvement experiments, and action planning. Blame and avoidance reduce retrospective effectiveness.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 209,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO characteristics of effective Product Owners? (Select exactly 2 answers)",
+    options: [
+      "Deep understanding of customer needs and market context",
+      "Complete technical expertise in all development technologies",
+      "Authority to make content and prioritization decisions",
+      "Ability to write all code and perform all testing",
+      "Exclusive focus on internal stakeholder preferences only"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Effective Product Owners understand customers and have decision authority. Technical expertise and coding aren't required.",
+    domain: "Agile Product Delivery",
+    difficulty: "Foundation"
+  },
+  {
+    id: 210,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE support effective iteration execution? (Select exactly 3 answers)",
+    options: [
+      "Daily stand-ups for coordination and impediment identification",
+      "Detailed individual task assignments from management",
+      "Team self-organization around the work and goals",
+      "Strict adherence to original plans without adaptation",
+      "Regular integration and testing of completed work",
+      "Individual performance tracking and ranking systems"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Effective execution uses stand-ups, self-organization, and regular integration. Management assignments and rigid plans reduce team effectiveness.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 211,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO key aspects of value-driven development? (Select exactly 2 answers)",
+    options: [
+      "Prioritizing features based on business value and customer impact",
+      "Focusing exclusively on technical complexity and ease of implementation",
+      "Regular validation of value delivery with stakeholders",
+      "Avoiding customer feedback to maintain development focus",
+      "Prioritizing internal preferences over customer needs"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Value-driven development prioritizes by business value and validates delivery with stakeholders. Technical focus alone reduces value orientation.",
+    domain: "Agile Product Delivery",
+    difficulty: "Foundation"
+  },
+  {
+    id: 212,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE practices support team learning and growth? (Select exactly 3 answers)",
+    options: [
+      "Regular retrospectives and improvement experiments",
+      "Individual competition and performance ranking",
+      "Knowledge sharing sessions and communities of practice",
+      "Strict specialization preventing cross-training",
+      "Pair programming and collaborative development",
+      "Punishment for mistakes and learning attempts"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Team learning requires retrospectives, knowledge sharing, and collaboration. Competition and punishment reduce learning opportunities.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 213,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO benefits of small batch sizes? (Select exactly 2 answers)",
+    options: [
+      "Faster feedback and shorter learning cycles",
+      "Maximum utilization of all available resources",
+      "Reduced risk and easier problem identification",
+      "Elimination of all coordination needs between teams",
+      "Guarantee of perfect quality in all deliveries"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Small batches provide faster feedback and reduce risk. They don't maximize utilization or eliminate coordination needs.",
+    domain: "Team and Technical Agility",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 214,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE are characteristics of effective user stories? (Select exactly 3 answers)",
+    options: [
+      "Written from the user's perspective and point of view",
+      "Include comprehensive technical implementation details",
+      "Focus on delivering specific business value to users",
+      "Contain complete system architecture specifications",
+      "Sized appropriately to fit within an iteration",
+      "Written exclusively by technical team members"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Effective stories are user-focused, value-oriented, and appropriately sized. Technical details and architecture specs aren't included.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 215,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO key practices for managing dependencies? (Select exactly 2 answers)",
+    options: [
+      "Early identification and proactive communication",
+      "Ignoring dependencies to maintain team autonomy",
+      "Coordination with other teams and stakeholders",
+      "Waiting for dependencies to resolve themselves",
+      "Avoiding all work that involves external dependencies"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Dependency management requires early identification and coordination. Ignoring dependencies or avoiding dependent work reduces effectiveness.",
+    domain: "Team and Technical Agility",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 216,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE support effective team collaboration? (Select exactly 3 answers)",
+    options: [
+      "Shared workspace and collaboration tools",
+      "Individual workstations preventing any interaction",
+      "Common goals and shared accountability for outcomes",
+      "Separate objectives for each team member",
+      "Regular communication and information sharing",
+      "Strict role boundaries limiting collaboration"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Collaboration requires shared workspace, common goals, and regular communication. Individual isolation and separate objectives reduce collaboration.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 217,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO characteristics of evolutionary design? (Select exactly 2 answers)",
+    options: [
+      "Design emerges and evolves based on current needs",
+      "Complete architecture must be designed upfront",
+      "Supports continuous refactoring and improvement",
+      "Prevents any changes once initial design is complete",
+      "Requires detailed specifications before development"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Evolutionary design emerges based on needs and supports refactoring. Complete upfront architecture and change prevention oppose evolutionary approaches.",
+    domain: "Team and Technical Agility",
+    difficulty: "Intermediate"
+  },
+  {
+    id: 218,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE practices enhance software quality? (Select exactly 3 answers)",
+    options: [
+      "Automated testing at multiple levels",
+      "Manual testing as the only quality assurance method",
+      "Code reviews and peer feedback processes",
+      "Skipping testing to increase development velocity",
+      "Continuous integration with quality gates",
+      "Delaying all quality activities until project completion"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Software quality requires automated testing, code reviews, and CI with quality gates. Manual-only testing and delayed quality reduce effectiveness.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 219,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO benefits of customer collaboration? (Select exactly 2 answers)",
+    options: [
+      "Better understanding of real customer needs",
+      "Elimination of all development uncertainty",
+      "Faster feedback on product direction and features",
+      "Guarantee of project success in all circumstances",
+      "Complete prevention of all scope changes"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Customer collaboration provides better understanding and faster feedback. It doesn't eliminate uncertainty or guarantee success.",
+    domain: "Agile Product Delivery",
+    difficulty: "Foundation"
+  },
+  {
+    id: 220,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE are elements of effective team metrics? (Select exactly 3 answers)",
+    options: [
+      "Focus on team performance rather than individual ranking",
+      "Individual performance metrics for competition purposes",
+      "Support continuous improvement and learning",
+      "Create pressure and stress for maximum output",
+      "Provide actionable insights for team decisions",
+      "Punish teams for any performance variations"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Effective metrics focus on team performance, support improvement, and provide actionable insights. Individual competition and punishment reduce team effectiveness.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 221,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO key aspects of iterative development? (Select exactly 2 answers)",
+    options: [
+      "Regular delivery of working software increments",
+      "Complete system delivery only at project end",
+      "Frequent inspection and adaptation cycles",
+      "Avoiding changes once development begins",
+      "Extensive upfront planning for all iterations"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Iterative development provides regular increments and frequent adaptation. End-only delivery and change avoidance oppose iterative approaches.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 222,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE support effective product development? (Select exactly 3 answers)",
+    options: [
+      "Customer-centric design and development approaches",
+      "Internal assumptions without customer validation",
+      "Rapid prototyping and experimentation",
+      "Avoiding customer feedback to maintain focus",
+      "Minimum Viable Product (MVP) development",
+      "Complete feature development before any customer interaction"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Effective product development uses customer-centric approaches, rapid prototyping, and MVP development. Assumptions and feedback avoidance reduce effectiveness.",
+    domain: "Agile Product Delivery",
+    difficulty: "Foundation"
+  },
+  {
+    id: 223,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO characteristics of effective team facilitation? (Select exactly 2 answers)",
+    options: [
+      "Helps team reach consensus and make decisions",
+      "Makes all decisions for the team",
+      "Creates environment for productive team interactions",
+      "Controls all team communications and discussions",
+      "Avoids any involvement in team processes"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Effective facilitation helps with consensus and creates productive environments. Making decisions and controlling discussions reduce team empowerment.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 224,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE are benefits of working software over documentation? (Select exactly 3 answers)",
+    options: [
+      "Provides tangible value to customers and users",
+      "Eliminates all need for any documentation",
+      "Enables faster feedback and validation cycles",
+      "Prevents communication between team members",
+      "Demonstrates real progress and capability",
+      "Guarantees perfect understanding without explanation"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Working software provides value, enables feedback, and demonstrates progress. It doesn't eliminate documentation needs or prevent communication.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 225,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO key practices for effective estimation? (Select exactly 2 answers)",
+    options: [
+      "Team-based estimation with diverse perspectives",
+      "Individual estimation to avoid group influence",
+      "Relative sizing rather than absolute time predictions",
+      "Exact time estimates for all work items",
+      "Management-imposed estimates without team input"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Effective estimation uses team input and relative sizing. Individual estimation and management imposition reduce accuracy and ownership.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 226,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE support responding to change over following plans? (Select exactly 3 answers)",
+    options: [
+      "Regular planning and re-planning based on learning",
+      "Rigid adherence to original plans without adaptation",
+      "Embracing change as opportunity for improvement",
+      "Avoiding all changes to maintain predictability",
+      "Flexible processes that can adapt to new information",
+      "Punishment for any deviation from original plans"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Responding to change requires regular re-planning, embracing change, and flexible processes. Rigid adherence and punishment reduce adaptability.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 227,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO characteristics of self-organizing teams? (Select exactly 2 answers)",
+    options: [
+      "Teams decide how to accomplish their work",
+      "Management assigns all tasks and activities",
+      "Teams take ownership of their processes and outcomes",
+      "External control over all team decisions",
+      "Complete elimination of all team leadership"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Self-organizing teams decide how to work and take ownership. Management assignment and external control reduce self-organization.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 228,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE are elements of technical excellence? (Select exactly 3 answers)",
+    options: [
+      "Clean code and good design practices",
+      "Rushing implementation to meet deadlines",
+      "Automated testing and continuous integration",
+      "Skipping code reviews to save time",
+      "Regular refactoring and technical debt management",
+      "Avoiding learning new technologies or practices"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Technical excellence requires clean code, automated testing/CI, and refactoring. Rushing and skipping practices reduce technical excellence.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 229,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO benefits of face-to-face communication? (Select exactly 2 answers)",
+    options: [
+      "Richer communication with visual and verbal cues",
+      "Complete elimination of all misunderstandings",
+      "Faster resolution of complex issues and problems",
+      "Guarantee of perfect information transfer",
+      "Elimination of all need for documentation"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Face-to-face communication provides richer interaction and faster problem resolution. It doesn't eliminate misunderstandings or documentation needs.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 230,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE support individuals and interactions over processes and tools? (Select exactly 3 answers)",
+    options: [
+      "Prioritizing people and relationships in team dynamics",
+      "Strict adherence to processes regardless of context",
+      "Valuing human judgment and collaboration",
+      "Complete elimination of all processes and tools",
+      "Adapting processes to serve people rather than constraining them",
+      "Tool-centric solutions for all team challenges"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Valuing individuals requires prioritizing relationships, human judgment, and adaptive processes. Strict adherence and tool focus reduce human-centered approaches.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 231,
+    questionType: "multiple",
+    selectCount: 2,
+    question: "What are TWO key aspects of continuous improvement? (Select exactly 2 answers)",
+    options: [
+      "Regular reflection on team performance and practices",
+      "Maintaining status quo to avoid any disruption",
+      "Experimentation with new approaches and methods",
+      "Avoiding changes that might cause temporary discomfort",
+      "Strict adherence to established processes only"
+    ],
+    correctAnswers: [0, 2],
+    explanation: "Continuous improvement requires regular reflection and experimentation. Maintaining status quo and avoiding changes prevent improvement.",
+    domain: "Team and Technical Agility",
+    difficulty: "Foundation"
+  },
+  {
+    id: 232,
+    questionType: "multiple",
+    selectCount: 3,
+    question: "Which THREE are characteristics of motivated teams? (Select exactly 3 answers)",
+    options: [
+      "Clear purpose and understanding of team mission",
+      "Micromanagement and detailed task control",
+      "Autonomy to make decisions about their work",
+      "Strict hierarchy limiting team empowerment",
+      "Trust and support from leadership and organization",
+      "Fear-based motivation and punishment systems"
+    ],
+    correctAnswers: [0, 2, 4],
+    explanation: "Motivated teams have clear purpose, autonomy, and trust/support. Micromanagement and fear reduce team motivation and effectiveness.",
+    domain: "Team and Technical Agility",
     difficulty: "Foundation"
   }
 ];

@@ -5,7 +5,7 @@ import Results from '../shared/Results.jsx'
 import { useProgress } from '../../contexts/ProgressContext.jsx'
 import { useStudyIntelligence } from '../../contexts/StudyIntelligenceContext.jsx'
 
-function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45, autoShowExplanation = false }) {
+function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45, autoShowExplanation = false, examMode = 'exam' }) {
   const { recordSession } = useProgress()
   const { updateSpacedRepetition } = useStudyIntelligence()
 
@@ -35,6 +35,11 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
   const [totalTimeUsed, setTotalTimeUsed] = useState(0)
   const [examSubmitted, setExamSubmitted] = useState(false)
   const [shuffledQuestions, setShuffledQuestions] = useState([])
+  
+  // Per-question timing states
+  const [questionTimings, setQuestionTimings] = useState({}) // { questionId: totalTimeSpent }
+  const [questionStartTime, setQuestionStartTime] = useState(null)
+  const [currentQuestionTime, setCurrentQuestionTime] = useState(0)
 
   // Utility function to shuffle array
   const shuffleArray = (array) => {
@@ -48,15 +53,26 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
 
   // Utility function to shuffle question options and update correct answer index
   const shuffleQuestionOptions = (question) => {
-    const optionIndices = [0, 1, 2, 3].map(i => ({ index: i, option: question.options[i] }))
+    const optionIndices = question.options.map((option, i) => ({ index: i, option }))
     const shuffledOptions = shuffleArray(optionIndices)
     
     const newQuestion = {
       ...question,
       options: shuffledOptions.map(item => item.option),
-      correctAnswer: shuffledOptions.findIndex(item => item.index === question.correctAnswer),
-      originalCorrectAnswer: question.correctAnswer, // Keep track for explanations
       optionMapping: shuffledOptions.map(item => item.index) // Keep track of original positions
+    }
+    
+    // Handle single-select questions
+    if (!question.questionType || question.questionType !== 'multiple') {
+      newQuestion.correctAnswer = shuffledOptions.findIndex(item => item.index === question.correctAnswer)
+      newQuestion.originalCorrectAnswer = question.correctAnswer // Keep track for explanations
+    } 
+    // Handle multi-select questions
+    else {
+      newQuestion.correctAnswers = question.correctAnswers.map(originalIndex => 
+        shuffledOptions.findIndex(item => item.index === originalIndex)
+      )
+      newQuestion.originalCorrectAnswers = question.correctAnswers // Keep track for explanations
     }
     
     return newQuestion
@@ -64,12 +80,55 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
 
   // Initialize shuffled questions on component mount
   useEffect(() => {
-    const shuffled = shuffleArray(leadingSAFe6Questions)
+    let availableQuestions = leadingSAFe6Questions
+    
+    // Filter questions based on exam mode
+    if (examMode === 'exam') {
+      // Exam mode: only single-select questions (filter out multi-select)
+      availableQuestions = leadingSAFe6Questions.filter(q => !q.questionType || q.questionType !== 'multiple')
+    }
+    // Practice mode: include all questions (single-select + multi-select)
+    
+    const shuffled = shuffleArray(availableQuestions)
     const selectedQuestions = shuffled.slice(0, numberOfQuestions)
     // Shuffle the options for each question to prevent visual patterns
     const questionsWithShuffledOptions = selectedQuestions.map(shuffleQuestionOptions)
     setShuffledQuestions(questionsWithShuffledOptions)
-  }, [numberOfQuestions])
+  }, [numberOfQuestions, examMode])
+
+  // Track per-question timing - start timing when question changes
+  useEffect(() => {
+    if (shuffledQuestions.length > 0 && !examSubmitted) {
+      const currentQ = shuffledQuestions[currentQuestion]
+      if (currentQ) {
+        // Save time for previous question if there was one
+        if (questionStartTime !== null) {
+          const previousQ = shuffledQuestions[currentQuestion - 1] || shuffledQuestions[currentQuestion + 1]
+          if (previousQ) {
+            const timeSpent = Date.now() - questionStartTime
+            setQuestionTimings(prev => ({
+              ...prev,
+              [previousQ.id]: (prev[previousQ.id] || 0) + timeSpent
+            }))
+          }
+        }
+        
+        // Start timing current question
+        setQuestionStartTime(Date.now())
+        setCurrentQuestionTime(0)
+      }
+    }
+  }, [currentQuestion, shuffledQuestions, examSubmitted])
+
+  // Update current question timer every second
+  useEffect(() => {
+    if (questionStartTime && !examSubmitted) {
+      const timer = setInterval(() => {
+        setCurrentQuestionTime(Date.now() - questionStartTime)
+      }, 1000)
+      return () => clearInterval(timer)
+    }
+  }, [questionStartTime, examSubmitted])
 
   // Timer effect - only runs when timer is enabled
   useEffect(() => {
@@ -100,14 +159,49 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
   }
 
+  const formatMilliseconds = (milliseconds) => {
+    const totalSeconds = Math.floor(milliseconds / 1000)
+    const minutes = Math.floor(totalSeconds / 60)
+    const seconds = totalSeconds % 60
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`
+  }
+
   const handleAnswerSelect = (optionIndex) => {
     if (examSubmitted) return
     
     const question = shuffledQuestions[currentQuestion]
-    setSelectedAnswers(prev => ({
-      ...prev,
-      [question.id]: optionIndex
-    }))
+    const isMultiSelect = question.questionType === 'multiple'
+    
+    if (isMultiSelect) {
+      // Handle multi-select questions
+      const currentSelections = selectedAnswers[question.id] || []
+      const isAlreadySelected = currentSelections.includes(optionIndex)
+      
+      let newSelections
+      if (isAlreadySelected) {
+        // Remove selection
+        newSelections = currentSelections.filter(idx => idx !== optionIndex)
+      } else {
+        // Add selection if not at limit
+        if (currentSelections.length < question.selectCount) {
+          newSelections = [...currentSelections, optionIndex].sort()
+        } else {
+          // At limit - replace last selection
+          newSelections = [...currentSelections.slice(0, -1), optionIndex].sort()
+        }
+      }
+      
+      setSelectedAnswers(prev => ({
+        ...prev,
+        [question.id]: newSelections
+      }))
+    } else {
+      // Handle single-select questions (existing behavior)
+      setSelectedAnswers(prev => ({
+        ...prev,
+        [question.id]: optionIndex
+      }))
+    }
     
     setRevealedAnswers(prev => ({
       ...prev,
@@ -148,18 +242,72 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
   const handleSubmitExam = () => {
     const timeUsed = hasTimer ? (initialTimer - timeRemaining) : 0
     setTotalTimeUsed(timeUsed)
+    
+    // Save timing for current question before submitting
+    if (questionStartTime && shuffledQuestions[currentQuestion]) {
+      const currentQ = shuffledQuestions[currentQuestion]
+      const timeSpent = Date.now() - questionStartTime
+      setQuestionTimings(prev => {
+        const finalTimings = {
+          ...prev,
+          [currentQ.id]: (prev[currentQ.id] || 0) + timeSpent
+        }
+        
+        // Store per-question timings in localStorage for analysis
+        const examTimingData = {
+          examType: 'Leading SAFe 6',
+          date: new Date().toISOString(),
+          totalTimeUsed: timeUsed,
+          questionTimings: finalTimings,
+          questions: shuffledQuestions.map(q => ({
+            id: q.id,
+            question: q.question.substring(0, 100) + '...', // Truncate for storage
+            domain: q.domain,
+            difficulty: q.difficulty
+          }))
+        }
+        
+        // Store in localStorage with timestamp key
+        const storageKey = `examTiming_${Date.now()}`
+        localStorage.setItem(storageKey, JSON.stringify(examTimingData))
+        
+        return finalTimings
+      })
+    }
 
-    // Calculate score and domain performance
-    let correctAnswers = 0
+    // Calculate score and domain performance with support for multi-select questions
+    let totalScore = 0
     const domainPerformance = {}
     
     shuffledQuestions.forEach((question) => {
-      const isCorrect = selectedAnswers[question.id] === question.correctAnswer
-      if (isCorrect) correctAnswers++
+      let questionScore = 0
+      const userAnswer = selectedAnswers[question.id]
+      
+      if (question.questionType === 'multiple') {
+        // Multi-select scoring: partial credit based on correct selections
+        const userSelections = userAnswer || []
+        const correctAnswers = question.correctAnswers || []
+        
+        if (userSelections.length > 0) {
+          const correctSelected = userSelections.filter(idx => correctAnswers.includes(idx)).length
+          const incorrectSelected = userSelections.filter(idx => !correctAnswers.includes(idx)).length
+          const missedCorrect = correctAnswers.filter(idx => !userSelections.includes(idx)).length
+          
+          // Scoring formula: (correct selections - incorrect selections) / total correct answers
+          // Minimum score is 0, maximum is 1
+          questionScore = Math.max(0, (correctSelected - incorrectSelected) / correctAnswers.length)
+        }
+      } else {
+        // Single-select scoring: 1 if correct, 0 if incorrect
+        const isCorrect = userAnswer === question.correctAnswer
+        questionScore = isCorrect ? 1 : 0
+      }
+      
+      totalScore += questionScore
       
       // Update spaced repetition for each question
       const questionId = `leadingsafe_${question.id}`;
-      const performance = isCorrect ? 1.0 : 0.2; // High performance if correct, low if incorrect
+      const performance = questionScore > 0.5 ? questionScore : 0.2; // Use actual score or low performance
       updateSpacedRepetition(questionId, Math.floor(performance * 5)); // Convert to 0-5 scale
       
       // Track domain performance
@@ -168,22 +316,38 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
         domainPerformance[domain] = { correct: 0, total: 0 }
       }
       domainPerformance[domain].total++
-      if (isCorrect) domainPerformance[domain].correct++
+      domainPerformance[domain].correct += questionScore
     })
 
-    const score = Math.round((correctAnswers / shuffledQuestions.length) * 100)
+    const score = Math.round((totalScore / shuffledQuestions.length) * 100)
+    const effectiveCorrectAnswers = Math.round(totalScore)
 
-    // Get incorrect questions for smart review
-    const incorrectQuestions = shuffledQuestions.filter((question) =>
-      selectedAnswers[question.id] !== question.correctAnswer
-    )
+    // Get questions that need review (score < 1.0)
+    const incorrectQuestions = shuffledQuestions.filter((question) => {
+      const userAnswer = selectedAnswers[question.id]
+      
+      if (question.questionType === 'multiple') {
+        const userSelections = userAnswer || []
+        const correctAnswers = question.correctAnswers || []
+        
+        if (userSelections.length === 0) return true
+        
+        const correctSelected = userSelections.filter(idx => correctAnswers.includes(idx)).length
+        const incorrectSelected = userSelections.filter(idx => !correctAnswers.includes(idx)).length
+        const questionScore = Math.max(0, (correctSelected - incorrectSelected) / correctAnswers.length)
+        
+        return questionScore < 1.0
+      } else {
+        return userAnswer !== question.correctAnswer
+      }
+    })
 
     // Record the session
     recordSession({
       examType: 'Leading SAFe 6',
       score: score,
       totalQuestions: shuffledQuestions.length,
-      correctAnswers: correctAnswers,
+      correctAnswers: effectiveCorrectAnswers,
       timeUsed: timeUsed,
       timeLimitSec: initialTimer,
       domainPerformance: domainPerformance,
@@ -225,6 +389,10 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
           setCollapsedExplanations({})
           setTimeRemaining(initialTimer)
           setTotalTimeUsed(0)
+          // Reset timing states
+          setQuestionTimings({})
+          setQuestionStartTime(null)
+          setCurrentQuestionTime(0)
         }}
       />
     )
@@ -299,15 +467,34 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
               <div className={styles.questionMeta}>
                 <span className={styles.domain}>{currentQ.domain}</span>
                 <span className={styles.difficulty}>{currentQ.difficulty}</span>
+                <span className={styles.questionTimer}>
+                  Time on question: {formatMilliseconds(currentQuestionTime)}
+                </span>
               </div>
             </div>
+            
+            {/* Question instruction for multi-select */}
+            {currentQ.questionType === 'multiple' && (
+              <div className={styles.questionInstruction}>
+                Select exactly {currentQ.selectCount} answer{currentQ.selectCount > 1 ? 's' : ''}
+              </div>
+            )}
             
             <h2 className={styles.questionText}>{currentQ.question}</h2>
             
             <div className={styles.optionsContainer}>
               {currentQ.options.map((option, index) => {
-                const isSelected = selectedOption === index
-                const isCorrect = index === currentQ.correctAnswer
+                const isMultiSelect = currentQ.questionType === 'multiple'
+                const currentSelections = selectedAnswers[currentQ.id] || (isMultiSelect ? [] : null)
+                const isSelected = isMultiSelect 
+                  ? currentSelections.includes(index)
+                  : selectedOption === index
+                
+                // Determine if this option is correct
+                const isCorrect = isMultiSelect
+                  ? currentQ.correctAnswers.includes(index)
+                  : index === currentQ.correctAnswer
+                
                 const showResult = isRevealed
                 
                 let optionClass = styles.option
@@ -328,8 +515,15 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
                     onClick={() => handleAnswerSelect(index)}
                     disabled={examSubmitted}
                   >
+                    <span className={styles.optionIndicator}>
+                      {isMultiSelect ? (
+                        isSelected ? '☑' : '☐'
+                      ) : (
+                        isSelected ? '●' : '○'
+                      )}
+                    </span>
                     <span className={styles.optionLetter}>
-                      {index + 1}
+                      {String.fromCharCode(65 + index)}
                     </span>
                     <span className={styles.optionText}>{option}</span>
                     {showResult && isCorrect && (
