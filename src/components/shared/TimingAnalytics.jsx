@@ -3,14 +3,7 @@ import styles from './TimingAnalytics.module.css'
 
 function TimingAnalytics({ onGoHome }) {
   const [timingData, setTimingData] = useState([])
-  const [selectedE                  )}
-                </div>
-              )}
-            </div>
-          )}
-      </main>
-    </div>
-  )electedExam] = useState(null)
+  const [selectedExam, setSelectedExam] = useState(null)
 
   useEffect(() => {
     // Load all timing data from localStorage
@@ -220,8 +213,7 @@ function TimingAnalytics({ onGoHome }) {
               )}
             </div>
           )}
-        </div>
-      </div>
+      </main>
     </div>
   )
 }
