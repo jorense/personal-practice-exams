@@ -2,6 +2,33 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- Early global error & rejection capture (before app bundle) -->
+    <script>
+      (function () {
+        const key = 'e2e.globalErrors';
+        function push(kind, msg, stack) {
+          try {
+            const list = JSON.parse(localStorage.getItem(key) || '[]');
+            list.push({ t: Date.now(), kind, msg: '' + msg, stack: stack || null });
+            // Keep last 100 entries max
+            while (list.length > 100) list.shift();
+            localStorage.setItem(key, JSON.stringify(list));
+          } catch (e) {
+            // swallow
+          }
+        }
+        window.addEventListener('error', function (e) {
+          push('error', e.message, e.error && e.error.stack);
+        });
+        window.addEventListener('unhandledrejection', function (e) {
+          const reason = e.reason && (e.reason.message || e.reason.toString());
+            push('unhandledrejection', reason, e.reason && e.reason.stack);
+        });
+        window.__dumpGlobalErrors = function () {
+          try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch { return []; }
+        };
+      })();
+    </script>
     
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json" />

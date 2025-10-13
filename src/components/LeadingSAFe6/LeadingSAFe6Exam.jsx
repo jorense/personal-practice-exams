@@ -27,7 +27,7 @@ function LeadingSAFe6Exam({
 
   return (
     <div className={styles.examContainer}>
-      <header className={styles.examHeader}>
+  <header className={styles.examHeader} data-testid="leading-safe-exam-header">
         <div className={styles.brand}>
           <div className={styles.logo}>LACE Studio</div>
           <div className={styles.tagline}>Leading SAFe 6 Practice Exam</div>
@@ -37,14 +37,30 @@ function LeadingSAFe6Exam({
         </button>
       </header>
 
-      <main className={styles.examContent}>
+  <main className={styles.examContent} data-testid="leading-safe-exam-settings">
+        {/* Temporary cross-browser support notice (Firefox / Safari) */}
+        {typeof navigator !== 'undefined' && /firefox|safari/i.test(navigator.userAgent) && !/chrome|edg/i.test(navigator.userAgent) && (
+          <div style={{
+            background: '#fff3cd',
+            color: '#7a5b00',
+            border: '1px solid #f7d98b',
+            padding: '0.85rem 1rem',
+            borderRadius: '6px',
+            marginBottom: '1.25rem',
+            fontSize: '0.9rem',
+            lineHeight: 1.4
+          }} data-testid="browser-support-warning">
+            <strong>Browser Notice:</strong> Full exam stability is currently optimized for Chrome / Edge. 
+            You are using a Firefox/Safari-based browser; if you experience an unexpected interruption after starting the quiz, please try again in a Chromium browser while we finalize a cross‑browser fix.
+          </div>
+        )}
         <div className={styles.examInfo}>
           <h1>Leading SAFe 6.0: Scaled Agile Framework</h1>
           <p className={styles.examDescription}>
             Test your knowledge of the Scaled Agile Framework (SAFe) 6.0 and Lean-Agile leadership principles.
           </p>
 
-          <div className={styles.examDetails}>
+          <div className={styles.examDetails} data-testid="leading-safe-exam-details">
             <div className={styles.detailCard}>
               <h3>📝 Questions</h3>
               <p>{numberOfQuestions} practice questions</p>
@@ -64,13 +80,14 @@ function LeadingSAFe6Exam({
           </div>
 
           {/* Exam Settings Panel */}
-          <div className={styles.examSettings}>
+          <div className={styles.examSettings} data-testid="leading-safe-exam-config">
             <h2>⚙️ Exam Settings</h2>
             <div className={styles.settingsGrid}>
               <div className={styles.settingCard}>
                 <h4>Number of Questions</h4>
                 <select 
                   value={numberOfQuestions} 
+                  data-testid="leading-safe-questions-select"
                   onChange={(e) => onNumberOfQuestionsChange && onNumberOfQuestionsChange(Number(e.target.value))}
                   className={styles.settingSelect}
                 >
@@ -90,6 +107,7 @@ function LeadingSAFe6Exam({
                 <h4>Exam Mode</h4>
                 <select 
                   value={examMode} 
+                  data-testid="leading-safe-exam-mode-select"
                   onChange={(e) => onExamModeChange && onExamModeChange(e.target.value)}
                   className={styles.settingSelect}
                 >
@@ -108,6 +126,7 @@ function LeadingSAFe6Exam({
                   <input 
                     type="checkbox" 
                     checked={autoShowExplanation}
+                    data-testid="leading-safe-auto-explanation-checkbox"
                     onChange={(e) => onAutoShowExplanationChange && onAutoShowExplanationChange(e.target.checked)}
                     className={styles.settingCheckbox}
                   />
@@ -122,7 +141,7 @@ function LeadingSAFe6Exam({
             </div>
           </div>
 
-          <div className={styles.examDomains}>
+          <div className={styles.examDomains} data-testid="leading-safe-exam-domains">
             <h2>Exam Domains</h2>
             <div className={styles.domainsGrid}>
               <div className={styles.domainCard}>
@@ -163,9 +182,10 @@ function LeadingSAFe6Exam({
             </div>
           </div>
 
-          <div className={styles.examActions}>
+          <div className={styles.examActions} data-testid="leading-safe-exam-actions">
             <button 
               className={`${styles.actionButton} ${styles.primary}`}
+              data-testid="leading-safe-start-quiz"
               onClick={onStartQuiz}
             >
               🚀 Start Practice Exam
@@ -178,7 +198,7 @@ function LeadingSAFe6Exam({
             </button>
           </div>
 
-          <div className={styles.examTips}>
+          <div className={styles.examTips} data-testid="leading-safe-exam-tips">
             <h2>Exam Tips</h2>
             <div className={styles.tipsGrid}>
               <div className={styles.tipCard}>

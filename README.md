@@ -4,6 +4,16 @@ A comprehensive, modern web application for **mastering SAFe (Scaled Agile Frame
 
 ## 🆕 **Latest Updates (October 2025)**
 
+### ⚠️ Browser Support Status (October 2025)
+Full functionality (including complete exam flow E2E automation) is currently guaranteed on **Chromium-based browsers (Chrome, Edge, Brave, Arc)**. 
+
+The exam experience *loads and is usable* on **Firefox** and **Safari/WebKit**, but an automated test scenario exercising rapid answer navigation and submission intermittently times out in those engines. We have not observed user-facing crashes during normal paced usage; however, if you encounter an unexpected interruption in Firefox/Safari, please retry in a Chromium browser while we finalize the cross‑browser fix.
+
+Tracking Issue: `firefox-webkit-exam-flow-timeout` (internal) – root cause under investigation (suspected interaction between autosave/timing loop and headless engine lifecycle).
+
+If cross-browser parity is critical for your environment, use Chrome/Edge for formal practice sessions until this notice is removed. This section will be updated once the fix is confirmed.
+
+
 ### 🔥 **Multi-Select Question System**
 - **25% Multi-Select Distribution** - Realistic certification practice with advanced question types
 - **Partial Credit Scoring** - Proportional points system for multi-select answers
@@ -203,6 +213,86 @@ npm run build
 
 The built files will be in the `dist` directory, ready for PWA deployment.
 
+### 🧪 End-to-End (E2E) Testing with Playwright (NEW!)
+
+This project includes a multi-browser Playwright E2E suite covering:
+
+- Core exam flow (start → answer → submit → results)
+- Multi-select validation & partial credit heuristics
+- Help system tour & panel interactions
+- Autosave recovery after reload
+- Timer expiry (best-effort; falls back to manual submit)
+
+#### 1. Install Playwright Browsers (first time only)
+```
+npx playwright install --with-deps
+```
+(On CI / minimal environments you can use: `npx playwright install chromium` to limit scope.)
+
+#### 2. Run the full test suite
+```
+npm run e2e
+```
+Runs all tests across: Chromium, Firefox, WebKit, and a mobile Chrome profile (Pixel 7).
+
+#### 3. Open the interactive UI mode (exploratory / debugging)
+```
+npm run e2e:ui
+```
+
+#### 4. View HTML report (after a run)
+```
+npm run e2e:report
+```
+Report output folder: `playwright-report/` (automatically git-ignored if you add it).
+
+#### 5. Useful Environment Variables
+
+- `PLAYWRIGHT_BASE_URL` – override dev server URL (defaults to `http://localhost:5173`).
+- `CI=1` – enables retries (configured as 2) and prevents server reuse.
+
+#### 6. CI Integration (Example GitHub Actions Snippet)
+```yaml
+steps:
+	- uses: actions/checkout@v4
+	- uses: actions/setup-node@v4
+		with:
+			node-version: 18
+	- run: npm ci
+	- run: npx playwright install --with-deps
+	- run: npm run e2e
+	- if: failure()
+		uses: actions/upload-artifact@v4
+		with:
+			name: playwright-report
+			path: playwright-report
+```
+
+#### 7. Test Selectors
+
+Deterministic `data-testid` attributes have been added to key UI elements (navigation, exam start buttons, quiz options, results metrics) to keep tests stable against copy changes.
+
+#### 8. Flake Reduction Tips
+
+- Prefer `getByTestId` over text queries for dynamic values.
+- Use `await expect(locator).toBeVisible()` instead of manual timeouts.
+- Keep heuristics (like searching for `/Results|Score|Correct/`) only as fallback.
+
+#### 9. Extending Tests
+
+- Add new specs under `tests/e2e/*.spec.js`.
+- For new UI metrics, add `data-testid` attributes near semantic elements (e.g. results-score, results-correct).
+- If you expose internal test hooks (like forcing timer expiry), gate them behind `if (import.meta.env.DEV)` checks for safety.
+
+#### 10. Running a Single Test File
+```
+npx playwright test tests/e2e/exam-flow.spec.js --project=chromium
+```
+
+---
+
+With this E2E layer + existing component tests, you now have defense-in-depth: unit, integration, and user journey coverage.
+
 ## 🎓 Smart Learning & Exam Preparation
 
 ### 📈 **NEW: Use the Dashboard to Track Progress**
@@ -346,6 +436,15 @@ src/
 - **📋 Complete Test Coverage**: Multi-select, timing, filtering, analytics, and integration tests
 - **🏗️ CI/CD Ready**: Production-ready testing infrastructure for continuous deployment
 
+### **Enhancement 8: Advanced UX & Mobile-First Improvements** 🚧 (PLANNED - October 2025)
+- **🍔 Responsive Navigation**: Hamburger menu for mobile with organized navigation hierarchy
+- **🔖 Question Bookmarking**: Flag difficult questions for strategic review during exams
+- **📝 Enhanced Multi-Select UI**: Clear visual indicators for questions requiring multiple answers
+- **📊 Visual Progress Indicators**: Real-time progress bars and completion status throughout exams
+- **💾 Intelligent Autosave**: Automatic progress preservation with offline capability and crash recovery
+- **💡 Contextual Help System**: Interactive tooltips and guided help for complex features
+- **📈 Advanced Analytics Dashboard**: AI-powered insights, learning patterns, and personalized recommendations
+
 ### **Technical Improvements** ✅
 - **🔧 Enhanced ProgressContext**: Advanced state management with achievement calculations
 - **🎨 Professional UI/UX**: CSS Modules with responsive design and smooth animations
@@ -404,6 +503,26 @@ src/
 - ✅ **Integration Testing**: End-to-end validation of exam flow with timing and multi-select features
 - ✅ **Browser Compatibility**: Testing across modern browsers with localStorage and timing APIs
 
+### **Phase 8: Advanced UX & Mobile Excellence** (Planned - October 2025)
+
+#### **Subphase 8.1: Mobile-First Navigation Revolution**
+- 🚧 **Hamburger Menu Implementation**: Responsive navigation with organized hierarchy and smooth animations
+- 🚧 **Touch-Optimized Interface**: Minimum 44px touch targets with enhanced mobile interaction patterns
+- 🚧 **Responsive Breakpoint Strategy**: Mobile-first design with progressive enhancement for larger screens
+- 🚧 **Navigation Accessibility**: ARIA labels, keyboard navigation, and screen reader compatibility
+
+#### **Subphase 8.2: Enhanced Exam Experience**
+- 🚧 **Question Bookmarking System**: Strategic question flagging with visual indicators and review shortcuts
+- 🚧 **Multi-Select UI Clarity**: Distinctive visual design for questions requiring multiple answers
+- 🚧 **Dynamic Progress Visualization**: Real-time progress bars, completion percentage, and milestone indicators
+- 🚧 **Smart Confirmation Dialogs**: User-friendly confirmations for critical actions (submit exam, navigate away)
+
+#### **Subphase 8.3: Intelligent Data & Help Systems**
+- 🚧 **Advanced Autosave Framework**: Debounced auto-saving with offline sync and crash recovery
+- 🚧 **Contextual Help Integration**: Interactive tooltips, guided tours, and feature explanations
+- 🚧 **Advanced Analytics Engine**: Learning pattern analysis, performance predictions, and personalized insights
+- 🚧 **Enhanced Error States**: Informative error messages with actionable recovery suggestions
+
 ## 📊 **Key Metrics & Statistics**
 
 - **📚 Total Questions**: 385 high-quality practice questions with intelligent tracking
@@ -419,6 +538,13 @@ src/
 - **📲 PWA Capabilities**: Offline functionality, push notifications, and native app experience
 - **🧪 Test Coverage**: Comprehensive Jest test suite with React Testing Library integration
 
+### 🚀 **Coming Soon - Advanced UX Features**
+- **🍔 Mobile Navigation**: Hamburger menu with organized navigation hierarchy
+- **🔖 Question Bookmarking**: Strategic flagging system for exam questions
+- **💾 Smart Autosave**: Intelligent progress preservation with offline sync
+- **💡 Contextual Help**: Interactive tooltips and guided feature explanations
+- **📊 Advanced Insights**: AI-powered learning analytics and performance predictions
+
 ## �📄 License
 
 This project is for educational purposes. SAFe® is a registered trademark of Scaled Agile, Inc.
@@ -427,29 +553,39 @@ This project is for educational purposes. SAFe® is a registered trademark of Sc
 
 This is a private educational project. For questions or suggestions, please reach out directly.
 
-## 🚀 **Future Enhancements**
+## 🚀 **Future Enhancements & Roadmap**
 
-### **Enhancement 2: Intelligent Study Companion** ✅ (Completed October 2025)
-- **🧠 AI-Powered Study Recommendations**: Optimal study times, session lengths, and question counts
-- **📊 Predictive Analytics**: Real-time certification readiness calculator with pass probability  
-- **🔄 Spaced Repetition System**: SM-2 algorithm for scientifically-backed question review scheduling
-- **📈 Advanced Learning Insights**: Performance velocity, retention rates, and improvement predictions
-- **🎯 Smart Session Planning**: Micro-learning modes with adaptive difficulty progression
-- **💡 Knowledge Gap Analysis**: Precise identification of weak areas with targeted study plans
-- **⚡ Performance Optimization**: Client-side ML algorithms for personalized learning experiences
+### **Enhancement 8: Advanced UX & Mobile Excellence** 🚧 (In Development - October 2025)
 
-### **Enhancement 3: Mobile-First PWA** ✅ (Completed October 2025)
-- **📱 Progressive Web App**: Complete offline functionality with advanced service worker caching
-- **🔔 Push Notifications**: Smart study reminders, achievement alerts, and spaced repetition scheduling  
-- **📲 Native App Experience**: Install to home screen with app shortcuts and protocol handlers
-- **🎨 Mobile-First Design**: Safe area support, touch-friendly navigation, and responsive design
-- **⚡ Advanced PWA Features**: Background sync, share targets, and comprehensive browser compatibility
+#### **🍔 Revolutionary Mobile Navigation**
+- **Hamburger Menu System**: Organized navigation hierarchy with smooth animations and accessibility support
+- **Touch-Optimized Design**: Enhanced mobile interaction patterns with minimum 44px touch targets
+- **Progressive Enhancement**: Mobile-first approach with adaptive features for larger screens
+- **Navigation Intelligence**: Context-aware menu organization based on user behavior and current screen
 
-### **Enhancement 4: Social Learning Platform** (Future)
-- Team challenges and collaborative learning features
-- Leaderboards and competitive study modes
-- Study group formation and progress sharing
-- Mentor/mentee connection system
+#### **🎯 Enhanced Exam Experience**
+- **Question Bookmarking**: Strategic flagging system allowing users to mark difficult questions for review
+- **Multi-Select UI Clarity**: Distinctive visual indicators clearly showing questions requiring multiple answers
+- **Dynamic Progress Visualization**: Real-time progress bars, completion percentages, and milestone celebrations
+- **Smart Confirmations**: User-friendly dialog system for critical actions with clear explanations
+
+#### **💡 Intelligent Learning Support**
+- **Advanced Autosave Framework**: Debounced auto-saving with offline synchronization and crash recovery
+- **Contextual Help Integration**: Interactive tooltips, guided tours, and progressive feature disclosure
+- **Enhanced Analytics Engine**: AI-powered learning pattern analysis with personalized improvement suggestions
+- **Adaptive Error Handling**: Informative error states with actionable recovery paths and prevention tips
+
+### **Enhancement 9: Social Learning Platform** (Future - 2026)
+- **🤝 Collaborative Features**: Team challenges and group study modes with progress sharing
+- **🏆 Competitive Elements**: Leaderboards, achievement competitions, and certification races  
+- **� Study Communities**: Formation of study groups with mentor/mentee connection systems
+- **📊 Group Analytics**: Team performance insights and collaborative learning effectiveness metrics
+
+### **Enhancement 10: Enterprise Integration** (Future - 2026)
+- **🏢 Corporate Learning**: Enterprise SSO, learning management system integration, and compliance tracking
+- **📈 Advanced Reporting**: Detailed organizational learning analytics and certification progress monitoring
+- **🎯 Custom Certification Paths**: Tailored learning journeys based on role-specific requirements
+- **🔄 API Ecosystem**: RESTful APIs for integration with existing enterprise learning platforms
 
 ---
 
@@ -459,6 +595,10 @@ This is a private educational project. For questions or suggestions, please reac
 
 ## ⭐ **Ready to Master Your SAFe Certifications?**
 
+### 🌐 **Public Access**
+**Live URL**: https://jorense.github.io/safe-practice-exams/
+
+### 🛠️ **Local Development**
 1. **🚀 Launch the app**: `npm run dev`
 2. **📊 Check your Dashboard**: Track your comprehensive learning analytics
 3. **🎯 Take a practice exam**: Choose your preferred adaptive timer mode
@@ -467,4 +607,13 @@ This is a private educational project. For questions or suggestions, please reac
 6. **🔄 Follow spaced repetition**: Let AI optimize your review schedule for maximum retention
 7. **📱 Install as PWA**: Get native app experience with offline access and notifications
 
+### 🚧 **Coming Soon: Enhanced User Experience**
+- **📱 Mobile-First Navigation**: Hamburger menu and touch-optimized interface
+- **🔖 Question Bookmarking**: Flag questions for strategic review
+- **💾 Smart Autosave**: Never lose your progress with intelligent data preservation
+- **💡 Interactive Help**: Contextual tooltips and guided feature tours
+- **📈 Advanced Analytics**: AI-powered insights for personalized learning optimization
+
 **Experience the future of intelligent SAFe certification preparation! 🎉🧠📱**
+
+**Share with colleagues**: https://jorense.github.io/safe-practice-exams/

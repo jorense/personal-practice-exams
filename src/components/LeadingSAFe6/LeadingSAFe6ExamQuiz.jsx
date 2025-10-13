@@ -2,12 +2,18 @@ import { useState, useEffect } from 'react'
 import styles from './LeadingSAFe6ExamQuiz.module.css'
 import { leadingSAFe6Questions } from './LeadingSAFe6Questions.js'
 import Results from '../shared/Results.jsx'
+import ProgressIndicator from '../exam/ProgressIndicator.jsx'
+
+import SessionRecovery from '../autosave/SessionRecovery.jsx'
+import HelpSystem, { MultiSelectHelp } from '../help/HelpSystem.jsx'
 import { useProgress } from '../../contexts/ProgressContext.jsx'
 import { useStudyIntelligence } from '../../contexts/StudyIntelligenceContext.jsx'
+import { useAutosave } from '../../contexts/AutosaveContext.jsx'
 
 function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45, autoShowExplanation = false, examMode = 'exam' }) {
   const { recordSession } = useProgress()
   const { updateSpacedRepetition } = useStudyIntelligence()
+  const { saveExamState, loadExamState, clearExamState, AUTOSAVE_INTERVAL, DEBOUNCE_DELAY } = useAutosave()
 
   // Adaptive timer calculation function
   const calculateTimerDuration = (questionCount) => {
@@ -35,6 +41,10 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
   const [totalTimeUsed, setTotalTimeUsed] = useState(0)
   const [examSubmitted, setExamSubmitted] = useState(false)
   const [shuffledQuestions, setShuffledQuestions] = useState([])
+  const [bookmarkedQuestions, setBookmarkedQuestions] = useState(new Set())
+  const [sessionId] = useState(() => `session-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`)
+  const [showSessionRecovery, setShowSessionRecovery] = useState(true)
+  const [lastAutosave, setLastAutosave] = useState(Date.now())
   
   // Per-question timing states
   const [questionTimings, setQuestionTimings] = useState({}) // { questionId: totalTimeSpent }
@@ -80,21 +90,152 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
 
   // Initialize shuffled questions on component mount
   useEffect(() => {
-    let availableQuestions = leadingSAFe6Questions
-    
-    // Filter questions based on exam mode
-    if (examMode === 'exam') {
-      // Exam mode: only single-select questions (filter out multi-select)
-      availableQuestions = leadingSAFe6Questions.filter(q => !q.questionType || q.questionType !== 'multiple')
+    try {
+      let availableQuestions = leadingSAFe6Questions
+      
+      // Filter questions based on exam mode
+      if (examMode === 'exam') {
+        // Exam mode: only single-select questions (filter out multi-select)
+        availableQuestions = leadingSAFe6Questions.filter(q => !q.questionType || q.questionType !== 'multiple')
+      }
+      // Practice mode: include all questions (single-select + multi-select)
+      
+      const shuffled = shuffleArray(availableQuestions)
+      const selectedQuestions = shuffled.slice(0, numberOfQuestions)
+      // Shuffle the options for each question to prevent visual patterns
+      const questionsWithShuffledOptions = selectedQuestions.map(shuffleQuestionOptions)
+      setShuffledQuestions(questionsWithShuffledOptions)
+
+      if (typeof window !== 'undefined') {
+        try {
+          const logs = JSON.parse(localStorage.getItem('e2e.logs') || '[]')
+          logs.push({ t: Date.now(), msg: `quiz-init-success count=${questionsWithShuffledOptions.length}` })
+          localStorage.setItem('e2e.logs', JSON.stringify(logs))
+        } catch(_) {}
+      }
+    } catch (err) {
+      if (typeof window !== 'undefined') {
+        try {
+          const logs = JSON.parse(localStorage.getItem('e2e.logs') || '[]')
+          logs.push({ t: Date.now(), msg: 'quiz-init-error', error: err && (err.message || String(err)), stack: err && err.stack })
+          localStorage.setItem('e2e.logs', JSON.stringify(logs))
+          localStorage.setItem('e2e.quizInitError', JSON.stringify({ message: err.message, stack: err.stack }))
+        } catch(_) {}
+      }
+      // Rethrow so React error overlay still shows in dev (optional)
+      // console.error(err)
     }
-    // Practice mode: include all questions (single-select + multi-select)
-    
-    const shuffled = shuffleArray(availableQuestions)
-    const selectedQuestions = shuffled.slice(0, numberOfQuestions)
-    // Shuffle the options for each question to prevent visual patterns
-    const questionsWithShuffledOptions = selectedQuestions.map(shuffleQuestionOptions)
-    setShuffledQuestions(questionsWithShuffledOptions)
   }, [numberOfQuestions, examMode])
+
+  // Session recovery and autosave initialization
+  useEffect(() => {
+    if (shuffledQuestions.length === 0) return
+
+    // Try to load existing session data
+    const savedSession = loadExamState('leadingsafe6', sessionId)
+    
+    if (savedSession && savedSession.shuffledQuestions) {
+      // Restore session data
+      setCurrentQuestion(savedSession.currentQuestion || 0)
+      setSelectedAnswers(savedSession.selectedAnswers || {})
+      setRevealedAnswers(savedSession.revealedAnswers || {})
+      setCollapsedExplanations(savedSession.collapsedExplanations || {})
+      setBookmarkedQuestions(new Set(savedSession.bookmarkedQuestions || []))
+      setQuestionTimings(savedSession.questionTimings || {})
+      setCurrentQuestionTime(savedSession.currentQuestionTime || 0)
+      setTotalTimeUsed(savedSession.totalTimeUsed || 0)
+      
+      if (savedSession.timeRemaining !== undefined) {
+        setTimeRemaining(savedSession.timeRemaining)
+      }
+      
+      // Use saved questions to maintain consistency
+      setShuffledQuestions(savedSession.shuffledQuestions)
+      setShowSessionRecovery(false)
+    } else {
+      setShowSessionRecovery(false)
+    }
+  }, [loadExamState, sessionId, shuffledQuestions.length])
+
+  // Autosave effect - debounced saving of exam state
+  useEffect(() => {
+    if (shuffledQuestions.length === 0 || examSubmitted) return
+
+    const saveTimeout = setTimeout(() => {
+      const currentTime = Date.now()
+      
+      // Only save if there's meaningful progress or enough time has passed
+      const hasProgress = Object.keys(selectedAnswers).length > 0
+      const timeSinceLastSave = currentTime - lastAutosave
+      
+      if (hasProgress && timeSinceLastSave >= DEBOUNCE_DELAY) {
+        const examState = {
+          currentQuestion,
+          selectedAnswers,
+          revealedAnswers,
+          collapsedExplanations,
+          bookmarkedQuestions: Array.from(bookmarkedQuestions),
+          questionTimings,
+          currentQuestionTime,
+          totalTimeUsed,
+          timeRemaining,
+          shuffledQuestions,
+          totalQuestions: shuffledQuestions.length,
+          examMode,
+          numberOfQuestions,
+          autoShowExplanation
+        }
+        
+        saveExamState('leadingsafe6', sessionId, examState)
+        setLastAutosave(currentTime)
+      }
+    }, DEBOUNCE_DELAY)
+
+    return () => clearTimeout(saveTimeout)
+  }, [
+    currentQuestion, selectedAnswers, revealedAnswers, collapsedExplanations,
+    bookmarkedQuestions, questionTimings, currentQuestionTime, totalTimeUsed,
+    timeRemaining, shuffledQuestions, examSubmitted, examMode, numberOfQuestions,
+    autoShowExplanation, saveExamState, sessionId, lastAutosave, DEBOUNCE_DELAY
+  ])
+
+  // Periodic autosave (fallback)
+  useEffect(() => {
+    if (shuffledQuestions.length === 0 || examSubmitted) return
+
+    const interval = setInterval(() => {
+      const hasProgress = Object.keys(selectedAnswers).length > 0
+      
+      if (hasProgress) {
+        const examState = {
+          currentQuestion,
+          selectedAnswers,
+          revealedAnswers,
+          collapsedExplanations,
+          bookmarkedQuestions: Array.from(bookmarkedQuestions),
+          questionTimings,
+          currentQuestionTime,
+          totalTimeUsed,
+          timeRemaining,
+          shuffledQuestions,
+          totalQuestions: shuffledQuestions.length,
+          examMode,
+          numberOfQuestions,
+          autoShowExplanation
+        }
+        
+        saveExamState('leadingsafe6', sessionId, examState)
+        setLastAutosave(Date.now())
+      }
+    }, AUTOSAVE_INTERVAL)
+
+    return () => clearInterval(interval)
+  }, [
+    currentQuestion, selectedAnswers, revealedAnswers, collapsedExplanations,
+    bookmarkedQuestions, questionTimings, currentQuestionTime, totalTimeUsed,
+    timeRemaining, shuffledQuestions, examSubmitted, examMode, numberOfQuestions,
+    autoShowExplanation, saveExamState, sessionId, AUTOSAVE_INTERVAL
+  ])
 
   // Track per-question timing - start timing when question changes
   useEffect(() => {
@@ -173,28 +314,16 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
     const isMultiSelect = question.questionType === 'multiple'
     
     if (isMultiSelect) {
-      // Handle multi-select questions
+      // Multi-select: allow temporary over-selection to surface explicit warning state
       const currentSelections = selectedAnswers[question.id] || []
       const isAlreadySelected = currentSelections.includes(optionIndex)
-      
       let newSelections
       if (isAlreadySelected) {
-        // Remove selection
-        newSelections = currentSelections.filter(idx => idx !== optionIndex)
+        newSelections = currentSelections.filter(i => i !== optionIndex)
       } else {
-        // Add selection if not at limit
-        if (currentSelections.length < question.selectCount) {
-          newSelections = [...currentSelections, optionIndex].sort()
-        } else {
-          // At limit - replace last selection
-          newSelections = [...currentSelections.slice(0, -1), optionIndex].sort()
-        }
+        newSelections = [...currentSelections, optionIndex].sort()
       }
-      
-      setSelectedAnswers(prev => ({
-        ...prev,
-        [question.id]: newSelections
-      }))
+      setSelectedAnswers(prev => ({ ...prev, [question.id]: newSelections }))
     } else {
       // Handle single-select questions (existing behavior)
       setSelectedAnswers(prev => ({
@@ -355,12 +484,22 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
       date: new Date().toISOString()
     })
 
+    // Clear autosave data since exam is completed
+    clearExamState('leadingsafe6', sessionId)
+
     setExamSubmitted(true)
   }
 
   if (shuffledQuestions.length === 0) {
+    if (typeof window !== 'undefined' && window.__E2E__) {
+      try {
+        const logs = JSON.parse(localStorage.getItem('e2e.logs') || '[]')
+        logs.push({ t: Date.now(), msg: 'quiz-loading (no questions yet)' })
+        localStorage.setItem('e2e.logs', JSON.stringify(logs))
+      } catch(_) {}
+    }
     return (
-      <div className={styles.loadingContainer}>
+      <div className={styles.loadingContainer} data-testid="quiz-loading">
         <div className={styles.loading}>
           <h2>Preparing your exam...</h2>
           <div className={styles.spinner}></div>
@@ -398,6 +537,63 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
     )
   }
 
+  const handleBookmarkToggle = (questionIndex) => {
+    const questionId = shuffledQuestions[questionIndex].id
+    setBookmarkedQuestions(prev => {
+      const newBookmarks = new Set(prev)
+      if (newBookmarks.has(questionId)) {
+        newBookmarks.delete(questionId)
+      } else {
+        newBookmarks.add(questionId)
+      }
+      return newBookmarks
+    })
+  }
+
+  const handleQuestionJump = (questionIndex) => {
+    // Save current question timing before jumping
+    if (questionStartTime) {
+      const timeSpent = Date.now() - questionStartTime
+      setQuestionTimings(prev => ({
+        ...prev,
+        [shuffledQuestions[currentQuestion].id]: (prev[shuffledQuestions[currentQuestion].id] || 0) + timeSpent
+      }))
+    }
+
+    // Jump to new question
+    setCurrentQuestion(questionIndex)
+    
+    // Reset timing for new question
+    setQuestionStartTime(Date.now())
+    setCurrentQuestionTime(0)
+  }
+
+  const handleSessionRestore = (session) => {
+    const savedState = loadExamState('leadingsafe6', session.sessionId)
+    if (savedState) {
+      // Restore all saved state
+      setCurrentQuestion(savedState.currentQuestion || 0)
+      setSelectedAnswers(savedState.selectedAnswers || {})
+      setRevealedAnswers(savedState.revealedAnswers || {})
+      setCollapsedExplanations(savedState.collapsedExplanations || {})
+      setBookmarkedQuestions(new Set(savedState.bookmarkedQuestions || []))
+      setQuestionTimings(savedState.questionTimings || {})
+      setCurrentQuestionTime(savedState.currentQuestionTime || 0)
+      setTotalTimeUsed(savedState.totalTimeUsed || 0)
+      
+      if (savedState.timeRemaining !== undefined) {
+        setTimeRemaining(savedState.timeRemaining)
+      }
+      
+      setShuffledQuestions(savedState.shuffledQuestions || [])
+    }
+    setShowSessionRecovery(false)
+  }
+
+  const handleSessionDismiss = () => {
+    setShowSessionRecovery(false)
+  }
+
   const currentQ = shuffledQuestions[currentQuestion]
   const isAnswered = selectedAnswers[currentQ.id] !== undefined
   const isRevealed = revealedAnswers[currentQ.id]
@@ -408,8 +604,10 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
   const progressPercent = (answeredCount / shuffledQuestions.length) * 100
 
   return (
-    <div className={styles.quizContainer}>
-      <header className={styles.quizHeader}>
+    <>
+  <div className={styles.quizContainer} data-testid="quiz-root">
+        
+        <header className={styles.quizHeader}>
         <div className={styles.quizHeaderContent}>
           <div className={styles.quizInfo}>
             <div className={styles.examTitle}>Leading SAFe 6 Practice Exam</div>
@@ -439,12 +637,13 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
           )}
 
           <div className={styles.headerActions}>
-            <button onClick={onGoHome} className={styles.backButton}>
+            <button onClick={onGoHome} className={styles.backButton} data-testid="quiz-back-home">
               ← Back to Home
             </button>
             <button 
               onClick={handleSubmitExam} 
               className={styles.submitButton}
+              data-testid="quiz-submit"
               disabled={answeredCount === 0}
             >
               Submit Exam ({answeredCount}/{shuffledQuestions.length})
@@ -453,16 +652,23 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
         </div>
       </header>
 
-      <div className={styles.progressBar}>
-        <div 
-          className={styles.progressFill} 
-          style={{ width: `${progressPercent}%` }}
-        ></div>
-      </div>
+      <ProgressIndicator
+        currentQuestion={currentQuestion}
+        totalQuestions={shuffledQuestions.length}
+        answeredQuestions={Object.keys(selectedAnswers).length}
+        questions={shuffledQuestions.map((q, index) => ({
+          id: q.id,
+          number: index + 1,
+          answered: selectedAnswers[q.id] !== undefined,
+          bookmarked: bookmarkedQuestions.has(q.id)
+        }))}
+        onQuestionJump={handleQuestionJump}
+        onBookmarkToggle={handleBookmarkToggle}
+      />
 
       <main className={styles.quizContent}>
         <div className={styles.questionSection}>
-          <div className={styles.questionCard}>
+            <div className={styles.questionCard} data-testid="quiz-question-card" data-question-id={currentQ.id}>
             <div className={styles.questionHeader}>
               <div className={styles.questionMeta}>
                 <span className={styles.domain}>{currentQ.domain}</span>
@@ -473,16 +679,49 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
               </div>
             </div>
             
-            {/* Question instruction for multi-select */}
-            {currentQ.questionType === 'multiple' && (
+            {/* Enhanced question instruction for multi-select */}
+            {currentQ.questionType === 'multiple' ? (
               <div className={styles.questionInstruction}>
-                Select exactly {currentQ.selectCount} answer{currentQ.selectCount > 1 ? 's' : ''}
+                <div className={styles.multiSelectBadge}>
+                  <span className={styles.badgeIcon}>☑</span>
+                  Multiple Choice <MultiSelectHelp position="right" />
+                </div>
+                <div className={styles.selectionRequirement} data-testid="multi-select-requirement">
+                  Select exactly <strong>{currentQ.selectCount}</strong> answer{currentQ.selectCount > 1 ? 's' : ''}
+                </div>
+                <div className={styles.selectionProgress} data-testid="multi-select-progress">
+                  {(() => {
+                    const currentSelections = selectedAnswers[currentQ.id] || []
+                    const selectedCount = currentSelections.length
+                    const remaining = currentQ.selectCount - selectedCount
+                    return (
+                      <span className={`${styles.progressText} ${
+                        selectedCount === currentQ.selectCount ? styles.complete : 
+                        selectedCount > currentQ.selectCount ? styles.warning : ''
+                      }`}>
+                        {selectedCount} of {currentQ.selectCount} selected
+                        {remaining > 0 && ` (${remaining} more needed)`}
+                        {selectedCount > currentQ.selectCount && ` (${selectedCount - currentQ.selectCount} too many)`}
+                      </span>
+                    )
+                  })()}
+                </div>
+              </div>
+            ) : (
+              <div className={styles.questionInstruction}>
+                <div className={styles.singleSelectBadge}>
+                  <span className={styles.badgeIcon}>●</span>
+                  Single Choice
+                </div>
+                <div className={styles.selectionRequirement}>
+                  Select <strong>one</strong> answer
+                </div>
               </div>
             )}
             
-            <h2 className={styles.questionText}>{currentQ.question}</h2>
+            <h2 className={styles.questionText} data-testid="quiz-question-text">{currentQ.question}</h2>
             
-            <div className={styles.optionsContainer}>
+            <div className={styles.optionsContainer} data-testid="quiz-options-container">
               {currentQ.options.map((option, index) => {
                 const isMultiSelect = currentQ.questionType === 'multiple'
                 const currentSelections = selectedAnswers[currentQ.id] || (isMultiSelect ? [] : null)
@@ -512,6 +751,7 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
                   <button
                     key={index}
                     className={optionClass}
+                    data-testid={`quiz-option-${index}`}
                     onClick={() => handleAnswerSelect(index)}
                     disabled={examSubmitted}
                   >
@@ -562,11 +802,12 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
               onClick={previousQuestion}
               disabled={currentQuestion === 0}
               className={styles.navButton}
+              data-testid="quiz-prev"
             >
               ← Previous
             </button>
             
-            <span className={styles.questionInfo}>
+            <span className={styles.questionInfo} data-testid="quiz-progress">
               {currentQuestion + 1} / {shuffledQuestions.length}
             </span>
             
@@ -574,6 +815,7 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
               onClick={nextQuestion}
               disabled={currentQuestion === shuffledQuestions.length - 1}
               className={styles.navButton}
+              data-testid="quiz-next"
             >
               Next →
             </button>
@@ -591,6 +833,7 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
                   className={`${styles.questionNumber} ${
                     isCurrent ? styles.current : ''
                   } ${isAnswered ? styles.answered : ''}`}
+                  data-testid={`quiz-jump-${index+1}`}
                   onClick={() => goToQuestion(index)}
                 >
                   {index + 1}
@@ -600,7 +843,20 @@ function LeadingSAFe6ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45
           </div>
         </div>
       </main>
+      
+      {/* Session Recovery Modal */}
+      {showSessionRecovery && (
+        <SessionRecovery
+          examType="leadingsafe6"
+          onRestore={handleSessionRestore}
+          onDismiss={handleSessionDismiss}
+        />
+      )}
+      
+  {/* Contextual Help System restored (lightweight panel + tour) */}
+  <HelpSystem isEnabled={true} examContext="exam" />
     </div>
+    </>
   )
 }
 

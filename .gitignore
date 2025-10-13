@@ -12,6 +12,13 @@ dist
 dist-ssr
 *.local
 
+# Playwright / test artifacts (do not commit)
+playwright-report/
+test-results/
+trace.zip
+*.webm
+
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
