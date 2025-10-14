@@ -1,5 +1,6 @@
 import { useTheme } from '../../contexts/ThemeContext.jsx';
 import styles from './LeadingSAFe6Exam.module.css'
+import DataPersistenceNotice from '../autosave/DataPersistenceNotice.jsx'
 
 function LeadingSAFe6Exam({ 
   onGoHome, 
@@ -138,6 +139,14 @@ function LeadingSAFe6Exam({
                   When enabled, explanations are shown automatically for each question
                 </p>
               </div>
+              {/* 4th tile: Local progress / persistence notice */}
+              <div className={styles.settingCard} data-testid="leading-safe-storage-tile">
+                <h4>Local Progress Storage</h4>
+                <p className={styles.settingDescription} style={{marginBottom:'0.75rem'}}>
+                  Progress & results are saved only in this browser (no cloud sync). Clearing site data / using private mode erases them.
+                </p>
+                <DataPersistenceNotice />
+              </div>
             </div>
           </div>
 
@@ -250,6 +259,7 @@ function LeadingSAFe6Exam({
               </div>
             </div>
           )}
+
         </div>
       </main>
     </div>

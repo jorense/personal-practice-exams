@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react'
 import styles from './Results.module.css'
+import DataPersistenceNotice from '../autosave/DataPersistenceNotice.jsx'
+import { exportResultsToExcel } from '../../utils/exportResultsToExcel.js'
 
 export default function Results({
   title = 'Exam Results',
@@ -203,6 +205,21 @@ export default function Results({
               <button onClick={onGoHome} className={styles.actionButton}>
                 🏠 Back to Home
               </button>
+              <button 
+                onClick={() => {
+                  exportResultsToExcel({
+                    attempt: { ...attempt, title },
+                    questions,
+                    selectedAnswers,
+                    timingData: null,
+                    includeRaw: false
+                  })
+                }}
+                className={styles.actionButton}
+                data-testid="results-export-excel"
+              >
+                📊 Export Excel
+              </button>
             </div>
 
             <button 
@@ -270,6 +287,8 @@ export default function Results({
               </div>
             </div>
           )}
+          {/* Persistence notice also relevant post-exam for exporting current results */}
+          <DataPersistenceNotice className={styles.persistenceNotice} />
         </div>
       </main>
     </div>
