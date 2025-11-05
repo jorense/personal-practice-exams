@@ -19,7 +19,7 @@ function TimingAnalytics({ onGoHome }) {
             console.error('Error parsing timing data:', error)
           }
         }
-      }
+      }      
       
       // Sort by date (newest first)
       data.sort((a, b) => new Date(b.date) - new Date(a.date))
