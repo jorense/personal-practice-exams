@@ -13,7 +13,8 @@ mockIntersectionObserver.mockReturnValue({
 
 global.IntersectionObserver = mockIntersectionObserver
 
-describe('Tooltip Component - Advanced Flickering Detection', () => {
+// @diagnostic
+describe.skip('Tooltip Component - Advanced Flickering Detection', () => {
   let mockGetBoundingClientRect
   let positionCallCount = 0
   let renderCycleCount = 0

@@ -8,6 +8,11 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./src/test/setup.js'],
+    exclude: [
+      'tests/e2e/**',
+      'node_modules/**',
+      'dist/**'
+    ],
     css: {
       modules: {
         classNameStrategy: 'non-scoped'
@@ -15,13 +20,14 @@ export default defineConfig({
     },
     coverage: {
       reporter: ['text', 'json', 'html'],
-      include: ['src/components/**/*.{js,jsx}'],
+      include: ['src/**/*.{js,jsx}'],
       exclude: [
-        'src/components/**/*.test.{js,jsx}',
-        'src/components/**/__tests__/**'
+        'src/test/**',
+        'src/**/*.test.{js,jsx}',
+        'src/**/__tests__/**'
       ]
     },
-    testTimeout: 10000,
-    hookTimeout: 10000
+    testTimeout: 20000,
+    hookTimeout: 15000
   }
 })

@@ -6,15 +6,21 @@ import { exportResultsToExcel } from '../../utils/exportResultsToExcel.js'
 export default function DataPersistenceNotice({ className = '' }) {
   const [showDetails, setShowDetails] = useState(false)
   const [exportError, setExportError] = useState(null)
+  const [isExporting, setIsExporting] = useState(false)
 
   const handleExport = async () => {
     setExportError(null)
+    setIsExporting(true)
+    const started = Date.now()
     try {
       // History-only export: call utility with no current attempt but includeRaw=false
       await exportResultsToExcel({ attempt: null, questions: null, selectedAnswers: null, timingData: null, includeRaw: false })
     } catch (err) {
       console.error('Excel export failed', err)
       setExportError(err.message)
+    }
+    finally {
+      setIsExporting(false)
     }
   }
 
@@ -40,7 +46,7 @@ export default function DataPersistenceNotice({ className = '' }) {
         </div>
       )}
       <div className={styles.actions} style={{ marginTop: '0.55rem' }}>
-        <button className={styles.button} type="button" onClick={handleExport} data-testid="data-persistence-export">� Export History (Excel)</button>
+        <button className={styles.button} type="button" onClick={handleExport} data-testid="data-persistence-export" disabled={isExporting} data-exporting={isExporting || undefined}>📊 {isExporting ? 'Exporting...' : 'Export History (Excel)'}</button>
       </div>
       {exportError && <div className={styles.feedback} style={{ color: '#b20000' }}>Export failed: {exportError}</div>}
     </div>

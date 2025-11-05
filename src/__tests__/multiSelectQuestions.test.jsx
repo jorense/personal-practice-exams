@@ -1,11 +1,14 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import LeadingSAFe6ExamQuiz from '../components/LeadingSAFe6/LeadingSAFe6ExamQuiz';
 
-// Mock the contexts
 const mockRecordSession = vi.fn();
 const mockUpdateSpacedRepetition = vi.fn();
+const mockSaveExamState = vi.fn();
+const mockLoadExamState = vi.fn(() => null);
+const mockClearExamState = vi.fn();
+const mockGetAutosavedSessions = vi.fn(() => []);
 
 vi.mock('../contexts/ProgressContext', () => ({
   useProgress: () => ({
@@ -19,8 +22,49 @@ vi.mock('../contexts/StudyIntelligenceContext', () => ({
   })
 }));
 
-// Mock CSS modules
-vi.mock('../components/LeadingSAFe6/LeadingSAFe6ExamQuiz.module.css', () => ({}));
+vi.mock('../contexts/AutosaveContext.jsx', () => ({
+  useAutosave: () => ({
+    saveExamState: mockSaveExamState,
+    loadExamState: mockLoadExamState,
+    clearExamState: mockClearExamState,
+    getAutosavedSessions: mockGetAutosavedSessions,
+    AUTOSAVE_INTERVAL: 60000,
+    DEBOUNCE_DELAY: 100,
+    formatSaveTime: vi.fn(() => 'Just now'),
+    autosaveStatus: 'idle',
+    lastSavedTime: null,
+    isEnabled: true,
+    setIsEnabled: vi.fn()
+  })
+}));
+
+// Mock CSS modules and heavyweight children
+vi.mock('../components/LeadingSAFe6/LeadingSAFe6ExamQuiz.module.css', () => ({ default: {} }));
+
+vi.mock('../components/autosave/SessionRecovery.jsx', () => ({
+  __esModule: true,
+  default: () => null
+}));
+
+vi.mock('../components/exam/ProgressIndicator.jsx', () => ({
+  __esModule: true,
+  default: () => null
+}));
+
+vi.mock('../components/help/HelpSystem.jsx', () => ({
+  __esModule: true,
+  default: () => null,
+  MultiSelectHelp: () => <span data-testid="multi-select-help" />
+}));
+
+vi.mock('../hooks/useExamTiming.js', () => ({
+  useExamTiming: () => ({
+    questionTimings: {},
+    currentQuestionTime: 0,
+    countdown: 5400,
+    finalize: vi.fn()
+  })
+}));
 
 // Mock questions with multi-select for testing - arranged so multi-select comes first
 vi.mock('../components/LeadingSAFe6/LeadingSAFe6Questions.js', () => ({
@@ -90,14 +134,8 @@ describe('Multi-Select Questions Tests', () => {
         />
       );
 
-      // Navigate to second question (multi-select)
-      const nextButton = await screen.findByRole('button', { name: /Next →/ });
-      await userEvent.click(nextButton);
-
-      // Component advances to next question without validation
-      await waitFor(() => {
-        expect(screen.getByText(/Single select question/)).toBeInTheDocument();
-      });
+      const requirement = await screen.findByTestId('multi-select-requirement');
+      expect(requirement.textContent.replace(/\s+/g, ' ').trim()).toContain('Select exactly 2');
     });
 
     test('should show checkbox indicators for multi-select questions', async () => {
@@ -110,16 +148,9 @@ describe('Multi-Select Questions Tests', () => {
         />
       );
 
-      // Navigate to multi-select question
-      const nextButton = await screen.findByRole('button', { name: /Next →/ });
-      await userEvent.click(nextButton);
-
-      // Look for checkbox indicators (☐)
-      await waitFor(() => {
-        const options = screen.getAllByRole('button');
-        const optionButtons = options.filter(btn => btn.textContent.includes('☐'));
-        expect(optionButtons.length).toBeGreaterThan(0);
-      });
+      const optionsContainer = await screen.findByTestId('quiz-options-container');
+      const optionButtons = within(optionsContainer).getAllByRole('button');
+      expect(optionButtons.some(btn => btn.textContent?.includes('☐'))).toBe(true);
     });
 
     test('should show radio button indicators for single-select questions', async () => {
@@ -132,12 +163,13 @@ describe('Multi-Select Questions Tests', () => {
         />
       );
 
-      // First question should be single-select
-      await waitFor(() => {
-        const options = screen.getAllByRole('button');
-        const optionButtons = options.filter(btn => btn.textContent.includes('○'));
-        expect(optionButtons.length).toBeGreaterThan(0);
-      });
+      const nextButton = await screen.findByRole('button', { name: /Next →/ });
+      await userEvent.click(nextButton);
+
+      const optionsContainer = await screen.findByTestId('quiz-options-container');
+      const optionButtons = within(optionsContainer).getAllByRole('button');
+      expect(optionButtons.every(btn => !btn.textContent?.includes('☐'))).toBe(true);
+      expect(optionButtons.some(btn => btn.textContent?.includes('○') || btn.textContent?.includes('●'))).toBe(true);
     });
   });
 
@@ -154,17 +186,11 @@ describe('Multi-Select Questions Tests', () => {
         />
       );
 
-      // Navigate to multi-select question (selectCount: 2)
-      const nextButton = await screen.findByRole('button', { name: /Next →/ });
-      await user.click(nextButton);
+      await screen.findByTestId('multi-select-requirement');
 
-      await waitFor(() => {
-        expect(screen.getByText(/Select exactly 2 answers/)).toBeInTheDocument();
-      });
-
-      // Select first option
-      const options = screen.getAllByRole('button');
-      const optionA = options.find(btn => btn.textContent.includes('Option A'));
+      const optionsContainer = await screen.findByTestId('quiz-options-container');
+      const optionButtons = within(optionsContainer).getAllByRole('button');
+      const optionA = optionButtons.find(btn => btn.textContent?.includes('Option A'));
       await user.click(optionA);
 
       // Should show selected indicator (☑)
@@ -173,7 +199,7 @@ describe('Multi-Select Questions Tests', () => {
       });
 
       // Select second option
-      const optionB = options.find(btn => btn.textContent.includes('Option B'));
+      const optionB = optionButtons.find(btn => btn.textContent?.includes('Option B'));
       await user.click(optionB);
 
       // Should show second selection
@@ -181,15 +207,21 @@ describe('Multi-Select Questions Tests', () => {
         expect(optionB.textContent).toContain('☑');
       });
 
-      // Try to select third option - should replace the last selection
-      const optionC = options.find(btn => btn.textContent.includes('Option C'));
+      // Try to select third option - component allows temporary over-selection to show warning
+      const optionC = optionButtons.find(btn => btn.textContent?.includes('Option C'));
       await user.click(optionC);
 
-      // Should have exactly 2 selections
+      // All three should appear selected with a warning indicator
       await waitFor(() => {
-        const selectedOptions = options.filter(btn => btn.textContent.includes('☑'));
-        expect(selectedOptions).toHaveLength(2);
+        const selectedOptions = within(optionsContainer)
+          .getAllByRole('button')
+          .filter(btn => btn.textContent.includes('☑'));
+        expect(selectedOptions).toHaveLength(3);
       });
+
+      const progressIndicator = await screen.findByTestId('multi-select-progress');
+      expect(progressIndicator.textContent).toMatch(/3\s+of\s+2/i);
+      expect(progressIndicator.textContent).toMatch(/too many/i);
     });
 
     test('should allow deselecting answers in multi-select', async () => {
@@ -204,14 +236,13 @@ describe('Multi-Select Questions Tests', () => {
         />
       );
 
-      // Navigate to multi-select question (first question should be multi-select due to deterministic ordering)
-      await waitFor(() => {
-        expect(screen.getByText(/Select exactly 2 answers/)).toBeInTheDocument();
-      });
+      await screen.findByTestId('multi-select-requirement');
 
       // Select and then deselect an option
-      const options = screen.getAllByRole('button');
-      const optionA = options.find(btn => btn.textContent.includes('Option A'));
+      const optionsContainer = await screen.findByTestId('quiz-options-container');
+      const optionA = within(optionsContainer)
+        .getAllByRole('button')
+        .find(btn => btn.textContent?.includes('Option A'));
       
       // Select
       await user.click(optionA);
@@ -241,15 +272,15 @@ describe('Multi-Select Questions Tests', () => {
         />
       );
 
-      // Should only show single-select questions
       await waitFor(() => {
-        expect(screen.queryByText(/Select exactly/)).not.toBeInTheDocument();
+        expect(screen.queryByTestId('multi-select-requirement')).not.toBeInTheDocument();
       });
 
       // Should show radio button indicators only
-      const options = screen.getAllByRole('button');
-      const radioOptions = options.filter(btn => btn.textContent.includes('○'));
-      const checkboxOptions = options.filter(btn => btn.textContent.includes('☐'));
+      const optionsContainer = await screen.findByTestId('quiz-options-container');
+      const optionButtons = within(optionsContainer).getAllByRole('button');
+      const radioOptions = optionButtons.filter(btn => btn.textContent.includes('○'));
+      const checkboxOptions = optionButtons.filter(btn => btn.textContent.includes('☐'));
       
       expect(radioOptions.length).toBeGreaterThan(0);
       expect(checkboxOptions.length).toBe(0);
@@ -265,14 +296,23 @@ describe('Multi-Select Questions Tests', () => {
         />
       );
 
-      // Navigate through questions to find multi-select
-      const nextButton = await screen.findByRole('button', { name: /Next →/ });
-      await userEvent.click(nextButton);
+      let foundMultiSelect = false;
 
-      // Should show multi-select instruction
-      await waitFor(() => {
-        expect(screen.getByText(/Select exactly 2 answers/)).toBeInTheDocument();
-      });
+      for (let i = 0; i < 3; i++) {
+        if (screen.queryByTestId('multi-select-requirement')) {
+          foundMultiSelect = true;
+          break;
+        }
+
+        const nextButton = screen.queryByRole('button', { name: /Next →/ });
+        if (!nextButton || nextButton.disabled) break;
+        await userEvent.click(nextButton);
+        await waitFor(() => {
+          expect(screen.getByTestId('quiz-question-card')).toBeInTheDocument();
+        });
+      }
+
+      expect(foundMultiSelect).toBe(true);
     });
   });
 
@@ -289,19 +329,15 @@ describe('Multi-Select Questions Tests', () => {
         />
       );
 
-      // Should show first multi-select question (2 answers) due to deterministic ordering
-      await waitFor(() => {
-        expect(screen.getByText(/Multi-select question: Choose exactly 2 answers/)).toBeInTheDocument();
-      });
+      await screen.findByTestId('multi-select-requirement');
 
-      // Select one correct (A) and one incorrect (B) - should get partial credit
-      // Mock data has correctAnswers: [0, 2] so A (index 0) is correct, B (index 1) is incorrect
-      const options = screen.getAllByRole('button');
-      const optionA = options.find(btn => btn.textContent.includes('Option A')); // Correct (index 0)
-      const optionB = options.find(btn => btn.textContent.includes('Option B')); // Incorrect (index 1)
+      // Select one correct (A) while leaving one unanswered - should yield partial credit
+      // Mock data has correctAnswers: [0, 2] so selecting only A should earn partial score
+      const optionsContainer = await screen.findByTestId('quiz-options-container');
+      const optionButtons = within(optionsContainer).getAllByRole('button');
+      const optionA = optionButtons.find(btn => btn.textContent?.includes('Option A'));
       
       await user.click(optionA);
-      await user.click(optionB);
 
       // Submit exam
       const submitButton = screen.getByRole('button', { name: /Submit Exam/ });
@@ -311,9 +347,9 @@ describe('Multi-Select Questions Tests', () => {
       await waitFor(() => {
         expect(mockRecordSession).toHaveBeenCalled();
         const sessionData = mockRecordSession.mock.calls[0][0];
-        // Should have partial score (not 0 or 100%)
-        expect(sessionData.score).toBeGreaterThan(0);
-        expect(sessionData.score).toBeLessThan(100);
+        // Should award partial score (50%) and count a fractional correct answer
+        expect(sessionData.score).toBe(50);
+        expect(sessionData.correctAnswers).toBe(1);
       });
     });
 
@@ -329,15 +365,13 @@ describe('Multi-Select Questions Tests', () => {
         />
       );
 
-      // Should show first multi-select question (2 answers) due to deterministic ordering
-      await waitFor(() => {
-        expect(screen.getByText(/Multi-select question: Choose exactly 2 answers/)).toBeInTheDocument();
-      });
+      await screen.findByTestId('multi-select-requirement');
 
       // Select both correct answers (A and C) - correctAnswers: [0, 2]
-      const options = screen.getAllByRole('button');
-      const optionA = options.find(btn => btn.textContent.includes('Option A')); // Correct (index 0)
-      const optionC = options.find(btn => btn.textContent.includes('Option C')); // Correct (index 2)
+      const optionsContainer = await screen.findByTestId('quiz-options-container');
+      const optionButtons = within(optionsContainer).getAllByRole('button');
+      const optionA = optionButtons.find(btn => btn.textContent?.includes('Option A'));
+      const optionC = optionButtons.find(btn => btn.textContent?.includes('Option C'));
       
       await user.click(optionA);
       await user.click(optionC);
@@ -366,15 +400,13 @@ describe('Multi-Select Questions Tests', () => {
         />
       );
 
-      // Should show first multi-select question (2 answers) due to deterministic ordering
-      await waitFor(() => {
-        expect(screen.getByText(/Multi-select question: Choose exactly 2 answers/)).toBeInTheDocument();
-      });
+      await screen.findByTestId('multi-select-requirement');
 
       // Select two incorrect answers (B and D) - correctAnswers: [0, 2], so [1, 3] are incorrect
-      const options = screen.getAllByRole('button');
-      const optionB = options.find(btn => btn.textContent.includes('Option B')); // Incorrect (index 1)
-      const optionD = options.find(btn => btn.textContent.includes('Option D')); // Incorrect (index 3)
+      const optionsContainer = await screen.findByTestId('quiz-options-container');
+      const optionButtons = within(optionsContainer).getAllByRole('button');
+      const optionB = optionButtons.find(btn => btn.textContent?.includes('Option B'));
+      const optionD = optionButtons.find(btn => btn.textContent?.includes('Option D'));
       
       await user.click(optionB);
       await user.click(optionD);

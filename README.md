@@ -213,6 +213,100 @@ npm run build
 
 The built files will be in the `dist` directory, ready for PWA deployment.
 
+## 🚀 Deployment
+
+### GitHub Pages (Current Configuration)
+This repository is already configured for GitHub Pages deployment using the workflow in `.github/workflows/deploy.yml`.
+
+What happens on push to `main`:
+1. Workflow installs dependencies (`npm ci`).
+2. (Optional) Runs tests – you can skip by setting repository or environment secret `SKIP_TESTS=true` if a known flaky integration test blocks deployment.
+3. Builds the site with `npm run build` (production base path `/safe-practice-exams/` comes from `vite.config.js`).
+4. Uploads the `dist` output as a Pages artifact.
+5. Deploys to GitHub Pages environment.
+
+Live URL pattern: `https://<org-or-user>.github.io/safe-practice-exams/` – currently: `https://jorense.github.io/safe-practice-exams/`.
+
+Manual trigger: Use the "Deploy PWA to GitHub Pages" workflow from the Actions tab (workflow_dispatch).
+
+### Confirming / Enabling Pages
+If the site does not appear after a successful run:
+- Go to Settings → Pages → Ensure "GitHub Actions" is selected as the source.
+- Check the workflow run summary for the final "Deploy to GitHub Pages" step.
+- Verify `dist/` contains `index.html` and asset files (workflow lists them before upload).
+
+### Cache Busting & Base Path
+Vite build already sets `base: '/safe-practice-exams/'` when `NODE_ENV=production`. If the repository name changes, update that in `vite.config.js`.
+
+### Common Deployment Adjustments
+- Skip tests temporarily: add an Actions variable or secret `SKIP_TESTS` with value `true`.
+- Pin Node version: adjust `node-version` in the workflow (currently 20).
+- Add coverage gating: insert a step running `npm run test:coverage` and fail if coverage drops.
+
+### Alternative Hosting Options
+You can deploy the same build output (`dist/`) almost anywhere:
+
+1. Netlify
+	- Build command: `npm run build`
+	- Publish directory: `dist`
+	- Set Environment Variable: `NODE_ENV=production`
+	- (Optional) Add `_redirects` file for SPA fallback: `/* /index.html 200`
+
+2. Vercel
+	- Framework preset: Vite
+	- Build command: `npm run build`
+	- Output directory: `dist`
+	- Remove `base` override if deploying at root (set `base: '/'` or use environment override).
+
+3. Docker (Static Artifact Serve)
+	Create a `Dockerfile`:
+	```Dockerfile
+	FROM node:20-alpine AS build
+	WORKDIR /app
+	COPY package*.json ./
+	RUN npm ci
+	COPY . .
+	ENV NODE_ENV=production
+	RUN npm run build
+
+	FROM nginx:1.27-alpine
+	COPY --from=build /app/dist /usr/share/nginx/html
+	# Optional: Add custom nginx.conf for SPA fallback
+	EXPOSE 80
+	CMD ["nginx", "-g", "daemon off;"]
+	```
+	Run locally:
+	```bash
+	docker build -t safe-practice-exams .
+	docker run -p 8080:80 safe-practice-exams
+	```
+
+4. Azure Static Web Apps
+	- App location: `/`
+	- Output location: `dist`
+	- Build command: `npm run build`
+
+### SPA Fallback Considerations
+For hosts that don’t automatically provide SPA routing (e.g. Netlify, Nginx): ensure all unmatched routes serve `index.html`.
+
+### Deployment Verification Checklist
+- ✅ Workflow run succeeded (green) on `main`.
+- ✅ Pages environment shows latest commit.
+- ✅ Console loads without 404s on static assets.
+- ✅ Multi-select questions render and partial scoring works.
+- ✅ Timing analytics modal opens and displays per-question data.
+
+If any of the above fails, re-run the workflow manually or inspect the `dist/` contents locally with `npm run preview`.
+
+### Fast Local Production Preview
+```bash
+npm run build
+npm run preview
+```
+Then open the printed local URL (typically `http://localhost:4173`).
+
+---
+
 ### 🧪 End-to-End (E2E) Testing with Playwright (NEW!)
 
 This project includes a multi-browser Playwright E2E suite covering:

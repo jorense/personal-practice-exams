@@ -81,7 +81,7 @@ const HelpSystem = ({ isEnabled = true, examContext = 'exam' }) => {
 		if (initRef.current) return
 		initRef.current = true
 		try {
-			const isE2E = typeof window !== 'undefined' && window.__E2E__
+			const isE2E = typeof window !== 'undefined' && (window.__E2E__ || localStorage.getItem('e2e.suppressTour') === 'true')
 			// Proactively mark tour seen for E2E before any potential render of overlay
 			if (isE2E) {
 				try { localStorage.setItem(STORAGE_KEYS.TOUR_SEEN, 'true') } catch(_) {}
@@ -180,11 +180,11 @@ const HelpSystem = ({ isEnabled = true, examContext = 'exam' }) => {
 	const Tour = () => {
 		if (!showTour) return null
 		return (
-			<div className={styles.tourOverlay} role="dialog" aria-label="Help tour">
-				<div className={styles.tourModal}>
+			<div className={styles.tourOverlay} role="dialog" aria-label="Help tour" data-testid="help-tour-overlay">
+				<div className={styles.tourModal} data-testid="help-tour-modal">
 					<div className={styles.tourHeader}>
 						<h3>Quick Help Tour</h3>
-						<button className={styles.closeButton} onClick={() => saveTourSeen(false)} aria-label="Close tour">×</button>
+						<button className={styles.closeButton} data-testid="help-tour-close" onClick={() => saveTourSeen(false)} aria-label="Close tour">×</button>
 					</div>
 					<div className={styles.tourBody}>
 						<p>We provide lightweight help for navigation, progress, and question types. Open the Help panel anytime.</p>
@@ -193,8 +193,8 @@ const HelpSystem = ({ isEnabled = true, examContext = 'exam' }) => {
 						</ul>
 					</div>
 					<div className={styles.tourActions}>
-						<button onClick={() => saveTourSeen(false)} className={styles.secondaryBtn}>Dismiss</button>
-						<button onClick={() => { saveTourSeen(true); setIsPanelOpen(true) }} className={styles.primaryBtn}>Open Help</button>
+						<button data-testid="help-tour-dismiss" onClick={() => saveTourSeen(false)} className={styles.secondaryBtn}>Dismiss</button>
+						<button data-testid="help-tour-open-panel" onClick={() => { saveTourSeen(true); setIsPanelOpen(true) }} className={styles.primaryBtn}>Open Help</button>
 					</div>
 				</div>
 			</div>
@@ -222,8 +222,8 @@ const HelpSystem = ({ isEnabled = true, examContext = 'exam' }) => {
 					</div>
 				</div>
 			)}
-			{/* Suppress Tour entirely in E2E for deterministic automation */}
-			{typeof window !== 'undefined' && window.__E2E__ ? null : <Tour />}
+			{/* Suppress Tour entirely in E2E or when localStorage e2e.suppressTour flag set */}
+			{typeof window !== 'undefined' && (window.__E2E__ || localStorage.getItem('e2e.suppressTour') === 'true') ? null : <Tour />}
 		</>
 	)
 }

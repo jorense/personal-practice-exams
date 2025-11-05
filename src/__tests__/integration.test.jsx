@@ -1,39 +1,113 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import React from 'react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import App from '../App';
 
-// Mock CSS modules
-vi.mock('../App.css', () => ({}));
-vi.mock('../StudyMaterials.css', () => ({}));
-vi.mock('../components/LeadingSAFe6/LeadingSAFe6Exam.module.css', () => ({}));
-vi.mock('../components/LeadingSAFe6/LeadingSAFe6ExamQuiz.module.css', () => ({}));
-vi.mock('../components/SAFeTeams6/SAFeTeams6ExamQuiz.module.css', () => ({}));
-vi.mock('../components/shared/TimingAnalytics.module.css', () => ({}));
-vi.mock('../components/shared/Results.module.css', () => ({}));
+// Ensure real ProgressContext is available (previous full-mock setup left stale state in cache)
+vi.mock('../contexts/ProgressContext.jsx', async (importOriginal) => {
+  const actual = await importOriginal();
+  return { ...actual }; // no overrides
+});
+
+// Mock NotificationContext only (it depends on ProgressContext and previously triggered missing export error)
+vi.mock('../contexts/NotificationContext.jsx', () => {
+  const React = require('react');
+  const value = {
+    permission: 'granted',
+    subscription: null,
+    notifications: [],
+    isSupported: false,
+    requestPermission: vi.fn(),
+    subscribeToPush: vi.fn(),
+    unsubscribeFromPush: vi.fn(),
+    scheduleStudyReminder: vi.fn(),
+    showAchievementNotification: vi.fn(),
+    showPassScoreNotification: vi.fn(),
+    showSpacedRepetitionReminder: vi.fn(),
+    sendDailyStreakNotification: vi.fn(),
+    addLocalNotification: vi.fn(),
+    markNotificationAsRead: vi.fn(),
+    clearAllNotifications: vi.fn()
+  };
+  const NotificationContext = React.createContext(value);
+  const NotificationProvider = ({ children }) => (
+    <NotificationContext.Provider value={value}>{children}</NotificationContext.Provider>
+  );
+  return {
+    NotificationProvider,
+    useNotifications: () => React.useContext(NotificationContext)
+  };
+});
+
+// Provide lightweight AutosaveContext to satisfy components expecting persistence hooks
+vi.mock('../contexts/AutosaveContext.jsx', () => {
+  const React = require('react');
+  const value = {
+    autosaveStatus: 'idle',
+    lastSavedTime: null,
+    isEnabled: false,
+    saveExamState: vi.fn(),
+    loadExamState: vi.fn(() => null),
+    clearExamState: vi.fn(),
+    getAutosavedSessions: vi.fn(() => []),
+    setIsEnabled: vi.fn(),
+    formatSaveTime: vi.fn(() => 'Just now'),
+    AUTOSAVE_INTERVAL: 30000,
+    DEBOUNCE_DELAY: 2000
+  };
+  const AutosaveContext = React.createContext(value);
+  const AutosaveProvider = ({ children }) => (
+    <AutosaveContext.Provider value={value}>{children}</AutosaveContext.Provider>
+  );
+  return {
+    AutosaveProvider,
+    useAutosave: () => React.useContext(AutosaveContext)
+  };
+});
+
+// NOTE: This test harness was simplified to avoid the prior hoisted mock + worker memory crash.
+// We now rely on the real context providers (lighter state) and only mock question data + CSS modules.
+// Keep the question set tiny for speed/determinism.
+
+// Mock CSS modules to silence style imports
+vi.mock('../App.css', () => ({ __esModule: true, default: {} }));
+vi.mock('../StudyMaterials.css', () => ({ __esModule: true, default: {} }));
+vi.mock('../components/LeadingSAFe6/LeadingSAFe6Exam.module.css', () => ({ __esModule: true, default: {} }));
+vi.mock('../components/LeadingSAFe6/LeadingSAFe6ExamQuiz.module.css', () => ({ __esModule: true, default: {} }));
+vi.mock('../components/SAFeTeams6/SAFeTeams6ExamQuiz.module.css', () => ({ __esModule: true, default: {} }));
+vi.mock('../components/shared/TimingAnalytics.module.css', () => ({ __esModule: true, default: {} }));
+vi.mock('../components/shared/Results.module.css', () => ({ __esModule: true, default: {} }));
+
+// Lightweight HelpSystem mock (avoid side effects)
+vi.mock('../components/help/HelpSystem.jsx', () => ({
+  __esModule: true,
+  default: ({ children }) => <div data-testid="help-system-mock">{children}</div>,
+  MultiSelectHelp: () => <span data-testid="multi-select-help" />
+}));
 
 // Mock smaller question sets for faster testing
 vi.mock('../components/LeadingSAFe6/LeadingSAFe6Questions.js', () => ({
   leadingSAFe6Questions: [
     {
       id: 1,
-      question: "What is the primary goal of SAFe?",
-      options: ["Business Agility", "Technical Excellence", "Team Performance", "Process Compliance"],
+      question: 'What is the primary goal of SAFe?',
+      options: ['Business Agility', 'Technical Excellence', 'Team Performance', 'Process Compliance'],
       correctAnswer: 0,
-      explanation: "Business Agility is the primary goal of SAFe",
-      domain: "Lean-Agile Leadership",
-      difficulty: "Foundation"
+      explanation: 'Business Agility is the primary goal of SAFe',
+      domain: 'Lean-Agile Leadership',
+      difficulty: 'Foundation'
     },
     {
       id: 2,
-      questionType: "multiple",
+      questionType: 'multiple',
       selectCount: 2,
-      question: "Which are core SAFe values? (Select 2)",
-      options: ["Alignment", "Built-in Quality", "Transparency", "Program Execution"],
+      question: 'Which are core SAFe values? (Select 2)',
+      options: ['Alignment', 'Built-in Quality', 'Transparency', 'Program Execution'],
       correctAnswers: [0, 2],
-      explanation: "Alignment and Transparency are core SAFe values",
-      domain: "Lean-Agile Leadership", 
-      difficulty: "Foundation"
+      explanation: 'Alignment and Transparency are core SAFe values',
+      domain: 'Lean-Agile Leadership',
+      difficulty: 'Foundation'
     }
   ]
 }));
@@ -42,15 +116,23 @@ vi.mock('../components/SAFeTeams6/SAFeTeams6Questions.js', () => ({
   safeTeams6Questions: [
     {
       id: 1,
-      question: "What is the recommended team size in SAFe?",
-      options: ["5-9 people", "10-12 people", "13-15 people", "16-20 people"],
+      question: 'What is the recommended team size in SAFe?',
+      options: ['5-9 people', '10-12 people', '13-15 people', '16-20 people'],
       correctAnswer: 0,
-      explanation: "5-9 people is the recommended team size",
-      domain: "Team and Technical Agility",
-      difficulty: "Foundation"
+      explanation: '5-9 people is the recommended team size',
+      domain: 'Team and Technical Agility',
+      difficulty: 'Foundation'
     }
   ]
 }));
+
+beforeAll(() => {
+  vi.spyOn(Math, 'random').mockReturnValue(0.5);
+});
+
+afterAll(() => {
+  Math.random.mockRestore();
+});
 
 describe('Quiz Integration Tests', () => {
   beforeEach(() => {
@@ -60,110 +142,106 @@ describe('Quiz Integration Tests', () => {
 
   describe('Full Exam Flow with Timing', () => {
     test('should complete full exam with timing and analytics', async () => {
-      const user = userEvent.setup();
-      vi.useFakeTimers();
+      vi.useFakeTimers({ shouldAdvanceTime: true });
+      const user = userEvent.setup({ advanceTimers: ms => vi.advanceTimersByTime(ms), delay: null });
       const mockDateNow = vi.spyOn(Date, 'now');
-      
-      render(<App />);
 
-      // Navigate to Leading SAFe 6 exam
-      await waitFor(() => {
-        expect(screen.getByText(/Leading SAFe 6/)).toBeInTheDocument();
-      });
+      try {
+        console.info('render start');
+        render(<App />);
+        console.info('rendered app');
 
-      const leadingSAFeButton = screen.getByRole('button', { name: /Leading SAFe 6/ });
-      await user.click(leadingSAFeButton);
+        // Navigate to Leading SAFe 6 exam
+  // Use test id for reliability (button text may include emoji or vary)
+  const leadingSAFeButton = await screen.findByTestId('start-leading-safe-home');
+        console.info('found leading button');
+        await user.click(leadingSAFeButton);
+        console.info('clicked leading button');
 
-      // Set practice mode and start exam
-      await waitFor(() => {
-        expect(screen.getByText(/Practice Mode/)).toBeInTheDocument();
-      });
+        // Switch to practice mode and start exam
+        const modeSelect = await screen.findByTestId('leading-safe-exam-mode-select');
+        await user.selectOptions(modeSelect, 'practice');
 
-      const practiceButton = screen.getByRole('button', { name: /Practice Mode/ });
-      await user.click(practiceButton);
+  const startExamButton = await screen.findByTestId('leading-safe-start-quiz');
+        await user.click(startExamButton);
 
-      // Should start exam with timing
-      await waitFor(() => {
-        expect(screen.getByText(/Question 1 of/)).toBeInTheDocument();
-        expect(screen.getByText(/Time on question: 0:00/)).toBeInTheDocument();
-      });
+        // Should start exam with timing
+        await waitFor(() => {
+          expect(screen.getByTestId('quiz-question-card')).toBeInTheDocument();
+          expect(screen.getByText(/Time on question: 0:00/)).toBeInTheDocument();
+        });
 
-      // Simulate time passing on first question
-      mockDateNow.mockReturnValue(1609459230000); // +30 seconds
-      vi.advanceTimersByTime(30000);
+        // Simulate time passing on first question
+  mockDateNow.mockReturnValue(1609459230000);
+  vi.advanceTimersByTime(30000);
 
-      await waitFor(() => {
-        expect(screen.getByText(/Time on question: 0:30/)).toBeInTheDocument();
-      });
+        await waitFor(() => {
+          expect(screen.getByText(/Time on question: 0:30/)).toBeInTheDocument();
+        });
 
-      // Answer first question
-      const options = screen.getAllByRole('button');
-      const firstOption = options.find(btn => 
-        btn.textContent && btn.textContent.includes('Business Agility')
-      );
-      await user.click(firstOption);
+        // Answer first question within options container
+        const firstOptionsContainer = await screen.findByTestId('quiz-options-container');
+        const firstOptions = within(firstOptionsContainer).getAllByRole('button');
+        const businessAgilityOption = firstOptions.find(btn => btn.textContent?.includes('Business Agility'));
+        await user.click(businessAgilityOption);
 
-      // Navigate to second question (multi-select)
-      const nextButton = screen.getByRole('button', { name: /Next →/ });
-      await user.click(nextButton);
+        // Navigate to second question (multi-select)
+        const nextButton = screen.getByRole('button', { name: /Next →/ });
+        await user.click(nextButton);
 
-      // Reset time for second question
-      mockDateNow.mockReturnValue(1609459230000);
+        // Reset time for second question
+  mockDateNow.mockReturnValue(1609459230000);
 
-      await waitFor(() => {
-        expect(screen.getByText(/Question 2 of 2/)).toBeInTheDocument();
-        expect(screen.getByText(/Select exactly 2 answers/)).toBeInTheDocument();
-        expect(screen.getByText(/Time on question: 0:00/)).toBeInTheDocument();
-      });
+        await waitFor(() => {
+          expect(screen.getByText(/Question 2 of 2/)).toBeInTheDocument();
+          expect(screen.getByTestId('multi-select-requirement')).toBeInTheDocument();
+          expect(screen.getByText(/Time on question: 0:00/)).toBeInTheDocument();
+        });
 
-      // Simulate time on second question
-      mockDateNow.mockReturnValue(1609459275000); // +45 seconds
-      vi.advanceTimersByTime(45000);
+        // Simulate time on second question
+  mockDateNow.mockReturnValue(1609459275000);
+  vi.advanceTimersByTime(45000);
 
-      await waitFor(() => {
-        expect(screen.getByText(/Time on question: 0:45/)).toBeInTheDocument();
-      });
+        await waitFor(() => {
+          expect(screen.getByText(/Time on question: 0:45/)).toBeInTheDocument();
+        });
 
-      // Answer multi-select question
-      const alignmentOption = options.find(btn => 
-        btn.textContent && btn.textContent.includes('Alignment')
-      );
-      const transparencyOption = options.find(btn => 
-        btn.textContent && btn.textContent.includes('Transparency')
-      );
-      
-      await user.click(alignmentOption);
-      await user.click(transparencyOption);
+        // Answer multi-select question
+        const secondOptionsContainer = await screen.findByTestId('quiz-options-container');
+        const secondOptions = within(secondOptionsContainer).getAllByRole('button');
+        const alignmentOption = secondOptions.find(btn => btn.textContent?.includes('Alignment'));
+        const transparencyOption = secondOptions.find(btn => btn.textContent?.includes('Transparency'));
+        await user.click(alignmentOption);
+        await user.click(transparencyOption);
 
-      // Submit exam
-      const submitButton = screen.getByRole('button', { name: /Submit Exam/ });
-      await user.click(submitButton);
+        // Submit exam
+        const submitButton = screen.getByRole('button', { name: /Submit Exam/ });
+        await user.click(submitButton);
 
-      // Should show results with timing
-      await waitFor(() => {
-        expect(screen.getByText(/Exam Results/)).toBeInTheDocument();
-      });
+        // Should show results with timing
+        await waitFor(() => {
+          expect(screen.getByText(/Exam Results/)).toBeInTheDocument();
+        });
 
-      // Go back to home
-      const homeButton = screen.getByRole('button', { name: /Home/ });
-      await user.click(homeButton);
+        // Go back to home (use first Back to Home button)
+  const backHomeButton = await screen.findByRole('button', { name: /Back to Home/i }); // still accessible in quiz header
+        await user.click(backHomeButton);
 
-      // Access timing analytics
-      await waitFor(() => {
-        expect(screen.getByRole('button', { name: /Timing/ })).toBeInTheDocument();
-      });
+        // Access timing analytics
+  // Navigate via nav timing test id (original label is just 'Timing')
+  const timingButton = await screen.findByTestId('nav-timing');
+        await user.click(timingButton);
 
-      const timingButton = screen.getByRole('button', { name: /Timing/ });
-      await user.click(timingButton);
-
-      // Should show timing analytics with exam data
-      await waitFor(() => {
-        expect(screen.getByText(/Exam Timing Analytics/)).toBeInTheDocument();
-        expect(screen.getByText(/Leading SAFe 6/)).toBeInTheDocument();
-        expect(screen.getByText(/Questions: 2/)).toBeInTheDocument();
-      });
-
-      vi.useRealTimers();
+        // Should show timing analytics with exam data
+        await waitFor(() => {
+          expect(screen.getByText(/Exam Timing Analytics/i)).toBeInTheDocument();
+          expect(screen.getByText(/Leading SAFe 6/i)).toBeInTheDocument();
+          expect(screen.getByText(/Questions: 2/i)).toBeInTheDocument();
+        });
+      } finally {
+        mockDateNow.mockRestore();
+        vi.useRealTimers();
+      }
     });
 
     test('should handle exam mode filtering correctly', async () => {
@@ -171,33 +249,24 @@ describe('Quiz Integration Tests', () => {
       
       render(<App />);
 
-      // Navigate to Leading SAFe 6 exam
-      await waitFor(() => {
-        expect(screen.getByText(/Leading SAFe 6/)).toBeInTheDocument();
-      });
-
-      const leadingSAFeButton = screen.getByRole('button', { name: /Leading SAFe 6/ });
+      // Navigate to Leading SAFe 6 exam using test id
+      const leadingSAFeButton = await screen.findByTestId('start-leading-safe-home');
       await user.click(leadingSAFeButton);
 
-      // Select exam mode (should filter out multi-select)
-      await waitFor(() => {
-        expect(screen.getByText(/Exam Mode/)).toBeInTheDocument();
-      });
-
-      const examButton = screen.getByRole('button', { name: /Exam Mode/ });
-      await user.click(examButton);
+      // Exam mode is default; start exam
+  const startExamButton = await screen.findByTestId('leading-safe-start-quiz');
+      await user.click(startExamButton);
 
       // Should start with only single-select questions
       await waitFor(() => {
-        expect(screen.getByText(/Question 1 of 1/)).toBeInTheDocument(); // Only 1 single-select
-        expect(screen.queryByText(/Select exactly/)).not.toBeInTheDocument();
+        expect(screen.getByText(/Question 1 of 1/)).toBeInTheDocument();
+        expect(screen.queryByTestId('multi-select-requirement')).not.toBeInTheDocument();
       });
 
       // Verify radio button indicators
-      const options = screen.getAllByRole('button');
-      const radioOptions = options.filter(btn => 
-        btn.textContent && btn.textContent.includes('○')
-      );
+      const optionsContainer = await screen.findByTestId('quiz-options-container');
+      const optionButtons = within(optionsContainer).getAllByRole('button');
+      const radioOptions = optionButtons.filter(btn => btn.textContent?.includes('○') || btn.textContent?.includes('●'));
       expect(radioOptions.length).toBeGreaterThan(0);
     });
   });
@@ -209,28 +278,25 @@ describe('Quiz Integration Tests', () => {
       render(<App />);
 
       // Set exam mode preference
-      const leadingSAFeButton = await screen.findByRole('button', { name: /Leading SAFe 6/ });
+      const leadingSAFeButton = await screen.findByTestId('start-leading-safe-home');
       await user.click(leadingSAFeButton);
 
-      // Select Practice Mode
-      const practiceButton = await screen.findByRole('button', { name: /Practice Mode/ });
-      await user.click(practiceButton);
+      // Select Practice Mode via settings select
+      const modeSelect = await screen.findByTestId('leading-safe-exam-mode-select');
+      await user.selectOptions(modeSelect, 'practice');
+      expect(modeSelect).toHaveValue('practice');
 
       // Go back and check if preference is saved
-      const backButton = screen.getByRole('button', { name: /← Back/ });
-      await user.click(backButton);
-
-      const homeButton = screen.getByRole('button', { name: /← Home/ });
-      await user.click(homeButton);
+  const backHomeButton = await screen.findByRole('button', { name: /Back to Home/i });
+      await user.click(backHomeButton);
 
       // Re-enter exam
-      await user.click(leadingSAFeButton);
+  const leadingSAFeButtonAgain = await screen.findByTestId('start-leading-safe-home');
+      await user.click(leadingSAFeButtonAgain);
 
       // Should remember Practice Mode selection
-      await waitFor(() => {
-        const practiceSelected = screen.getByRole('button', { name: /Practice Mode/ });
-        expect(practiceSelected).toHaveClass('selected'); // Assuming CSS class for selected state
-      });
+      const persistedSelect = await screen.findByTestId('leading-safe-exam-mode-select');
+      expect(persistedSelect).toHaveValue('practice');
     });
 
     test('should handle timing data persistence across app reloads', async () => {
@@ -252,7 +318,7 @@ describe('Quiz Integration Tests', () => {
       render(<App />);
 
       // Access timing analytics
-      const timingButton = await screen.findByRole('button', { name: /Timing/ });
+  const timingButton = await screen.findByTestId('nav-timing');
       await user.click(timingButton);
 
       // Should load persisted timing data
@@ -275,25 +341,27 @@ describe('Quiz Integration Tests', () => {
 
   describe('Error Handling and Edge Cases', () => {
     test('should handle empty question sets gracefully', async () => {
-      // Mock empty question set
-      vi.doMock('../components/LeadingSAFe6/LeadingSAFe6Questions.js', () => ({
-        leadingSAFe6Questions: []
-      }));
-
       const user = userEvent.setup();
-      
-      render(<App />);
+      const questionModule = await import('../components/LeadingSAFe6/LeadingSAFe6Questions.js');
+      const originalQuestions = [...questionModule.leadingSAFe6Questions];
+      questionModule.leadingSAFe6Questions.splice(0, questionModule.leadingSAFe6Questions.length);
 
-      const leadingSAFeButton = await screen.findByRole('button', { name: /Leading SAFe 6/ });
-      await user.click(leadingSAFeButton);
+      try {
+        render(<App />);
 
-      const practiceButton = await screen.findByRole('button', { name: /Practice Mode/ });
-      await user.click(practiceButton);
+    const leadingSAFeButton = await screen.findByTestId('start-leading-safe-home');
+        await user.click(leadingSAFeButton);
 
-      // Should show loading or handle empty state
-      await waitFor(() => {
-        expect(screen.getByText(/Preparing your exam/)).toBeInTheDocument();
-      });
+        const startExamButton = await screen.findByRole('button', { name: /Start Practice Exam/i });
+        await user.click(startExamButton);
+
+        // Should show loading or handle empty state
+        await waitFor(() => {
+          expect(screen.getByText(/Preparing your exam/i)).toBeInTheDocument();
+        });
+      } finally {
+        questionModule.leadingSAFe6Questions.splice(0, questionModule.leadingSAFe6Questions.length, ...originalQuestions);
+      }
     });
 
     test('should handle corrupt timing data gracefully', async () => {
@@ -304,7 +372,7 @@ describe('Quiz Integration Tests', () => {
       
       render(<App />);
 
-      const timingButton = await screen.findByRole('button', { name: /Timing/ });
+  const timingButton = await screen.findByRole('button', { name: /Timing Analytics/i });
       await user.click(timingButton);
 
       // Should still render without crashing
@@ -314,37 +382,42 @@ describe('Quiz Integration Tests', () => {
     });
 
     test('should handle rapid question navigation without timing errors', async () => {
-      const user = userEvent.setup();
-      vi.useFakeTimers();
+      vi.useFakeTimers({ shouldAdvanceTime: true });
+      const user = userEvent.setup({ advanceTimers: ms => vi.advanceTimersByTime(ms), delay: null });
       
-      render(<App />);
+      try {
+        render(<App />);
 
-      // Start exam
-      const leadingSAFeButton = await screen.findByRole('button', { name: /Leading SAFe 6/ });
-      await user.click(leadingSAFeButton);
+        // Start exam in practice mode for multiple questions
+        const leadingSAFeButton = await screen.findByRole('button', { name: /Leading SAFe 6/i });
+        await user.click(leadingSAFeButton);
 
-      const practiceButton = await screen.findByRole('button', { name: /Practice Mode/ });
-      await user.click(practiceButton);
+    const modeSelect = await screen.findByTestId('leading-safe-exam-mode-select');
+    await user.selectOptions(modeSelect, 'practice');
 
-      await waitFor(() => {
-        expect(screen.getByText(/Question 1 of/)).toBeInTheDocument();
-      });
+    const startExamButton = await screen.findByTestId('leading-safe-start-quiz');
+        await user.click(startExamButton);
 
-      // Rapidly navigate between questions
-      const nextButton = screen.getByRole('button', { name: /Next →/ });
-      const prevButton = screen.getByRole('button', { name: /← Previous/ });
-      
-      for (let i = 0; i < 5; i++) {
-        await user.click(nextButton);
-        vi.advanceTimersByTime(100);
-        await user.click(prevButton);
-        vi.advanceTimersByTime(100);
+        await waitFor(() => {
+          expect(screen.getByText(/Question 1 of 2/)).toBeInTheDocument();
+        });
+
+        // Rapidly navigate between questions
+        const nextButton = screen.getByRole('button', { name: /Next →/ });
+        const prevButton = screen.getByRole('button', { name: /← Previous/ });
+        
+        for (let i = 0; i < 5; i++) {
+          await user.click(nextButton);
+          vi.advanceTimersByTime(100);
+          await user.click(prevButton);
+          vi.advanceTimersByTime(100);
+        }
+
+        // Should still function correctly
+        expect(screen.getByText(/Time on question:/)).toBeInTheDocument();
+      } finally {
+        vi.useRealTimers();
       }
-
-      // Should still function correctly
-      expect(screen.getByText(/Time on question:/)).toBeInTheDocument();
-
-      vi.useRealTimers();
     });
   });
 
@@ -356,22 +429,16 @@ describe('Quiz Integration Tests', () => {
 
       // Start and stop exam multiple times
       for (let i = 0; i < 3; i++) {
-        const leadingSAFeButton = await screen.findByRole('button', { name: /Leading SAFe 6/ });
+        const leadingSAFeButton = await screen.findByRole('button', { name: /Leading SAFe 6/i });
         await user.click(leadingSAFeButton);
 
-        const practiceButton = await screen.findByRole('button', { name: /Practice Mode/ });
-        await user.click(practiceButton);
+        const startExamButton = await screen.findByRole('button', { name: /Start Practice Exam/i });
+        await user.click(startExamButton);
 
-        await waitFor(() => {
-          expect(screen.getByText(/Question 1 of/)).toBeInTheDocument();
-        });
+        await screen.findByTestId('quiz-question-card');
 
-        // Go back to home
-        const backButton = screen.getByRole('button', { name: /← Back/ });
-        await user.click(backButton);
-
-        const homeButton = screen.getByRole('button', { name: /← Home/ });
-        await user.click(homeButton);
+        const backHomeButton = screen.getByTestId('quiz-back-home');
+        await user.click(backHomeButton);
       }
 
       // Should not accumulate timers or cause errors
@@ -395,7 +462,7 @@ describe('Quiz Integration Tests', () => {
 
       render(<App />);
 
-      const timingButton = await screen.findByRole('button', { name: /Timing/ });
+  const timingButton = await screen.findByRole('button', { name: /Timing Analytics/i });
       await user.click(timingButton);
 
       // Should load and display data efficiently

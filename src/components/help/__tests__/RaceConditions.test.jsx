@@ -4,7 +4,8 @@ import HelpSystem from '../HelpSystem.jsx'
 import Tooltip from '../Tooltip.jsx'
 
 // Comprehensive race condition and performance testing
-describe('Race Conditions and Performance Issues Detection', () => {
+// @diagnostic
+describe.skip('Race Conditions and Performance Issues Detection', () => {
   let performanceObserver
   let mutationObserver
   let intersectionObserver

@@ -7,6 +7,10 @@ import SAFeTeams6ExamQuiz from '../components/SAFeTeams6/SAFeTeams6ExamQuiz';
 // Mock the contexts
 const mockRecordSession = vi.fn();
 const mockUpdateSpacedRepetition = vi.fn();
+const mockSaveExamState = vi.fn();
+const mockLoadExamState = vi.fn(() => null);
+const mockClearExamState = vi.fn();
+const mockGetAutosavedSessions = vi.fn(() => []);
 
 vi.mock('../contexts/ProgressContext', () => ({
   useProgress: () => ({
@@ -20,9 +24,50 @@ vi.mock('../contexts/StudyIntelligenceContext', () => ({
   })
 }));
 
+vi.mock('../contexts/AutosaveContext.jsx', () => ({
+  useAutosave: () => ({
+    saveExamState: mockSaveExamState,
+    loadExamState: mockLoadExamState,
+    clearExamState: mockClearExamState,
+    getAutosavedSessions: mockGetAutosavedSessions,
+    AUTOSAVE_INTERVAL: 60000,
+    DEBOUNCE_DELAY: 100,
+    formatSaveTime: vi.fn(() => 'Just now'),
+    autosaveStatus: 'idle',
+    lastSavedTime: null,
+    isEnabled: true,
+    setIsEnabled: vi.fn()
+  })
+}));
+
 // Mock CSS modules
-vi.mock('../components/LeadingSAFe6/LeadingSAFe6ExamQuiz.module.css', () => ({}));
-vi.mock('../components/SAFeTeams6/SAFeTeams6ExamQuiz.module.css', () => ({}));
+vi.mock('../components/LeadingSAFe6/LeadingSAFe6ExamQuiz.module.css', () => ({ default: {} }));
+vi.mock('../components/SAFeTeams6/SAFeTeams6ExamQuiz.module.css', () => ({ default: {} }));
+
+vi.mock('../components/autosave/SessionRecovery.jsx', () => ({
+  __esModule: true,
+  default: () => null
+}));
+
+vi.mock('../components/help/HelpSystem.jsx', () => ({
+  __esModule: true,
+  default: () => null,
+  MultiSelectHelp: () => <span data-testid="multi-select-help" />
+}));
+
+vi.mock('../components/exam/ProgressIndicator.jsx', () => ({
+  __esModule: true,
+  default: () => null
+}));
+
+vi.mock('../hooks/useExamTiming.js', () => ({
+  useExamTiming: () => ({
+    questionTimings: {},
+    currentQuestionTime: 0,
+    countdown: 5400,
+    finalize: vi.fn()
+  })
+}));
 
 // Mock mixed questions for LeadingSAFe6
 vi.mock('../components/LeadingSAFe6/LeadingSAFe6Questions.js', () => ({
@@ -203,9 +248,11 @@ describe('Exam Mode Filtering Tests', () => {
     test('should preserve question randomization in both modes', async () => {
       // Test exam mode
       const examResults = [];
+      const randomSeeds = [0, 0.4, 0.9];
       
       for (let i = 0; i < 3; i++) {
-        render(
+        const randomMock = vi.spyOn(Math, 'random').mockImplementation(() => randomSeeds[i]);
+        const { unmount } = render(
           <LeadingSAFe6ExamQuiz
             onGoHome={mockOnGoHome}
             onGoBackToExam={mockOnGoBackToExam}
@@ -221,11 +268,14 @@ describe('Exam Mode Filtering Tests', () => {
         // Get first question text
         const questionText = screen.getByRole('heading', { level: 2 }).textContent;
         examResults.push(questionText);
+
+        randomMock.mockRestore();
+        unmount();
       }
 
-      // Questions should be randomized (very unlikely to get same order 3 times)
-      const allSame = examResults.every(q => q === examResults[0]);
-      expect(allSame).toBe(false);
+      // Questions should produce different starting prompts across seeds
+      const uniqueStarts = new Set(examResults);
+      expect(uniqueStarts.size).toBeGreaterThan(1);
     });
   });
 

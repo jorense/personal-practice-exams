@@ -135,17 +135,28 @@ async function ensureNoOverlays(page) {
 }
 
 async function waitForQuizReady(page) {
-  // Simplified readiness check modeled after passing smoke test
+  const start = Date.now()
   const quizRoot = page.getByTestId('quiz-root')
   const quizLoading = page.getByTestId('quiz-loading')
   const questionText = page.getByTestId('quiz-question-text')
-
-  // Quick race: loading or root appears
-  await Promise.race([
-    quizRoot.waitFor({ timeout: 4000 }).catch(()=>null),
-    quizLoading.waitFor({ timeout: 4000 }).catch(()=>null)
-  ])
-
-  // Then wait a bit for question text
-  await questionText.waitFor({ timeout: 4000 })
+  try {
+    await Promise.race([
+      quizRoot.waitFor({ timeout: 6000 }).catch(()=>null),
+      quizLoading.waitFor({ timeout: 6000 }).catch(()=>null)
+    ])
+    await questionText.waitFor({ timeout: 6000 })
+  } catch (e) {
+    // Fallback: look for options container
+    const optionsVisible = await page.getByTestId('quiz-options-container').isVisible().catch(()=>false)
+    await page.evaluate((info) => {
+      try { localStorage.setItem('e2e.quizReady.debug', JSON.stringify(info)) } catch(_) {}
+    }, {
+      error: String(e),
+      time: Date.now() - start,
+      rootVisible: await quizRoot.isVisible().catch(()=>false),
+      loadingVisible: await quizLoading.isVisible().catch(()=>false),
+      optionsVisible
+    })
+    if (!optionsVisible) throw e
+  }
 }

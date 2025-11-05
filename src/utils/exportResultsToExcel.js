@@ -134,6 +134,11 @@ export async function exportResultsToExcel({ attempt, questions, selectedAnswers
     }))
     const wsHistory = XLSX.utils.json_to_sheet(historyRows)
     XLSX.utils.book_append_sheet(wb, wsHistory, 'History')
+  } else {
+    const wsHistoryEmpty = XLSX.utils.json_to_sheet([
+      { Info: 'No prior exam history found. Take an exam to populate this sheet.' }
+    ])
+    XLSX.utils.book_append_sheet(wb, wsHistoryEmpty, 'History')
   }
 
   // Raw storage (optional)
@@ -146,5 +151,11 @@ export async function exportResultsToExcel({ attempt, questions, selectedAnswers
   // File name
   const timestamp = new Date().toISOString().replace(/[:]/g,'-').replace(/\..+/,'')
   const filename = `exam-results-${timestamp}.xlsx`
-  XLSX.writeFile(wb, filename)
+  try {
+    XLSX.writeFile(wb, filename)
+    try { localStorage.setItem('excel.export.lastStatus', JSON.stringify({ t: Date.now(), file: filename })) } catch(_) {}
+  } catch (err) {
+    try { localStorage.setItem('excel.export.lastError', JSON.stringify({ t: Date.now(), msg: err.message })) } catch(_) {}
+    throw err
+  }
 }
