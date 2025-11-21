@@ -442,7 +442,7 @@ describe('Quiz Integration Tests', () => {
       }
 
       // Should not accumulate timers or cause errors
-      expect(screen.getByText(/LACE Studio/)).toBeInTheDocument();
+      expect(screen.getByText(/AI Cert Studio/)).toBeInTheDocument();
     });
 
     test('should handle large amounts of timing data efficiently', async () => {

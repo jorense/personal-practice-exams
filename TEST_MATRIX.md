@@ -1,6 +1,6 @@
 # Test Suite Classification (Critical / Diagnostic / Experimental)
 
-This matrix supports Options 1, 3, 6, 8 strategy: fast path to green while retaining visibility on advanced diagnostics.
+This matrix supports test categorization for the Azure AI Certification Practice Exams (AB-730 and AI-900).
 
 | Category | Suite / Pattern | Purpose | Ship Blocking? | Action Now |
 |----------|-----------------|---------|----------------|-----------|

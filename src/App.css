@@ -1,4 +1,4 @@
-/* LACE Studio Practice Exam - Professional Styling */
+/* AI Cert Studio - Professional Styling */
 
 /* Root Variables */
 :root {
@@ -103,6 +103,12 @@ body {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.logo-image {
+  height: 45px;
+  width: auto;
+  display: block;
 }
 
 .logo-fallback {
@@ -343,6 +349,36 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+}
+
+.featured-exam-button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: rotate(45deg);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%) translateY(-100%) rotate(45deg);
+  }
+  100% {
+    transform: translateX(100%) translateY(100%) rotate(45deg);
+  }
 }
 
 .featured-exam-button:hover:not(:disabled) {
@@ -356,16 +392,26 @@ body {
   opacity: 0.7;
 }
 
-.featured-exam-button.leading-safe-6 {
-  background: linear-gradient(135deg, #059669, #047857);
+.featured-exam-button:disabled::before {
+  animation: none;
 }
 
-.featured-exam-button.safe-teams-6 {
-  background: linear-gradient(135deg, #1e40af, #3b82f6);
+.featured-exam-button.azure-ai-ab730 {
+  background: linear-gradient(135deg, #0078D4, #005A9E);
+}
+
+.featured-exam-button.azure-ai-ai900 {
+  background: linear-gradient(135deg, #00BCF2, #0078D4);
+}
+
+.featured-exam-button.azure-ai-102 {
+  background: linear-gradient(135deg, #7A7574, #8A8886);
 }
 
 .featured-exam-content {
   text-align: left;
+  position: relative;
+  z-index: 1;
 }
 
 .featured-exam-content h3 {
@@ -510,20 +556,28 @@ body {
   opacity: 0.7;
 }
 
-.cta-button.leading-safe-6 {
-  background: linear-gradient(135deg, #059669, #047857);
+.cta-button.azure-ai-ab730 {
+  background: linear-gradient(135deg, #0078D4, #005A9E);
 }
 
-.cta-button.safe-teams-6 {
-  background: linear-gradient(135deg, #1e40af, #3b82f6);
+.cta-button.azure-ai-ab730:hover {
+  background: linear-gradient(135deg, #005A9E, #004578);
 }
 
-.cta-button.safe-teams-6:hover {
-  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+.cta-button.azure-ai-ai900 {
+  background: linear-gradient(135deg, #00BCF2, #0078D4);
 }
 
-.featured-exam-button.safe-teams-6:hover {
-  background: linear-gradient(135deg, #1d4ed8, #2563eb);
+.cta-button.azure-ai-ai900:hover {
+  background: linear-gradient(135deg, #0078D4, #005A9E);
+}
+
+.featured-exam-button.azure-ai-ab730:hover {
+  background: linear-gradient(135deg, #005A9E, #004578);
+}
+
+.featured-exam-button.azure-ai-ai900:hover {
+  background: linear-gradient(135deg, #0078D4, #005A9E);
 }
 
 .button-content {

@@ -1,8 +1,8 @@
-// SAFe Practice Exams PWA Service Worker
+// Azure AI Practice Exams PWA Service Worker
 // Enhanced offline functionality with intelligent caching strategies
 
-const CACHE_NAME = 'safe-exams-v1.0.0';
-const DATA_CACHE_NAME = 'safe-exams-data-v1.0.0';
+const CACHE_NAME = 'azure-ai-exams-v2.0.1';
+const DATA_CACHE_NAME = 'azure-ai-exams-data-v2.0.1';
 
 // Resources to cache for offline functionality
 const STATIC_CACHE_URLS = [
@@ -270,7 +270,7 @@ function getOfflineHTML() {
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>SAFe Exams - Offline</title>
+      <title>Azure AI Exams - Offline</title>
       <style>
         body {
           font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -329,7 +329,7 @@ function getOfflineHTML() {
         <div class="offline-icon">📚</div>
         <h1 class="offline-title">You're Offline</h1>
         <p class="offline-message">
-          SAFe Practice Exams is available offline! While you're not connected to the internet, 
+          Azure AI Practice Exams is available offline! While you're not connected to the internet, 
           you can still access cached content and continue your learning journey.
         </p>
         <button class="retry-button" onclick="window.location.reload()">
@@ -433,7 +433,7 @@ self.addEventListener('push', (event) => {
       notificationData = event.data.json();
     } catch (error) {
       notificationData = {
-        title: 'SAFe Practice Exams',
+        title: 'Azure AI Practice Exams',
         body: event.data.text() || 'New notification',
         icon: '/icon-192x192.png'
       };
@@ -445,7 +445,7 @@ self.addEventListener('push', (event) => {
     icon: notificationData.icon || '/icon-192x192.png',
     badge: '/icon-192x192.png',
     vibrate: [200, 100, 200],
-    tag: notificationData.tag || 'safe-exams',
+    tag: notificationData.tag || 'azure-ai-exams',
     requireInteraction: false,
     actions: [
       {
@@ -467,7 +467,7 @@ self.addEventListener('push', (event) => {
   
   event.waitUntil(
     self.registration.showNotification(
-      notificationData.title || 'SAFe Practice Exams',
+      notificationData.title || 'Azure AI Practice Exams',
       options
     )
   );

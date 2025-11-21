@@ -1,8 +1,8 @@
 {
-  "name": "lace-studio-practice-exam",
+  "name": "ai-cert-studio",
   "private": true,
-  "version": "1.0.0",
-  "description": "LACE Studio Practice Exam - Professional certification practice exams for Leading SAFe 6, PSM II, and PSPO 1",
+  "version": "2.0.0",
+  "description": "AI Cert Studio - Professional certification practice exams for Microsoft Azure AI (AB-730, AI-900)",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "build:github": "cross-env NODE_ENV=production npm run build",
-    "preview:github": "npm run build:github && vite preview --base=/safe-practice-exams/",
+    "preview:github": "npm run build:github && vite preview --base=/personal-practice-exams/",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",

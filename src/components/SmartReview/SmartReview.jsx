@@ -26,7 +26,7 @@ function SmartReview({ onGoHome, onStartExam }) {
       title: '📚 Weak Areas', 
       description: 'Focus on domains where you scored below 70%',
       icon: '🎯',
-      questions: [...leadingSafeWeak, ...safeTeamsWeak]
+      questions: [...leadingSafeWeak]
     },
     {
       id: 'comprehensive',
@@ -50,7 +50,7 @@ function SmartReview({ onGoHome, onStartExam }) {
       <div className={styles.reviewContainer}>
         <header className={styles.reviewHeader}>
           <div className={styles.brand}>
-            <div className={styles.logo}>LACE Studio</div>
+            <img src="/ai-cert-studio-logo.png" alt="AI Cert Studio" className={styles.logo} />
             <div className={styles.tagline}>Smart Review</div>
           </div>
           <button className={styles.homeButton} onClick={onGoHome}>
@@ -76,7 +76,7 @@ function SmartReview({ onGoHome, onStartExam }) {
     <div className={styles.reviewContainer}>
       <header className={styles.reviewHeader}>
         <div className={styles.brand}>
-          <div className={styles.logo}>LACE Studio</div>
+          <div className={styles.logo}>AI Cert Studio</div>
           <div className={styles.tagline}>Smart Review</div>
         </div>
         <button className={styles.homeButton} onClick={onGoHome}>

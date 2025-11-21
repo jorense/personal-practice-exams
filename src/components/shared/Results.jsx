@@ -116,7 +116,7 @@ export default function Results({
       <header className={styles.resultsHeader}>
         <div className={styles.resultsHeaderContent}>
           <div className={styles.brand}>
-            <div className={styles.logo}>LACE Studio</div>
+            <img src="/ai-cert-studio-logo.png" alt="AI Cert Studio" className={styles.logo} />
             <div className={styles.tagline}>Practice Exam Results</div>
           </div>
           <button onClick={onGoHome} className={styles.homeButton}>

@@ -85,7 +85,7 @@ function TimingAnalytics({ onGoHome }) {
     <div className={styles.examContainer}>
       <header className={styles.examHeader}>
         <div className={styles.brand}>
-          <div className={styles.logo}>LACE Studio</div>
+          <img src="/ai-cert-studio-logo.png" alt="AI Cert Studio" className={styles.logo} />
           <div className={styles.tagline}>Exam Timing Analytics</div>
         </div>
         <button className={styles.homeButton} onClick={onGoHome}>

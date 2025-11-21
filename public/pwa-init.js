@@ -65,16 +65,16 @@ window.addEventListener('beforeinstallprompt', (e) => {
   deferredPrompt = e;
   
   // Check if PWA prompts are disabled
-  const pwaPromptsDisabled = localStorage.getItem('lace-studio-disable-pwa-prompt') === 'true';
+  const pwaPromptsDisabled = localStorage.getItem('personal-practice-exams-disable-pwa-prompt') === 'true';
   if (pwaPromptsDisabled) {
     console.log('PWA install prompts are disabled');
     return;
   }
   
   // Only show install prompt if user hasn't dismissed it before and has used the app
-  const hasUsedApp = localStorage.getItem('lace-studio-sessions-count');
-  const hasDismissedInstall = localStorage.getItem('lace-studio-dismissed-install');
-  const dismissTime = localStorage.getItem('lace-studio-dismiss-time');
+  const hasUsedApp = localStorage.getItem('personal-practice-exams-sessions-count');
+  const hasDismissedInstall = localStorage.getItem('personal-practice-exams-dismissed-install');
+  const dismissTime = localStorage.getItem('personal-practice-exams-dismiss-time');
   
   // Don't show again for 7 days after dismissal
   if (hasDismissedInstall && dismissTime) {
@@ -138,8 +138,8 @@ window.addEventListener('beforeinstallprompt', (e) => {
       });
       
       const dismissHandler = () => {
-        localStorage.setItem('lace-studio-dismissed-install', 'true');
-        localStorage.setItem('lace-studio-dismiss-time', Date.now().toString());
+        localStorage.setItem('personal-practice-exams-dismissed-install', 'true');
+        localStorage.setItem('personal-practice-exams-dismiss-time', Date.now().toString());
         if (document.getElementById('pwa-install-banner')) {
           document.body.removeChild(installBanner);
         }

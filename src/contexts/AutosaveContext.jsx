@@ -21,7 +21,7 @@ export const AutosaveProvider = ({ children }) => {
   
   // Get storage key for exam session
   const getStorageKey = (examType, sessionId) => 
-    `lace-studio-autosave-${examType}-${sessionId}`
+    `personal-practice-exams-autosave-${examType}-${sessionId}`
 
   // Save exam state to localStorage
   const saveExamState = useCallback((examType, sessionId, examState) => {
@@ -100,9 +100,9 @@ export const AutosaveProvider = ({ children }) => {
       
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i)
-        if (key && key.startsWith('lace-studio-autosave-')) {
+        if (key && key.startsWith('personal-practice-exams-autosave-')) {
           const data = JSON.parse(localStorage.getItem(key))
-          const keyParts = key.replace('lace-studio-autosave-', '').split('-')
+          const keyParts = key.replace('personal-practice-exams-autosave-', '').split('-')
           
           sessions.push({
             examType: keyParts[0],
@@ -129,7 +129,7 @@ export const AutosaveProvider = ({ children }) => {
       
       for (let i = localStorage.length - 1; i >= 0; i--) {
         const key = localStorage.key(i)
-        if (key && key.startsWith('lace-studio-autosave-')) {
+        if (key && key.startsWith('personal-practice-exams-autosave-')) {
           const data = JSON.parse(localStorage.getItem(key))
           if (data.lastSaved < sevenDaysAgo) {
             localStorage.removeItem(key)

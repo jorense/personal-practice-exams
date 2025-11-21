@@ -1,8 +1,8 @@
 import { useTheme } from '../../contexts/ThemeContext.jsx';
-import styles from './LeadingSAFe6Exam.module.css'
+import styles from './AB730Exam.module.css'
 import DataPersistenceNotice from '../autosave/DataPersistenceNotice.jsx'
 
-function LeadingSAFe6Exam({ 
+function AB730Exam({ 
   onGoHome, 
   onGoToStudyMaterials, 
   onStartQuiz, 
@@ -28,17 +28,17 @@ function LeadingSAFe6Exam({
 
   return (
     <div className={styles.examContainer}>
-  <header className={styles.examHeader} data-testid="leading-safe-exam-header">
+      <header className={styles.examHeader} data-testid="ab730-exam-header">
         <div className={styles.brand}>
-          <div className={styles.logo}>LACE Studio</div>
-          <div className={styles.tagline}>Leading SAFe 6 Practice Exam</div>
+          <img src="/ai-cert-studio-logo.png" alt="AI Cert Studio" className={styles.logo} />
+          <div className={styles.tagline}>AB-730 Practice Exam</div>
         </div>
         <button className={styles.homeButton} onClick={onGoHome}>
           ← Back to Home
         </button>
       </header>
 
-  <main className={styles.examContent} data-testid="leading-safe-exam-settings">
+      <main className={styles.examContent} data-testid="ab730-exam-settings">
         {/* Temporary cross-browser support notice (Firefox / Safari) */}
         {typeof navigator !== 'undefined' && /firefox|safari/i.test(navigator.userAgent) && !/chrome|edg/i.test(navigator.userAgent) && (
           <div style={{
@@ -56,12 +56,12 @@ function LeadingSAFe6Exam({
           </div>
         )}
         <div className={styles.examInfo}>
-          <h1>Leading SAFe 6.0: Scaled Agile Framework</h1>
+          <h1>AB-730: AI Business Professional</h1>
           <p className={styles.examDescription}>
-            Test your knowledge of the Scaled Agile Framework (SAFe) 6.0 and Lean-Agile leadership principles.
+            Test your knowledge of Microsoft 365 Copilot and AI for business professionals. This exam validates your ability to use generative AI tools to enhance productivity and business outcomes.
           </p>
 
-          <div className={styles.examDetails} data-testid="leading-safe-exam-details">
+          <div className={styles.examDetails} data-testid="ab730-exam-details">
             <div className={styles.detailCard}>
               <h3>📝 Questions</h3>
               <p>{numberOfQuestions} practice questions</p>
@@ -72,7 +72,7 @@ function LeadingSAFe6Exam({
             </div>
             <div className={styles.detailCard}>
               <h3>🎯 Passing Score</h3>
-              <p>77% or higher</p>
+              <p>70%</p>
             </div>
             <div className={styles.detailCard}>
               <h3>🔄 Retakes</h3>
@@ -81,14 +81,14 @@ function LeadingSAFe6Exam({
           </div>
 
           {/* Exam Settings Panel */}
-          <div className={styles.examSettings} data-testid="leading-safe-exam-config">
+          <div className={styles.examSettings} data-testid="ab730-exam-config">
             <h2>⚙️ Exam Settings</h2>
             <div className={styles.settingsGrid}>
               <div className={styles.settingCard}>
                 <h4>Number of Questions</h4>
                 <select 
                   value={numberOfQuestions} 
-                  data-testid="leading-safe-questions-select"
+                  data-testid="ab730-questions-select"
                   onChange={(e) => onNumberOfQuestionsChange && onNumberOfQuestionsChange(Number(e.target.value))}
                   className={styles.settingSelect}
                 >
@@ -97,8 +97,7 @@ function LeadingSAFe6Exam({
                   <option value={40}>40 Questions</option>
                   <option value={45}>45 Questions (Default)</option>
                   <option value={50}>50 Questions</option>
-                  <option value={100}>100 Questions</option>
-                  <option value={200}>200 Questions (Complete Bank)</option>
+                  <option value={100}>100 Questions (Complete Bank)</option>
                 </select>
                 <p className={styles.settingDescription}>
                   Choose how many questions you want to practice with
@@ -108,7 +107,7 @@ function LeadingSAFe6Exam({
                 <h4>Exam Mode</h4>
                 <select 
                   value={examMode} 
-                  data-testid="leading-safe-exam-mode-select"
+                  data-testid="ab730-exam-mode-select"
                   onChange={(e) => onExamModeChange && onExamModeChange(e.target.value)}
                   className={styles.settingSelect}
                 >
@@ -117,8 +116,8 @@ function LeadingSAFe6Exam({
                 </select>
                 <p className={styles.settingDescription}>
                   {examMode === 'exam' 
-                    ? 'Single-select questions only (matches real SAFe exam format)' 
-                    : 'Mix of single-select (70%) and multi-select (30%) questions for deeper learning'}
+                    ? 'Single-select questions only (matches real Microsoft exam format)' 
+                    : 'Mix of single-select (75%) and multi-select (25%) questions for deeper learning'}
                 </p>
               </div>
               <div className={styles.settingCard}>
@@ -127,7 +126,7 @@ function LeadingSAFe6Exam({
                   <input 
                     type="checkbox" 
                     checked={autoShowExplanation}
-                    data-testid="leading-safe-auto-explanation-checkbox"
+                    data-testid="ab730-auto-explanation-checkbox"
                     onChange={(e) => onAutoShowExplanationChange && onAutoShowExplanationChange(e.target.checked)}
                     className={styles.settingCheckbox}
                   />
@@ -140,7 +139,7 @@ function LeadingSAFe6Exam({
                 </p>
               </div>
               {/* 4th tile: Local progress / persistence notice */}
-              <div className={styles.settingCard} data-testid="leading-safe-storage-tile">
+              <div className={styles.settingCard} data-testid="ab730-storage-tile">
                 <h4>Local Progress Storage</h4>
                 <p className={styles.settingDescription} style={{marginBottom:'0.75rem'}}>
                   Progress & results are saved only in this browser (no cloud sync). Clearing site data / using private mode erases them.
@@ -150,51 +149,31 @@ function LeadingSAFe6Exam({
             </div>
           </div>
 
-          <div className={styles.examDomains} data-testid="leading-safe-exam-domains">
+          <div className={styles.examDomains} data-testid="ab730-exam-domains">
             <h2>Exam Domains</h2>
             <div className={styles.domainsGrid}>
               <div className={styles.domainCard}>
-                <h3>Applying SAFe Principles</h3>
-                <p>Understanding and implementing the 10 SAFe principles in Lean-Agile environments</p>
-                <span className={styles.domainWeight}>20%</span>
+                <h3>Understand Generative AI Fundamentals</h3>
+                <p>Core concepts of generative AI, responsible AI principles, and Microsoft 365 Copilot capabilities</p>
+                <span className={styles.domainWeight}>25-30%</span>
               </div>
               <div className={styles.domainCard}>
-                <h3>Supporting Program Execution</h3>
-                <p>Leading Program Increment planning, execution, and continuous improvement</p>
-                <span className={styles.domainWeight}>19%</span>
+                <h3>Manage Prompts and Conversations by Using AI</h3>
+                <p>Crafting effective prompts, managing conversations, creating agents, and optimizing AI interactions</p>
+                <span className={styles.domainWeight}>35-40%</span>
               </div>
               <div className={styles.domainCard}>
-                <h3>Supporting Team Execution</h3>
-                <p>Coaching Agile teams and facilitating team events and processes</p>
-                <span className={styles.domainWeight}>16%</span>
-              </div>
-              <div className={styles.domainCard}>
-                <h3>Building High-Performing Teams</h3>
-                <p>Developing Agile teams and fostering a culture of continuous learning</p>
-                <span className={styles.domainWeight}>15%</span>
-              </div>
-              <div className={styles.domainCard}>
-                <h3>Establishing Team Agility</h3>
-                <p>Implementing Scrum, Kanban, and XP practices within SAFe</p>
-                <span className={styles.domainWeight}>13%</span>
-              </div>
-              <div className={styles.domainCard}>
-                <h3>Planning Program Increments</h3>
-                <p>Facilitating PI planning events and managing dependencies</p>
-                <span className={styles.domainWeight}>12%</span>
-              </div>
-              <div className={styles.domainCard}>
-                <h3>Enabling Organizational Change</h3>
-                <p>Leading transformation initiatives and organizational change management</p>
-                <span className={styles.domainWeight}>5%</span>
+                <h3>Draft and Analyze Business Content by Using AI</h3>
+                <p>Using Copilot across Microsoft 365 apps for content creation, analysis, and business workflows</p>
+                <span className={styles.domainWeight}>25-30%</span>
               </div>
             </div>
           </div>
 
-          <div className={styles.examActions} data-testid="leading-safe-exam-actions">
+          <div className={styles.examActions} data-testid="ab730-exam-actions">
             <button 
               className={`${styles.actionButton} ${styles.primary}`}
-              data-testid="leading-safe-start-quiz"
+              data-testid="ab730-start-quiz"
               onClick={onStartQuiz}
             >
               🚀 Start Practice Exam
@@ -207,14 +186,14 @@ function LeadingSAFe6Exam({
             </button>
           </div>
 
-          <div className={styles.examTips} data-testid="leading-safe-exam-tips">
+          <div className={styles.examTips} data-testid="ab730-exam-tips">
             <h2>Exam Tips</h2>
             <div className={styles.tipsGrid}>
               <div className={styles.tipCard}>
                 <span className={styles.tipIcon}>💡</span>
                 <div>
-                  <h4>Read Questions Carefully</h4>
-                  <p>Take time to understand what each question is asking before selecting your answer.</p>
+                  <h4>Focus on Practical Applications</h4>
+                  <p>This exam emphasizes real-world use of Copilot across Microsoft 365 applications.</p>
                 </div>
               </div>
               <div className={styles.tipCard}>
@@ -234,15 +213,15 @@ function LeadingSAFe6Exam({
               <div className={styles.tipCard}>
                 <span className={styles.tipIcon}>🎯</span>
                 <div>
-                  <h4>Focus on SAFe Principles</h4>
-                  <p>Many questions test your understanding of the core SAFe principles and values.</p>
+                  <h4>Understand Prompt Engineering</h4>
+                  <p>Many questions test your ability to craft effective prompts and manage AI conversations.</p>
                 </div>
               </div>
               <div className={styles.tipCard}>
                 <span className={styles.tipIcon}>📖</span>
                 <div>
-                  <h4>Use Study Materials</h4>
-                  <p>Review the study materials before taking the exam for better preparation.</p>
+                  <h4>Know Copilot Features</h4>
+                  <p>Be familiar with Copilot capabilities across Word, Excel, PowerPoint, Outlook, and Teams.</p>
                 </div>
               </div>
             </div>
@@ -266,4 +245,4 @@ function LeadingSAFe6Exam({
   )
 }
 
-export default LeadingSAFe6Exam
+export default AB730Exam

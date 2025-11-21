@@ -1,7 +1,7 @@
 {
-  "name": "SAFe Practice Exams - AI Learning Companion",
-  "short_name": "SAFe Exams",
-  "description": "Intelligent SAFe certification practice exams with AI-powered study companion, adaptive learning, and comprehensive analytics",
+  "name": "Azure AI Practice Exams - AI Learning Companion",
+  "short_name": "Azure AI Exams",
+  "description": "Intelligent Azure AI certification practice exams with AI-powered study companion, adaptive learning, and comprehensive analytics",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#667eea",
@@ -117,7 +117,7 @@
   },
   "protocol_handlers": [
     {
-      "protocol": "web+safeexam",
+      "protocol": "web+azureaiexam",
       "url": "/?exam=%s"
     }
   ]

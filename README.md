@@ -1,6 +1,6 @@
-# Master Your SAFe Certifications - Advanced Learning Platform 🚀
+# AI Cert Studio - Master Your Azure AI Certifications 🚀
 
-A comprehensive, modern web application for **mastering SAFe (Scaled Agile Framework) certifications** with advanced learning features, progress tracking, and personalized study tools. This platform provides high-quality practice questions, adaptive learning systems, and detailed analytics to help you achieve certification success.
+A comprehensive, modern web application for **mastering Microsoft Azure AI certifications** with advanced learning features, progress tracking, and personalized study tools. AI Cert Studio provides high-quality practice questions, adaptive learning systems, and detailed analytics to help you achieve certification success.
 
 ## 🆕 **Latest Updates (October 2025)**
 
@@ -49,19 +49,20 @@ If cross-browser parity is critical for your environment, use Chrome/Edge for fo
 
 ## 🎯 Available Certifications
 
-### Leading SAFe 6.0
-- **200 comprehensive practice questions** covering all exam domains
+### AB-730: AI Business Professional
+- **200 comprehensive practice questions** covering Microsoft 365 Copilot and AI for business
+- **Exam domains**: Generative AI Fundamentals (25-30%), Manage Prompts/Conversations (35-40%), Draft/Analyze Content (25-30%)
 - **Adaptive timer system** (90 minutes for certification mode)
-- **77% passing score** requirement
-- Comprehensive study materials and resources
+- **70% passing score** requirement
+- Comprehensive study materials focused on practical Copilot usage
 - **Performance analytics** and **achievement tracking**
 
-### SAFe for Teams 6.0
-- **185 team-focused practice questions** across three key domains
-- **Team Agility (35%)** - Scrum practices and collaboration
-- **Technical Agility (35%)** - Built-in quality and DevOps
-- **Business Agility (30%)** - Value delivery and customer focus
-- **73% passing score** requirement
+### AI-900: Azure AI Fundamentals
+- **200 practice questions** covering Azure AI services and ML fundamentals
+- **Key areas**: AI Workloads (15-20%), ML Principles (25-30%), Computer Vision (15-20%), NLP (15-20%), Conversational AI (15-20%)
+- **Realistic exam simulation** with timed practice
+- **700 (out of 1000) passing score** requirement
+- Detailed explanations for Azure Cognitive Services and ML concepts
 - **Smart Review** system for targeted improvement
 
 ## 🚀 Advanced Features
@@ -145,25 +146,25 @@ If cross-browser parity is critical for your environment, use Chrome/Edge for fo
 - **Achievement Gallery** - Visual display of earned badges and progress
 - **Analytics Charts** - Performance trends and learning pattern visualization
 
-## 📚 Study Resources & Content
+### 📚 Study Resources & Content
 
-### Leading SAFe 6.0 (200 Questions)
-- SAFe principles and values
-- Lean-Agile leadership concepts
-- Program Increment (PI) planning
-- Agile Release Train (ART) implementation
-- DevOps and continuous delivery
+### AB-730: AI Business Professional (200 Questions)
+- Microsoft 365 Copilot fundamentals and capabilities
+- Prompt engineering and conversation management
+- Copilot across Microsoft 365 apps (Word, Excel, PowerPoint, Outlook, Teams)
+- Agent creation and customization
+- Responsible AI principles and implementation
 - **25% Multi-Select Questions** - Realistic exam simulation with partial credit scoring
-- **Comprehensive explanations** for every question and answer option
+- **Comprehensive explanations** for every question with practical examples
 
-### SAFe for Teams 6.0 (185 Questions)
-- Scrum events and team collaboration
-- Test-Driven Development (TDD)
-- Continuous Integration/Deployment
-- Built-in quality practices
-- Value stream participation
-- **25% Multi-Select Questions** - Advanced question types matching real certification exams
-- **Detailed learning content** with practical examples
+### AI-900: Azure AI Fundamentals (200 Questions)
+- Machine learning concepts and Azure ML services
+- Computer vision with Azure Computer Vision API
+- Natural language processing and Azure Language service
+- Speech services and conversational AI
+- Azure Cognitive Services and Applied AI
+- **25% Multi-Select Questions** - Advanced question types matching real Microsoft exams
+- **Detailed learning content** covering all Azure AI service offerings
 
 ## 🏁 Getting Started
 
@@ -175,8 +176,8 @@ If cross-browser parity is critical for your environment, use Chrome/Edge for fo
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/jorense/safe-practice-exams.git
-cd safe-practice-exams
+git clone https://github.com/YOUR-USERNAME/personal-practice-exams.git
+cd personal-practice-exams
 ```
 
 2. Install dependencies:
@@ -221,11 +222,11 @@ This repository is already configured for GitHub Pages deployment using the work
 What happens on push to `main`:
 1. Workflow installs dependencies (`npm ci`).
 2. (Optional) Runs tests – you can skip by setting repository or environment secret `SKIP_TESTS=true` if a known flaky integration test blocks deployment.
-3. Builds the site with `npm run build` (production base path `/safe-practice-exams/` comes from `vite.config.js`).
+3. Builds the site with `npm run build` (production base path `/personal-practice-exams/` comes from `vite.config.js`).
 4. Uploads the `dist` output as a Pages artifact.
 5. Deploys to GitHub Pages environment.
 
-Live URL pattern: `https://<org-or-user>.github.io/safe-practice-exams/` – currently: `https://jorense.github.io/safe-practice-exams/`.
+Live URL pattern: `https://<org-or-user>.github.io/personal-practice-exams/` – currently: `https://YOUR-USERNAME.github.io/personal-practice-exams/`.
 
 Manual trigger: Use the "Deploy PWA to GitHub Pages" workflow from the Actions tab (workflow_dispatch).
 
@@ -236,7 +237,7 @@ If the site does not appear after a successful run:
 - Verify `dist/` contains `index.html` and asset files (workflow lists them before upload).
 
 ### Cache Busting & Base Path
-Vite build already sets `base: '/safe-practice-exams/'` when `NODE_ENV=production`. If the repository name changes, update that in `vite.config.js`.
+Vite build already sets `base: '/personal-practice-exams/'` when `NODE_ENV=production`. If the repository name changes, update that in `vite.config.js`.
 
 ### Common Deployment Adjustments
 - Skip tests temporarily: add an Actions variable or secret `SKIP_TESTS` with value `true`.
@@ -277,8 +278,8 @@ You can deploy the same build output (`dist/`) almost anywhere:
 	```
 	Run locally:
 	```bash
-	docker build -t safe-practice-exams .
-	docker run -p 8080:80 safe-practice-exams
+	docker build -t personal-practice-exams .
+	docker run -p 8080:80 personal-practice-exams
 	```
 
 4. Azure Static Web Apps
@@ -460,8 +461,8 @@ src/
 │   ├── Dashboard/              # Performance analytics dashboard
 │   ├── Achievements/           # Achievement system with 25+ badges  
 │   ├── SmartReview/           # Personalized review system
-│   ├── LeadingSAFe6/          # Leading SAFe 6.0 (200 questions with 25% multi-select)
-│   ├── SAFeTeams6/            # SAFe Teams 6.0 (185 questions with 25% multi-select)
+│   ├── AB730/                 # AB-730 AI Business Professional (200 questions with 25% multi-select)
+│   ├── AI900/                 # AI-900 Azure AI Fundamentals (200 questions with 25% multi-select)
 │   ├── NotificationSettings/   # Comprehensive notification preferences management
 │   └── shared/                # Reusable UI components + Timing Analytics
 │       ├── Results.jsx        # Enhanced results with multi-select scoring
@@ -507,12 +508,12 @@ src/
 - **🔧 PWA Manifest**: Complete app metadata with shortcuts, share targets, and installation prompts
 - **📱 Cross-Platform**: Works seamlessly on iOS, Android, and desktop browsers
 
-### **Enhancement 4: SAFe-Focused Branding & UX** ✅ (NEW!)
-- **🎯 Updated Main Title**: Changed from "Master Your Agile & Scrum Certifications" to "**Master Your SAFe Certifications**"
-- **👨‍🏫 Expert Alignment**: Updated subtitle to emphasize "SAFe experts" for targeted certification preparation
-- **📝 Documentation Consistency**: Complete README alignment with new SAFe-focused branding
+### **Enhancement 4: Azure AI Certification Focus** ✅
+- **🎯 Updated Platform**: Specialized platform for Microsoft Azure AI certifications
+- **👨‍🏫 Expert Alignment**: Focused content for AB-730 and AI-900 certification preparation
+- **📝 Documentation Consistency**: Complete README alignment with Azure AI certification focus
 - **🎨 Brand Coherence**: Consistent messaging throughout the application and documentation
-- **📱 User Experience**: Improved clarity about the platform's specific SAFe certification focus
+- **📱 User Experience**: Clear focus on Azure AI certification exam preparation
 
 ### **Enhancement 6: Multi-Select Questions & Advanced Timing** ✅ (NEW - October 2025!)
 - **🔥 Multi-Select Question System**: 25% distribution across both exams with partial credit scoring
@@ -619,13 +620,13 @@ src/
 
 ## 📊 **Key Metrics & Statistics**
 
-- **📚 Total Questions**: 385 high-quality practice questions with intelligent tracking
-- **🔥 Multi-Select Questions**: 25% distribution (96 multi-select questions) across both exams with partial credit
+- **📚 Total Questions**: 400 high-quality practice questions with intelligent tracking
+- **🔥 Multi-Select Questions**: 25% distribution (100 multi-select questions total) across both exams with partial credit
 - **🏆 Achievement Badges**: 25+ badges across 5 categories with progress analytics
 - **📈 Analytics Tracking**: Comprehensive performance metrics and predictive trends
 - **⏱️ Timer Modes**: 3 adaptive timing modes for different learning objectives
 - **⏱️ Timing Analytics**: Per-question timing with session analysis and performance insights
-- **🎯 Passing Scores**: Realistic thresholds (77% Leading SAFe, 73% SAFe Teams)  
+- **🎯 Passing Scores**: Realistic thresholds (70% for AB-730, 700 out of 1000 for AI-900)  
 - **📱 Device Support**: Fully responsive PWA across desktop, tablet, and mobile devices
 - **🧠 AI Features**: Pass probability prediction, spaced repetition, and personalized recommendations
 - **🔬 Learning Science**: SM-2 algorithm, retention analysis, and performance optimization
@@ -639,9 +640,9 @@ src/
 - **💡 Contextual Help**: Interactive tooltips and guided feature explanations
 - **📊 Advanced Insights**: AI-powered learning analytics and performance predictions
 
-## �📄 License
+## 📄 License
 
-This project is for educational purposes. SAFe® is a registered trademark of Scaled Agile, Inc.
+This project is for educational purposes. Microsoft, Azure, and Microsoft 365 are registered trademarks of Microsoft Corporation.
 
 ## 🤝 Contributing
 
@@ -683,14 +684,14 @@ This is a private educational project. For questions or suggestions, please reac
 
 ---
 
-**Disclaimer**: This practice exam is not affiliated with or endorsed by Scaled Agile, Inc. It is an independent study tool designed to help with exam preparation.
+**Disclaimer**: This practice exam is not affiliated with or endorsed by Microsoft Corporation. It is an independent study tool designed to help with Azure AI certification exam preparation.
 
 ---
 
-## ⭐ **Ready to Master Your SAFe Certifications?**
+## ⭐ **Ready to Master Your Azure AI Certifications?**
 
 ### 🌐 **Public Access**
-**Live URL**: https://jorense.github.io/safe-practice-exams/
+**Live URL**: https://YOUR-USERNAME.github.io/personal-practice-exams/
 
 ### 🛠️ **Local Development**
 1. **🚀 Launch the app**: `npm run dev`
@@ -708,6 +709,6 @@ This is a private educational project. For questions or suggestions, please reac
 - **💡 Interactive Help**: Contextual tooltips and guided feature tours
 - **📈 Advanced Analytics**: AI-powered insights for personalized learning optimization
 
-**Experience the future of intelligent SAFe certification preparation! 🎉🧠📱**
+**Experience the future of intelligent Azure AI certification preparation! 🎉🧠📱**
 
-**Share with colleagues**: https://jorense.github.io/safe-practice-exams/
+**Share with colleagues**: https://YOUR-USERNAME.github.io/personal-practice-exams/

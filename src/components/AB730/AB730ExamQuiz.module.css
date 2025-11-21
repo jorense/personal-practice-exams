@@ -49,6 +49,71 @@
   position: sticky;
   top: 0;
   z-index: 100;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brandSection {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.logo {
+  height: 45px;
+  width: auto;
+  display: block;
+}
+
+.examTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.headerControls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.timerDisplay {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  padding: 0.5rem 1rem;
+  background: var(--background-gray);
+  border-radius: var(--border-radius);
+}
+
+.timerWarning {
+  color: var(--danger-color);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.homeButton {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.homeButton:hover {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
 }
 
 .quizHeaderContent {
@@ -158,6 +223,38 @@
   opacity: 0.6;
 }
 
+.revealSection {
+  margin: 1.5rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.revealButton {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  border: none;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--border-radius);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.revealButton:hover {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+  transform: translateY(-1px);
+}
+
+.revealButton:active {
+  transform: translateY(0);
+}
+
 .progressBar {
   height: 4px;
   background: var(--border-color);
@@ -207,6 +304,80 @@
 .questionMeta {
   display: flex;
   gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.questionNumber {
+  background: var(--background-gray);
+  color: var(--text-primary);
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.multiSelectBadge {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  color: #92400e;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.multiSelectBadge::before {
+  content: '☑';
+  font-size: 1rem;
+}
+
+.questionDomain {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  color: #1e40af;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.questionDifficulty {
+  background: linear-gradient(135deg, #f3e8ff, #e9d5ff);
+  color: #7c3aed;
+  padding: 0.5rem 1rem;
+  border-radius: var(--border-radius);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.bookmarkButton {
+  background: transparent;
+  border: 2px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1;
+}
+
+.bookmarkButton:hover {
+  border-color: #fbbf24;
+  color: #fbbf24;
+  transform: scale(1.1);
+}
+
+.bookmarkButton.bookmarked {
+  border-color: #fbbf24;
+  background: #fef3c7;
+  color: #f59e0b;
 }
 
 .domain,
@@ -353,6 +524,15 @@
   box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.3);
 }
 
+/* Aliases for backward compatibility */
+.optionButton {
+  composes: option;
+}
+
+.optionLabel {
+  composes: optionLetter;
+}
+
 .optionText {
   flex: 1;
   font-size: 1rem;
@@ -383,6 +563,15 @@
 .xMark {
   background: var(--danger-color);
   color: white;
+}
+
+/* Aliases for indicator classes */
+.correctIndicator {
+  composes: checkMark;
+}
+
+.incorrectIndicator {
+  composes: xMark;
 }
 
 .explanationSection {

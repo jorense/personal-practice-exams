@@ -4,11 +4,10 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // Configure for GitHub Pages deployment
-  // Repository name: safe-practice-exams
-  base: process.env.NODE_ENV === 'production' ? '/safe-practice-exams/' : '/',
+  // Configure for personal practice exams (independent deployment)
+  base: '/',
   build: {
-    // Ensure proper asset paths for GitHub Pages
+    // Ensure proper asset paths
     assetsDir: 'assets',
     // Generate manifest for PWA
     manifest: true

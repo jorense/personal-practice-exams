@@ -36,7 +36,7 @@ const HamburgerMenu = ({
             {/* Header */}
             <div className={styles.menuHeader}>
               <div className={styles.menuBrand}>
-                <span className={styles.menuLogo}>LACE Studio</span>
+                <img src="/ai-cert-studio-logo.png" alt="AI Cert Studio" style={{height: '40px', width: 'auto'}} />
                 <span className={styles.menuTagline}>Practice Exams</span>
               </div>
               <button 
@@ -123,7 +123,7 @@ const HamburgerMenu = ({
             {/* Footer */}
             <div className={styles.menuFooter}>
               <p className={styles.footerText}>
-                © 2025 LACE Studio Practice Exams
+                © 2025 AI Cert Studio
               </p>
             </div>
           </nav>

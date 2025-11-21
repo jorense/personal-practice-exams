@@ -32,7 +32,7 @@ export const AnalyticsProvider = ({ children }) => {
       
       for (let i = 0; i < localStorage.length; i++) {
         const key = localStorage.key(i)
-        if (key && key.startsWith('lace-studio-sessions')) {
+        if (key && key.startsWith('personal-practice-exams-sessions')) {
           const data = JSON.parse(localStorage.getItem(key))
           if (Array.isArray(data)) {
             sessions.push(...data)
@@ -46,7 +46,7 @@ export const AnalyticsProvider = ({ children }) => {
       }
       
       // Load streak data
-      const savedStreak = localStorage.getItem('lace-studio-study-streak')
+      const savedStreak = localStorage.getItem('personal-practice-exams-study-streak')
       if (savedStreak) {
         setStreakData(JSON.parse(savedStreak))
       }
@@ -279,7 +279,7 @@ export const AnalyticsProvider = ({ children }) => {
 
   const updateStreak = useCallback(() => {
     const today = new Date().toDateString()
-    const savedStreak = localStorage.getItem('lace-studio-study-streak')
+    const savedStreak = localStorage.getItem('personal-practice-exams-study-streak')
     let streakInfo = savedStreak ? JSON.parse(savedStreak) : { current: 0, longest: 0, lastStudyDate: null }
 
     if (streakInfo.lastStudyDate === today) {
@@ -303,7 +303,7 @@ export const AnalyticsProvider = ({ children }) => {
     streakInfo.longest = Math.max(streakInfo.longest, streakInfo.current)
     streakInfo.lastStudyDate = today
 
-    localStorage.setItem('lace-studio-study-streak', JSON.stringify(streakInfo))
+    localStorage.setItem('personal-practice-exams-study-streak', JSON.stringify(streakInfo))
     setStreakData(streakInfo)
     
     return streakInfo
@@ -373,7 +373,7 @@ export const AnalyticsProvider = ({ children }) => {
     const url = URL.createObjectURL(dataBlob)
     const link = document.createElement('a')
     link.href = url
-    link.download = `lace-studio-analytics-${new Date().toISOString().split('T')[0]}.json`
+    link.download = `personal-practice-exams-analytics-${new Date().toISOString().split('T')[0]}.json`
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
@@ -385,9 +385,9 @@ export const AnalyticsProvider = ({ children }) => {
       // Clear analytics-related localStorage items
       for (let i = localStorage.length - 1; i >= 0; i--) {
         const key = localStorage.key(i)
-        if (key && (key.startsWith('lace-studio-sessions') || 
+        if (key && (key.startsWith('personal-practice-exams-sessions') || 
                    key.startsWith('examTiming_') || 
-                   key === 'lace-studio-study-streak')) {
+                   key === 'personal-practice-exams-study-streak')) {
           localStorage.removeItem(key)
         }
       }

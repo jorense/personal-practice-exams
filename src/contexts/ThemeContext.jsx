@@ -13,19 +13,19 @@ export const useTheme = () => {
 export const ThemeProvider = ({ children }) => {
   // Initialize theme from localStorage or default to 'light'
   const [theme, setTheme] = useState(() => {
-    const savedTheme = localStorage.getItem('lace-studio-theme')
+    const savedTheme = localStorage.getItem('personal-practice-exams-theme')
     return savedTheme || 'light'
   })
 
   // Initialize auto show explanation setting
   const [autoShowExplanation, setAutoShowExplanation] = useState(() => {
-    const saved = localStorage.getItem('lace-studio-auto-explanation')
+    const saved = localStorage.getItem('personal-practice-exams-auto-explanation')
     return saved === 'true'
   })
 
   // Apply theme immediately on mount and whenever it changes
   useEffect(() => {
-    localStorage.setItem('lace-studio-theme', theme)
+    localStorage.setItem('personal-practice-exams-theme', theme)
     // Apply theme to document body and root element
     document.body.className = theme === 'dark' ? 'dark-theme' : 'light-theme'
     document.documentElement.className = theme === 'dark' ? 'dark-theme' : 'light-theme'
@@ -33,14 +33,14 @@ export const ThemeProvider = ({ children }) => {
 
   // Apply theme immediately on component mount
   useEffect(() => {
-    const savedTheme = localStorage.getItem('lace-studio-theme') || 'light'
+    const savedTheme = localStorage.getItem('personal-practice-exams-theme') || 'light'
     document.body.className = savedTheme === 'dark' ? 'dark-theme' : 'light-theme'
     document.documentElement.className = savedTheme === 'dark' ? 'dark-theme' : 'light-theme'
   }, [])
 
   // Save auto explanation setting to localStorage
   useEffect(() => {
-    localStorage.setItem('lace-studio-auto-explanation', autoShowExplanation.toString())
+    localStorage.setItem('personal-practice-exams-auto-explanation', autoShowExplanation.toString())
   }, [autoShowExplanation])
 
   const setLightTheme = () => setTheme('light')

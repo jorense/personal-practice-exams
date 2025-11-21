@@ -5,10 +5,10 @@ import { StudyIntelligenceProvider } from './contexts/StudyIntelligenceContext.j
 import { NotificationProvider } from './contexts/NotificationContext.jsx'
 import { AutosaveProvider } from './contexts/AutosaveContext.jsx'
 import { AnalyticsProvider } from './contexts/AnalyticsContext.jsx'
-import LeadingSAFe6Exam from './components/LeadingSAFe6/LeadingSAFe6Exam.jsx'
-import LeadingSAFe6ExamQuiz from './components/LeadingSAFe6/LeadingSAFe6ExamQuiz.jsx'
-import SAFeTeams6Exam from './components/SAFeTeams6/SAFeTeams6Exam.jsx'
-import SAFeTeams6ExamQuiz from './components/SAFeTeams6/SAFeTeams6ExamQuiz.jsx'
+import AB730Exam from './components/AB730/AB730Exam.jsx'
+import AB730ExamQuiz from './components/AB730/AB730ExamQuiz.jsx'
+import AI900Exam from './components/AI900/AI900Exam.jsx'
+import AI900ExamQuiz from './components/AI900/AI900ExamQuiz.jsx'
 import Dashboard from './components/Dashboard/Dashboard.jsx'
 import Achievements from './components/Achievements/Achievements.jsx'
 import SmartReview from './components/SmartReview/SmartReview.jsx'
@@ -45,11 +45,11 @@ function AppContent() {
   const { theme, setLightTheme, setDarkTheme, autoShowExplanation, setAutoShowExplanation } = useTheme()
   const { achievements, getNewAchievements } = useProgress()
   const [currentPage, setCurrentPage] = useState('home')
-  const [studyExamType, setStudyExamType] = useState('Leading SAFe 6')
+  const [studyExamType, setStudyExamType] = useState('AB-730')
   const [achievementNotification, setAchievementNotification] = useState(null)
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false)
   const [numberOfQuestions, setNumberOfQuestions] = useState(() => {
-    const savedQuestionCount = localStorage.getItem('lace-studio-question-count')
+    const savedQuestionCount = localStorage.getItem('personal-practice-exams-question-count')
     const count = savedQuestionCount ? Number(savedQuestionCount) : 45
     // Migration: Update old default of 40 to new default of 45
     return count === 40 ? 45 : count
@@ -57,25 +57,25 @@ function AppContent() {
   
   // Add exam mode state management
   const [examMode, setExamMode] = useState(() => {
-    const savedExamMode = localStorage.getItem('lace-studio-exam-mode')
+    const savedExamMode = localStorage.getItem('personal-practice-exams-exam-mode')
     return savedExamMode || 'exam'
   })
 
   // Save numberOfQuestions to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('lace-studio-question-count', numberOfQuestions.toString())
+    localStorage.setItem('personal-practice-exams-question-count', numberOfQuestions.toString())
   }, [numberOfQuestions])
 
   // Save examMode to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('lace-studio-exam-mode', examMode)
+    localStorage.setItem('personal-practice-exams-exam-mode', examMode)
   }, [examMode])
 
   // One-time migration effect to update localStorage for migrated users
   useEffect(() => {
-    const savedQuestionCount = localStorage.getItem('lace-studio-question-count')
+    const savedQuestionCount = localStorage.getItem('personal-practice-exams-question-count')
     if (savedQuestionCount === '40') {
-      localStorage.setItem('lace-studio-question-count', '45')
+      localStorage.setItem('personal-practice-exams-question-count', '45')
     }
   }, [])
 
@@ -88,22 +88,22 @@ function AppContent() {
   }, [achievements, getNewAchievements])
 
   const startExam = (examType) => {
-    if (examType === 'Leading SAFe 6') {
-      setCurrentPage('leading-safe-6')
-    } else if (examType === 'SAFe for Teams 6.0') {
-      setCurrentPage('safe-teams-6')
+    if (examType === 'AB-730') {
+      setCurrentPage('ab730')
+    } else if (examType === 'AI-900') {
+      setCurrentPage('ai900')
     }
   }
 
-  const startLeadingSAFe6Quiz = () => {
-    setCurrentPage('leading-safe-6-quiz')
+  const startAB730Quiz = () => {
+    setCurrentPage('ab730-quiz')
   }
 
-  const startSAFeTeams6Quiz = () => {
-    setCurrentPage('safe-teams-6-quiz')
+  const startAI900Quiz = () => {
+    setCurrentPage('ai900-quiz')
   }
 
-  const goToStudyMaterials = (examType = 'Leading SAFe 6') => {
+  const goToStudyMaterials = (examType = 'AB-730') => {
     setStudyExamType(examType)
     setCurrentPage('study-materials')
   }
@@ -184,28 +184,28 @@ function AppContent() {
   }
 
   const goBackToExam = () => {
-    if (studyExamType === 'Leading SAFe 6') {
-      setCurrentPage('leading-safe-6')
-    } else if (studyExamType === 'SAFe for Teams 6.0') {
-      setCurrentPage('safe-teams-6')
+    if (studyExamType === 'AB-730') {
+      setCurrentPage('ab730')
+    } else if (studyExamType === 'AI-900') {
+      setCurrentPage('ai900')
     }
   }
 
-  const goBackToLeadingSAFe6 = () => {
-    setCurrentPage('leading-safe-6')
+  const goBackToAB730 = () => {
+    setCurrentPage('ab730')
   }
 
-  const goBackToSAFeTeams6 = () => {
-    setCurrentPage('safe-teams-6')
+  const goBackToAI900 = () => {
+    setCurrentPage('ai900')
   }
 
-  // Leading SAFe 6 Exam Page
-  if (currentPage === 'leading-safe-6') {
+  // AB-730 Exam Page
+  if (currentPage === 'ab730') {
     return (
-      <LeadingSAFe6Exam 
+      <AB730Exam 
         onGoHome={goHome} 
-        onGoToStudyMaterials={() => goToStudyMaterials('Leading SAFe 6')} 
-        onStartQuiz={startLeadingSAFe6Quiz} 
+        onGoToStudyMaterials={() => goToStudyMaterials('AB-730')} 
+        onStartQuiz={startAB730Quiz} 
         numberOfQuestions={numberOfQuestions} 
         autoShowExplanation={autoShowExplanation}
         onNumberOfQuestionsChange={setNumberOfQuestions}
@@ -216,12 +216,12 @@ function AppContent() {
     )
   }
 
-  // Leading SAFe 6 Quiz Page
-  if (currentPage === 'leading-safe-6-quiz') {
+  // AB-730 Quiz Page
+  if (currentPage === 'ab730-quiz') {
     return (
-      <LeadingSAFe6ExamQuiz 
+      <AB730ExamQuiz 
         onGoHome={goHome} 
-        onGoBackToExam={goBackToLeadingSAFe6} 
+        onGoBackToExam={goBackToAB730} 
         numberOfQuestions={numberOfQuestions} 
         autoShowExplanation={autoShowExplanation} 
         examMode={examMode}
@@ -229,13 +229,13 @@ function AppContent() {
     )
   }
 
-  // SAFe for Teams 6.0 Exam Page
-  if (currentPage === 'safe-teams-6') {
+  // AI-900 Exam Page
+  if (currentPage === 'ai900') {
     return (
-      <SAFeTeams6Exam 
+      <AI900Exam 
         onGoHome={goHome} 
-        onGoToStudyMaterials={() => goToStudyMaterials('SAFe for Teams 6.0')} 
-        onStartQuiz={startSAFeTeams6Quiz} 
+        onGoToStudyMaterials={() => goToStudyMaterials('AI-900')} 
+        onStartQuiz={startAI900Quiz} 
         numberOfQuestions={numberOfQuestions} 
         autoShowExplanation={autoShowExplanation}
         onNumberOfQuestionsChange={setNumberOfQuestions}
@@ -246,12 +246,12 @@ function AppContent() {
     )
   }
 
-  // SAFe for Teams 6.0 Quiz Page
-  if (currentPage === 'safe-teams-6-quiz') {
+  // AI-900 Quiz Page
+  if (currentPage === 'ai900-quiz') {
     return (
-      <SAFeTeams6ExamQuiz 
+      <AI900ExamQuiz 
         onGoHome={goHome} 
-        onGoBackToExam={goBackToSAFeTeams6} 
+        onGoBackToExam={goBackToAI900} 
         numberOfQuestions={numberOfQuestions} 
         autoShowExplanation={autoShowExplanation} 
         examMode={examMode}
@@ -279,7 +279,7 @@ function AppContent() {
 
   if (currentPage === 'study-companion') {
     return <StudyCompanion 
-      examType={studyExamType === 'Leading SAFe 6' ? 'leadingsafe' : 'safeteams'}
+      examType='ab730'
       onStartRecommendedSession={(config) => {
         setNumberOfQuestions(config.questionCount);
         goHome();
@@ -312,7 +312,7 @@ function AppContent() {
           <div className="header-content">
             <div className="brand">
               <div className="logo-container">
-                <div className="logo-fallback">LACE Studio</div>
+                <img src="/ai-cert-studio-logo.png" alt="AI Cert Studio" className="logo-image" />
               </div>
               <div className="tagline">Practice Exams - Settings</div>
             </div>
@@ -418,9 +418,7 @@ function AppContent() {
                   <option value={40}>40 Questions</option>
                   <option value={45}>45 Questions (Default)</option>
                   <option value={50}>50 Questions</option>
-                  <option value={100}>100 Questions</option>
-                  <option value={185}>185 Questions (SAFe Teams 6.0 Complete)</option>
-                  <option value={200}>200 Questions (Leading SAFe 6 Complete)</option>
+                  <option value={100}>100 Questions (Complete Bank)</option>
                 </select>
               </div>
               <div className="settings-info">
@@ -467,7 +465,7 @@ function AppContent() {
           <div className="header-content">
             <div className="brand">
               <div className="logo-container">
-                <div className="logo-fallback">LACE Studio</div>
+                <img src="/ai-cert-studio-logo.png" alt="AI Cert Studio" className="logo-image" />
               </div>
               <div className="tagline">Practice Exams</div>
             </div>
@@ -530,30 +528,30 @@ function AppContent() {
           <div className="hero-section">
             <h1>Available Practice Exams</h1>
             <p className="hero-subtitle">
-              Choose from our comprehensive collection of Agile and Scrum certification practice exams
+              Choose from our comprehensive collection of Microsoft Azure AI certification practice exams
             </p>
 
             <div className="cta-section">
               <div className="exam-group">
-                <h2 className="exam-group-title">Agile & Scrum Certifications</h2>
+                <h2 className="exam-group-title">Microsoft Azure AI Certifications</h2>
                 <div className="exam-buttons agile-exams">
                   <button
-                    className="cta-button leading-safe-6 recommended"
-                    data-testid="start-leading-safe-exams"
-                    onClick={() => startExam('Leading SAFe 6')}
+                    className="cta-button azure-ai-ab730 recommended"
+                    data-testid="start-ab730-exams"
+                    onClick={() => startExam('AB-730')}
                   >
                     <span className="button-content">
-                      Start Leading SAFe 6 Practice Exam
+                      Start AB-730: AI Business Professional Practice Exam
                       <span className="recommended-badge">Available</span>
                     </span>
                   </button>
                   <button
-                    className="cta-button safe-teams-6 recommended"
-                    data-testid="start-safe-teams-exams"
-                    onClick={() => startExam('SAFe for Teams 6.0')}
+                    className="cta-button azure-ai-ai900 recommended"
+                    data-testid="start-ai900-exams"
+                    onClick={() => startExam('AI-900')}
                   >
                     <span className="button-content">
-                      Start SAFe for Teams 6.0 Practice Exam
+                      Start AI-900: Azure AI Fundamentals Practice Exam
                       <span className="recommended-badge">Available</span>
                     </span>
                   </button>
@@ -564,20 +562,20 @@ function AppContent() {
                 <h2 className="exam-group-title">Coming Soon</h2>
                 <div className="exam-buttons coming-soon-exams">
                   <button
-                    className="cta-button coming-soon-button psm-2"
+                    className="cta-button coming-soon-button azure-ai-102"
                     disabled
                   >
                     <span className="button-content">
-                      PSM II Practice Exam
+                      AI-102: Azure AI Engineer Associate
                       <span className="coming-soon-badge">Coming Soon</span>
                     </span>
                   </button>
                   <button
-                    className="cta-button coming-soon-button pspo-1"
+                    className="cta-button coming-soon-button azure-dp-100"
                     disabled
                   >
                     <span className="button-content">
-                      PSPO 1 Practice Exam
+                      DP-100: Azure Data Scientist Associate
                       <span className="coming-soon-badge">Coming Soon</span>
                     </span>
                   </button>
@@ -588,7 +586,7 @@ function AppContent() {
         </main>
 
         <footer className="footer">
-          <p>&copy; 2025 LACE Studio Practice Exams. Empowering Agile professionals worldwide.</p>
+          <p>&copy; 2025 AI Cert Studio. Empowering Azure AI professionals worldwide.</p>
         </footer>
       </>
     )
@@ -601,7 +599,7 @@ function AppContent() {
         <div className="header-content">
           <div className="brand">
             <div className="logo-container">
-              <div className="logo-fallback">LACE Studio</div>
+              <img src="/ai-cert-studio-logo.png" alt="AI Cert Studio" className="logo-image" />
             </div>
             <div className="tagline">Practice Exams</div>
           </div>
@@ -683,9 +681,9 @@ function AppContent() {
 
       <main className="main-content">
         <div className="hero-section">
-          <h1>Master Your SAFe Certifications</h1>
+          <h1>Master Your Azure AI Certifications</h1>
           <p className="hero-subtitle">
-            Prepare for success with our comprehensive practice exams designed by SAFe experts
+            Prepare for success with comprehensive practice exams for Microsoft Azure AI certifications
           </p>
 
           <div className="featured-exams-section">
@@ -696,12 +694,12 @@ function AppContent() {
               <div className="featured-exams-grid">
                 <div className="featured-exam-item">
                   <button
-                    className="featured-exam-button leading-safe-6"
-                    onClick={() => startExam('Leading SAFe 6')}
+                    className="featured-exam-button azure-ai-ab730"
+                    onClick={() => startExam('AB-730')}
                   >
-                      <div className="featured-exam-content" data-testid="start-leading-safe-home">
-                      <h3>Leading SAFe 6</h3>
-                      <p>Scaled Agile Framework</p>
+                      <div className="featured-exam-content" data-testid="start-ab730-home">
+                      <h3>AB-730</h3>
+                      <p>AI Business Professional</p>
                       <span className="featured-badge available">Available</span>
                     </div>
                   </button>
@@ -709,12 +707,12 @@ function AppContent() {
 
                 <div className="featured-exam-item">
                   <button
-                    className="featured-exam-button safe-teams-6"
-                    onClick={() => startExam('SAFe for Teams 6.0')}
+                    className="featured-exam-button azure-ai-ai900"
+                    onClick={() => startExam('AI-900')}
                   >
-                      <div className="featured-exam-content" data-testid="start-safe-teams-home">
-                      <h3>SAFe for Teams 6.0</h3>
-                      <p>Team-Level SAFe Certification</p>
+                      <div className="featured-exam-content" data-testid="start-ai900-home">
+                      <h3>AI-900</h3>
+                      <p>Azure AI Fundamentals</p>
                       <span className="featured-badge available">Available</span>
                     </div>
                   </button>
@@ -722,12 +720,12 @@ function AppContent() {
 
                 <div className="featured-exam-item">
                   <button
-                    className="featured-exam-button pspo-1 coming-soon"
+                    className="featured-exam-button azure-ai-102 coming-soon"
                     disabled
                   >
                     <div className="featured-exam-content">
-                      <h3>PSPO 1</h3>
-                      <p>Professional Scrum Product Owner I</p>
+                      <h3>AI-102</h3>
+                      <p>Azure AI Engineer Associate</p>
                       <span className="featured-badge coming-soon-badge">Coming Soon</span>
                     </div>
                   </button>
@@ -766,7 +764,7 @@ function AppContent() {
       </main>
 
       <footer className="footer">
-        <p>&copy; 2025 LACE Studio Practice Exams. Empowering Agile professionals worldwide.</p>
+        <p>&copy; 2025 AI Cert Studio. Empowering Azure AI professionals worldwide.</p>
       </footer>
 
       {/* Achievement Notification */}

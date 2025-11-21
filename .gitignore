@@ -75,9 +75,21 @@ HOOK_ERRORS_FIX.md
 NOTIFICATION_FIX.md
 UI_FIXES_SUMMARY.md
 UI_UX_REVIEW_COMPLETE.md
+MIGRATION_SUMMARY.md
+
+# Cleanup scripts (migration tools - not needed in production)
+careful-clean.js
+cleanup-safe.js
+cleanup.ps1
+deep-clean.js
+final-clean.js
+fix-imports.js
+remove-blocks.js
 
 # Local scratch / experimental source files
 src/App.jsx.backup
+src/App-simple.jsx
+src/App-test.jsx
 src/TestApp.jsx
 src/test/
 test-fixes.js

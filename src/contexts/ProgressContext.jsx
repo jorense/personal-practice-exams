@@ -23,10 +23,10 @@ export const ProgressProvider = ({ children }) => {
 
   // Load data from localStorage on mount
   useEffect(() => {
-    const savedHistory = localStorage.getItem('lace-studio-session-history');
-    const savedStreaks = localStorage.getItem('lace-studio-streaks');
-    const savedAchievements = localStorage.getItem('lace-studio-achievements');
-    const savedQuestionPerf = localStorage.getItem('lace-studio-question-performance');
+    const savedHistory = localStorage.getItem('personal-practice-exams-session-history');
+    const savedStreaks = localStorage.getItem('personal-practice-exams-streaks');
+    const savedAchievements = localStorage.getItem('personal-practice-exams-achievements');
+    const savedQuestionPerf = localStorage.getItem('personal-practice-exams-question-performance');
 
     if (savedHistory) {
       try {
@@ -63,19 +63,19 @@ export const ProgressProvider = ({ children }) => {
 
   // Save data to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('lace-studio-session-history', JSON.stringify(sessionHistory));
+    localStorage.setItem('personal-practice-exams-session-history', JSON.stringify(sessionHistory));
   }, [sessionHistory]);
 
   useEffect(() => {
-    localStorage.setItem('lace-studio-streaks', JSON.stringify(streakData));
+    localStorage.setItem('personal-practice-exams-streaks', JSON.stringify(streakData));
   }, [streakData]);
 
   useEffect(() => {
-    localStorage.setItem('lace-studio-achievements', JSON.stringify(achievements));
+    localStorage.setItem('personal-practice-exams-achievements', JSON.stringify(achievements));
   }, [achievements]);
 
   useEffect(() => {
-    localStorage.setItem('lace-studio-question-performance', JSON.stringify(questionPerformance));
+    localStorage.setItem('personal-practice-exams-question-performance', JSON.stringify(questionPerformance));
   }, [questionPerformance]);
 
   // Record a completed exam session
@@ -96,7 +96,7 @@ export const ProgressProvider = ({ children }) => {
       const newHistory = [session, ...prev].slice(0, 100); // Keep last 100 sessions
       
       // Track total session count for PWA install prompt
-      localStorage.setItem('lace-studio-sessions-count', newHistory.length.toString());
+      localStorage.setItem('personal-practice-exams-sessions-count', newHistory.length.toString());
       
       return newHistory;
     });

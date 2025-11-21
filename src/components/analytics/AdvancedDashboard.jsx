@@ -181,7 +181,7 @@ const AdvancedDashboard = ({ onGoHome }) => {
             </div>
             <div className={styles.chartFooter}>
               <div className={styles.passLine}>
-                <span>Passing Score: 77%</span>
+                <span>Passing Score: 70%</span>
               </div>
             </div>
           </div>

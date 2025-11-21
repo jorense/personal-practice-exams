@@ -40,7 +40,7 @@ function Dashboard({ onGoHome }) {
       <div className={styles.analyticsContainer}>
         <header className={styles.analyticsHeader}>
           <div className={styles.brand}>
-            <div className={styles.logo}>LACE Studio</div>
+            <img src="/ai-cert-studio-logo.png" alt="AI Cert Studio" className={styles.logo} />
             <div className={styles.tagline}>Performance Analytics</div>
           </div>
           <button className={styles.homeButton} onClick={onGoHome}>
@@ -66,7 +66,7 @@ function Dashboard({ onGoHome }) {
     <div className={styles.analyticsContainer}>
       <header className={styles.analyticsHeader}>
         <div className={styles.brand}>
-          <div className={styles.logo}>LACE Studio</div>
+          <div className={styles.logo}>AI Cert Studio</div>
           <div className={styles.tagline}>Performance Analytics</div>
         </div>
         <button className={styles.homeButton} onClick={onGoHome}>
