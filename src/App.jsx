@@ -312,7 +312,7 @@ function AppContent() {
           <div className="header-content">
             <div className="brand">
               <div className="logo-container">
-                <img src="/ai-cert-studio-logo.png" alt="AI Cert Studio" className="logo-image" />
+                <img src="./ai-cert-studio-logo.png" alt="AI Cert Studio" className="logo-image" />
               </div>
               <div className="tagline">Practice Exams - Settings</div>
             </div>
@@ -465,7 +465,7 @@ function AppContent() {
           <div className="header-content">
             <div className="brand">
               <div className="logo-container">
-                <img src="/ai-cert-studio-logo.png" alt="AI Cert Studio" className="logo-image" />
+                <img src="./ai-cert-studio-logo.png" alt="AI Cert Studio" className="logo-image" />
               </div>
               <div className="tagline">Practice Exams</div>
             </div>
@@ -599,7 +599,7 @@ function AppContent() {
         <div className="header-content">
           <div className="brand">
             <div className="logo-container">
-              <img src="/ai-cert-studio-logo.png" alt="AI Cert Studio" className="logo-image" />
+              <img src="./ai-cert-studio-logo.png" alt="AI Cert Studio" className="logo-image" />
             </div>
             <div className="tagline">Practice Exams</div>
           </div>
