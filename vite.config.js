@@ -4,8 +4,8 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
-  // Configure for personal practice exams (independent deployment)
-  base: '/',
+  // Configure for GitHub Pages deployment
+  base: '/personal-practice-exams/',
   build: {
     // Ensure proper asset paths
     assetsDir: 'assets',
