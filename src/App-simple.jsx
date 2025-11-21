@@ -17,7 +17,7 @@ function App() {
         marginBottom: '20px'
       }}>
         <h1 style={{ color: '#1e293b', margin: '0' }}>
-          LACE Studio Practice Exams
+          AI Cert Studio Practice Exams
         </h1>
         <p style={{ color: '#64748b', margin: '10px 0 0 0' }}>
           SAFe & Azure Certification Practice
@@ -30,7 +30,7 @@ function App() {
         borderRadius: '8px',
         boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
       }}>
-        <h2 style={{ color: '#1e293b' }}>Welcome to LACE Studio</h2>
+        <h2 style={{ color: '#1e293b' }}>Welcome to AI Cert Studio</h2>
         <p style={{ color: '#64748b' }}>
           Your comprehensive platform for SAFe and Azure certification practice exams.
         </p>

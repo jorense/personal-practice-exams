@@ -40,7 +40,7 @@ function Dashboard({ onGoHome }) {
       <div className={styles.analyticsContainer}>
         <header className={styles.analyticsHeader}>
           <div className={styles.brand}>
-            <img src="/ai-cert-studio-logo.png" alt="AI Cert Studio" className={styles.logo} />
+            <img src="./ai-cert-studio-logo.png" alt="AI Cert Studio" className={styles.logo} />
             <div className={styles.tagline}>Performance Analytics</div>
           </div>
           <button className={styles.homeButton} onClick={onGoHome}>

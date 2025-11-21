@@ -50,7 +50,7 @@ function SmartReview({ onGoHome, onStartExam }) {
       <div className={styles.reviewContainer}>
         <header className={styles.reviewHeader}>
           <div className={styles.brand}>
-            <img src="/ai-cert-studio-logo.png" alt="AI Cert Studio" className={styles.logo} />
+            <img src="./ai-cert-studio-logo.png" alt="AI Cert Studio" className={styles.logo} />
             <div className={styles.tagline}>Smart Review</div>
           </div>
           <button className={styles.homeButton} onClick={onGoHome}>

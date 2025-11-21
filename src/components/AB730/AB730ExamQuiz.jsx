@@ -390,7 +390,7 @@ function AB730ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45, autoS
     <div className={styles.quizContainer}>
       <header className={styles.quizHeader}>
         <div className={styles.brandSection}>
-          <img src="/ai-cert-studio-logo.png" alt="AI Cert Studio" className={styles.logo} />
+          <img src="./ai-cert-studio-logo.png" alt="AI Cert Studio" className={styles.logo} />
           <div className={styles.examTitle}>AB-730: AI Business Professional</div>
         </div>
         <div className={styles.headerControls}>

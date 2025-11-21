@@ -30,7 +30,7 @@ function AI900Exam({
     <div className={styles.examContainer}>
       <header className={styles.examHeader} data-testid="ai900-exam-header">
         <div className={styles.brand}>
-          <img src="/ai-cert-studio-logo.png" alt="AI Cert Studio" className={styles.logo} />
+          <img src="./ai-cert-studio-logo.png" alt="AI Cert Studio" className={styles.logo} />
           <div className={styles.tagline}>AI-900 Practice Exam</div>
         </div>
         <button className={styles.homeButton} onClick={onGoHome}>

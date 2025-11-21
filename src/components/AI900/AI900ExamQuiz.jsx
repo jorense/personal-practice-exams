@@ -390,7 +390,7 @@ function AI900ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45, autoS
     <div className={styles.quizContainer}>
       <header className={styles.quizHeader}>
         <div className={styles.brandSection}>
-          <img src="/ai-cert-studio-logo.png" alt="AI Cert Studio" className={styles.logo} />
+          <img src="./ai-cert-studio-logo.png" alt="AI Cert Studio" className={styles.logo} />
           <div className={styles.examTitle}>AI-900: Azure AI Fundamentals</div>
         </div>
         <div className={styles.headerControls}>

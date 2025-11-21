@@ -36,7 +36,7 @@ const HamburgerMenu = ({
             {/* Header */}
             <div className={styles.menuHeader}>
               <div className={styles.menuBrand}>
-                <img src="/ai-cert-studio-logo.png" alt="AI Cert Studio" style={{height: '40px', width: 'auto'}} />
+                <img src="./ai-cert-studio-logo.png" alt="AI Cert Studio" style={{height: '40px', width: 'auto'}} />
                 <span className={styles.menuTagline}>Practice Exams</span>
               </div>
               <button 
