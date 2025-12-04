@@ -1,6 +1,8 @@
 import { useTheme } from '../../contexts/ThemeContext.jsx';
 import styles from './AB730Exam.module.css'
 import DataPersistenceNotice from '../autosave/DataPersistenceNotice.jsx'
+import QuestionHistory from '../QuestionHistory/QuestionHistory.jsx'
+import AB730Questions from './AB730Questions.js'
 
 function AB730Exam({ 
   onGoHome, 
@@ -148,6 +150,9 @@ function AB730Exam({
               </div>
             </div>
           </div>
+
+          {/* Question History Panel */}
+          <QuestionHistory examType="ab730" totalQuestions={AB730Questions.length} />
 
           <div className={styles.examDomains} data-testid="ab730-exam-domains">
             <h2>Exam Domains</h2>

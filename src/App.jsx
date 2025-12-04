@@ -5,6 +5,7 @@ import { StudyIntelligenceProvider } from './contexts/StudyIntelligenceContext.j
 import { NotificationProvider } from './contexts/NotificationContext.jsx'
 import { AutosaveProvider } from './contexts/AutosaveContext.jsx'
 import { AnalyticsProvider } from './contexts/AnalyticsContext.jsx'
+import { QuestionHistoryProvider } from './contexts/QuestionHistoryContext.jsx'
 import AB730Exam from './components/AB730/AB730Exam.jsx'
 import AB730ExamQuiz from './components/AB730/AB730ExamQuiz.jsx'
 import AI900Exam from './components/AI900/AI900Exam.jsx'
@@ -31,7 +32,9 @@ function App() {
           <StudyIntelligenceProvider>
             <AutosaveProvider>
               <AnalyticsProvider>
-                <AppContent />
+                <QuestionHistoryProvider>
+                  <AppContent />
+                </QuestionHistoryProvider>
               </AnalyticsProvider>
             </AutosaveProvider>
           </StudyIntelligenceProvider>

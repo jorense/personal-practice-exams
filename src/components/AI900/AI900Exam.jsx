@@ -1,6 +1,8 @@
 import { useTheme } from '../../contexts/ThemeContext.jsx';
 import styles from './AI900Exam.module.css'
 import DataPersistenceNotice from '../autosave/DataPersistenceNotice.jsx'
+import QuestionHistory from '../QuestionHistory/QuestionHistory.jsx'
+import AI900Questions from './AI900Questions.js'
 
 function AI900Exam({ 
   onGoHome, 
@@ -148,6 +150,9 @@ function AI900Exam({
               </div>
             </div>
           </div>
+
+          {/* Question History Panel */}
+          <QuestionHistory examType="ai900" totalQuestions={AI900Questions.length} />
 
           <div className={styles.examDomains} data-testid="ai900-exam-domains">
             <h2>Exam Domains</h2>

@@ -3,6 +3,7 @@ import styles from './AI900ExamQuiz.module.css'
 import AI900Questions from './AI900Questions.js'
 import Results from '../shared/Results.jsx'
 import ProgressIndicator from '../exam/ProgressIndicator.jsx'
+import { shuffleQuestionAnswers } from '../../utils/shuffleAnswers.js'
 
 import SessionRecovery from '../autosave/SessionRecovery.jsx'
 import HelpSystem, { MultiSelectHelp } from '../help/HelpSystem.jsx'
@@ -10,11 +11,15 @@ import { useProgress } from '../../contexts/ProgressContext.jsx'
 import { useStudyIntelligence } from '../../contexts/StudyIntelligenceContext.jsx'
 import { useAutosave } from '../../contexts/AutosaveContext.jsx'
 import { useExamTiming } from '../../hooks/useExamTiming.js'
+import { useQuestionHistory } from '../../contexts/QuestionHistoryContext.jsx'
+import QuestionHistory from '../QuestionHistory/QuestionHistory.jsx'
+import QuestionBadge from '../shared/QuestionBadge.jsx'
 
 function AI900ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45, autoShowExplanation = false, examMode = 'exam', scheduler }) {
   const { recordSession } = useProgress()
   const { updateSpacedRepetition } = useStudyIntelligence()
   const { saveExamState, loadExamState, clearExamState, AUTOSAVE_INTERVAL, DEBOUNCE_DELAY } = useAutosave()
+  const { recordQuestionAttempt, isQuestionSeen, filterQuestions } = useQuestionHistory()
 
   // Adaptive timer calculation function
   const calculateTimerDuration = (questionCount) => {
@@ -68,33 +73,6 @@ function AI900ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45, autoS
     return shuffled
   }
 
-  // Utility function to shuffle question options and update correct answer index
-  const shuffleQuestionOptions = (question) => {
-    const optionIndices = question.options.map((option, i) => ({ index: i, option }))
-    const shuffledOptions = shuffleArray(optionIndices)
-    
-    const newQuestion = {
-      ...question,
-      options: shuffledOptions.map(item => item.option),
-      optionMapping: shuffledOptions.map(item => item.index) // Keep track of original positions
-    }
-    
-    // Handle single-select questions
-    if (!question.questionType || question.questionType !== 'multiple') {
-      newQuestion.correctAnswer = shuffledOptions.findIndex(item => item.index === question.correctAnswer)
-      newQuestion.originalCorrectAnswer = question.correctAnswer // Keep track for explanations
-    } 
-    // Handle multi-select questions
-    else {
-      newQuestion.correctAnswers = question.correctAnswers.map(originalIndex => 
-        shuffledOptions.findIndex(item => item.index === originalIndex)
-      )
-      newQuestion.originalCorrectAnswers = question.correctAnswers // Keep track for explanations
-    }
-    
-    return newQuestion
-  }
-
   // Initialize shuffled questions on component mount
   useEffect(() => {
     try {
@@ -107,10 +85,14 @@ function AI900ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45, autoS
       }
       // Practice mode: include all questions (single-select + multi-select)
       
+      // Apply seen/unseen filter
+      availableQuestions = filterQuestions('ai900', availableQuestions)
+      
       const shuffled = shuffleArray(availableQuestions)
       const selectedQuestions = shuffled.slice(0, numberOfQuestions)
-      // Shuffle the options for each question to prevent visual patterns
-      const questionsWithShuffledOptions = selectedQuestions.map(shuffleQuestionOptions)
+      // Shuffle the options for each question using seeded randomization
+      // This eliminates position bias, length bias, and visual cues
+      const questionsWithShuffledOptions = selectedQuestions.map(q => shuffleQuestionAnswers(q))
       setShuffledQuestions(questionsWithShuffledOptions)
 
       if (typeof window !== 'undefined') {
@@ -305,7 +287,7 @@ function AI900ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45, autoS
       questionTimings
     })
 
-    // Update spaced repetition
+    // Update spaced repetition and record question attempts
     shuffledQuestions.forEach(q => {
       const userAnswer = selectedAnswers[q.id]
       const isCorrect = q.questionType === 'multiple' 
@@ -313,6 +295,7 @@ function AI900ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45, autoS
         : userAnswer === q.correctAnswer
       
       updateSpacedRepetition(`ai900-${q.id}`, isCorrect)
+      recordQuestionAttempt('ai900', q.id, isCorrect)
     })
 
     clearExamState('ab730', sessionId)
@@ -329,10 +312,10 @@ function AI900ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45, autoS
     setBookmarkedQuestions(new Set())
     setTimingResetToken(prev => prev + 1)
     
-    // Reshuffle questions
+    // Reshuffle questions with seeded randomization to eliminate biases
     const shuffled = shuffleArray(AI900Questions)
     const selectedQuestions = shuffled.slice(0, numberOfQuestions)
-    const questionsWithShuffledOptions = selectedQuestions.map(shuffleQuestionOptions)
+    const questionsWithShuffledOptions = selectedQuestions.map(q => shuffleQuestionAnswers(q))
     setShuffledQuestions(questionsWithShuffledOptions)
   }
 
@@ -422,6 +405,9 @@ function AI900ExamQuiz({ onGoHome, onGoBackToExam, numberOfQuestions = 45, autoS
               <span className={styles.questionNumber}>
                 Question {currentQuestion + 1} of {shuffledQuestions.length}
               </span>
+              {!isQuestionSeen('ai900', question.id) && (
+                <QuestionBadge type="new" text="NEW" />
+              )}
               {isMultiSelect && (
                 <span className={styles.multiSelectBadge}>
                   Multi-Select (Choose {question.selectCount})
