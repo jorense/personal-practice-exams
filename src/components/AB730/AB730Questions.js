@@ -3002,6 +3002,1056 @@ const AB730Questions = [
     explanation: "Copilot continues evolving with expanded integrations across more applications, enhanced customization through agents and plugins, improved reasoning capabilities, broader application scenarios, and deeper Microsoft 365 and third-party connections to maximize business value.",
     domain: "Understand generative AI fundamentals",
     difficulty: "Foundation"
+  },
+  {
+    id: 201,
+    question: "Your organization wants to ensure Copilot only accesses documents from specific SharePoint sites. How should you configure this?",
+    options: [
+      "Use Copilot's built-in site filtering feature",
+      "Leverage Microsoft 365 permission inheritance and site access controls",
+      "Create a separate Copilot instance for each site",
+      "Manually approve each document access request"
+    ],
+    correctAnswer: 1,
+    explanation: "Copilot respects existing Microsoft 365 permissions. By properly configuring SharePoint site permissions and access controls, you ensure Copilot only accesses content users are authorized to see. There's no separate Copilot permission system - it inherits organizational security.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Applied"
+  },
+  {
+    id: 202,
+    question: "When crafting prompts for Copilot, what is the recommended approach for getting specific formatting?",
+    options: [
+      "Describe the desired format in natural language within your prompt",
+      "Copilot automatically detects and applies the best format",
+      "Use special formatting codes like [BOLD] or [TABLE]",
+      "Format the output manually after Copilot generates the content"
+    ],
+    correctAnswer: 0,
+    explanation: "The most effective approach is to describe your desired format clearly in natural language within your prompt (e.g., 'Create a table with three columns' or 'Format as bullet points'). Copilot understands natural language formatting instructions and can generate appropriately formatted content.",
+    domain: "Manage prompts and conversations by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 203,
+    question: "What is the primary benefit of using Copilot agents compared to standard Copilot chat?",
+    options: [
+      "Agents work offline while chat requires internet",
+      "Agents provide specialized expertise and workflows for specific business scenarios",
+      "Agents are faster than regular chat interactions",
+      "Agents can access data that regular Copilot cannot"
+    ],
+    correctAnswer: 1,
+    explanation: "Copilot agents are specialized tools configured with specific knowledge, capabilities, and instructions for particular use cases. They provide domain-specific expertise and can execute predefined workflows, making them ideal for specialized business scenarios like IT support, HR inquiries, or sales assistance.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Applied"
+  },
+  {
+    id: 204,
+    question: "In Microsoft Word, you want Copilot to rewrite a paragraph to be more concise. What is the most effective prompt structure?",
+    options: [
+      "'Make this shorter'",
+      "'Rewrite the selected paragraph to be more concise while maintaining the key message and professional tone'",
+      "'Delete unnecessary words'",
+      "'Summarize'"
+    ],
+    correctAnswer: 1,
+    explanation: "Effective prompts provide clear, specific instructions with context. The prompt should specify what to rewrite (selected paragraph), the goal (more concise), and any constraints (maintain key message and tone). This gives Copilot the context needed to produce the desired output.",
+    domain: "Manage prompts and conversations by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 205,
+    question: "Your marketing team wants to use Copilot to analyze customer feedback from multiple sources. What is the best approach?",
+    options: [
+      "Analyze each source separately and manually combine results",
+      "Provide Copilot with access to all feedback sources and ask it to identify common themes and sentiment across all data",
+      "Use Copilot only for the most recent feedback",
+      "Create separate Copilot instances for each feedback source"
+    ],
+    correctAnswer: 1,
+    explanation: "Copilot can analyze data from multiple sources simultaneously when given proper access. By providing comprehensive access and asking for cross-source analysis, you leverage Copilot's ability to identify patterns, themes, and insights across diverse datasets, providing more valuable and holistic insights.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Strategic"
+  },
+  {
+    id: 206,
+    question: "What is the purpose of grounding in Copilot's responses?",
+    options: [
+      "To slow down response generation for better accuracy",
+      "To anchor responses in your organization's specific data and context rather than just general knowledge",
+      "To prevent Copilot from accessing the internet",
+      "To limit responses to predefined templates"
+    ],
+    correctAnswer: 1,
+    explanation: "Grounding ensures Copilot's responses are anchored in your organization's specific data, documents, and context rather than relying solely on general pre-trained knowledge. This makes responses more relevant, accurate, and useful for your specific business needs.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Foundation"
+  },
+  {
+    id: 207,
+    question: "In PowerPoint, you want Copilot to create a presentation about Q4 sales results. What additional information improves the output quality?",
+    options: [
+      "Only the topic: 'Q4 sales results'",
+      "Topic, target audience, key metrics to highlight, desired tone, and data sources to reference",
+      "Just the title slide text",
+      "Only the number of slides needed"
+    ],
+    correctAnswer: 1,
+    explanation: "Comprehensive prompts produce better results. Including context like target audience (executives vs. team), key metrics (revenue, growth, top products), desired tone (celebratory vs. analytical), and specific data sources helps Copilot create more targeted, relevant presentations.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 208,
+    question: "What is a key consideration when using Copilot to draft sensitive business communications?",
+    options: [
+      "Copilot automatically flags all sensitive content",
+      "Review and verify all generated content before sending, especially for sensitive communications",
+      "Copilot cannot be used for sensitive communications",
+      "Sensitive communications bypass all security controls"
+    ],
+    correctAnswer: 1,
+    explanation: "While Copilot respects organizational security and compliance boundaries, users must always review and verify generated content before sending, especially for sensitive communications. AI can make errors or lack context, so human oversight is essential for accuracy and appropriateness.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Foundation"
+  },
+  {
+    id: 209,
+    question: "Your sales team wants to use Copilot to generate personalized customer proposals. What is the best prompt strategy?",
+    options: [
+      "Use a generic template for all customers",
+      "Provide customer-specific information, requirements, past interactions, and company context in the prompt",
+      "Let Copilot generate completely random proposals",
+      "Only include product information"
+    ],
+    correctAnswer: 1,
+    explanation: "Personalized proposals require specific context. Include customer-specific details (industry, size, pain points), their stated requirements, past interactions, and relevant company capabilities. This context enables Copilot to generate truly personalized, relevant proposals rather than generic templates.",
+    domain: "Manage prompts and conversations by using AI",
+    difficulty: "Strategic"
+  },
+  {
+    id: 210,
+    question: "In Microsoft Excel, what type of analysis can Copilot help perform on your data?",
+    options: [
+      "Only basic arithmetic calculations",
+      "Trend identification, pattern recognition, data summarization, correlation analysis, and insight generation",
+      "Exclusively chart creation",
+      "Only data sorting"
+    ],
+    correctAnswer: 1,
+    explanation: "Copilot in Excel provides sophisticated analytical capabilities including identifying trends, recognizing patterns, summarizing complex datasets, analyzing correlations, generating insights, creating formulas, suggesting visualizations, and helping interpret data meaningfully.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 211,
+    question: "What is the recommended approach when Copilot generates an inaccurate response?",
+    options: [
+      "Ignore the error and try a different tool",
+      "Provide feedback, rephrase your prompt with more context, or correct the specific inaccuracy",
+      "Stop using Copilot entirely",
+      "Accept the inaccurate response"
+    ],
+    correctAnswer: 1,
+    explanation: "When Copilot generates inaccurate content, provide feedback to improve the system, rephrase your prompt with more specific context or constraints, or directly correct the inaccuracy. This iterative approach improves both immediate results and future performance through feedback loops.",
+    domain: "Manage prompts and conversations by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 212,
+    question: "Your HR department wants to create an employee onboarding agent. What knowledge should be included?",
+    options: [
+      "Only basic company information",
+      "Company policies, benefits information, common procedures, organizational structure, IT setup guides, and role-specific resources",
+      "Just the employee handbook",
+      "No specific knowledge is needed"
+    ],
+    correctAnswer: 1,
+    explanation: "An effective onboarding agent should have comprehensive knowledge including company policies, benefits details, common procedures, organizational structure, IT setup instructions, workplace culture information, and role-specific resources. This enables the agent to answer diverse onboarding questions effectively.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Strategic"
+  },
+  {
+    id: 213,
+    question: "When using Copilot in Outlook to draft email responses, what context improves response quality?",
+    options: [
+      "No context needed, Copilot automatically knows everything",
+      "Email thread history, relationship with recipient, desired tone, key points to address, and any relevant background",
+      "Only the subject line",
+      "Just your name and title"
+    ],
+    correctAnswer: 1,
+    explanation: "Quality email responses require context. Copilot benefits from knowing the email thread history, your relationship with the recipient, desired tone (formal/casual), specific points to address, relevant background information, and any action items. This context enables appropriate, effective responses.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 214,
+    question: "What is the recommended way to handle confidential information when using Copilot?",
+    options: [
+      "Never use Copilot with any confidential information",
+      "Rely on your organization's existing security policies, data loss prevention, and compliance controls",
+      "Encrypt all prompts manually before entering them",
+      "Only use Copilot offline"
+    ],
+    correctAnswer: 1,
+    explanation: "Copilot operates within your organization's existing security framework. Rely on properly configured Microsoft 365 security policies, data loss prevention (DLP), compliance controls, and information protection. Your data is not used to train models and stays within your compliance boundary.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Foundation"
+  },
+  {
+    id: 215,
+    question: "Your team wants to use Copilot to generate meeting agendas. What makes an effective prompt?",
+    options: [
+      "'Create an agenda'",
+      "Meeting purpose, attendees, key topics to cover, time allocation, desired outcomes, and any preparation materials",
+      "'Make a list'",
+      "Only the meeting title"
+    ],
+    correctAnswer: 1,
+    explanation: "Effective agenda prompts include meeting purpose, attendee list (influences depth/topics), key discussion topics, suggested time allocations, desired outcomes, required preparation or pre-reads, and any specific format requirements. This comprehensive context produces practical, well-structured agendas.",
+    domain: "Manage prompts and conversations by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 216,
+    question: "What is the primary advantage of iterative prompting (having a conversation with Copilot)?",
+    options: [
+      "It wastes time compared to single prompts",
+      "You can refine outputs, add context, and progressively improve results through follow-up prompts",
+      "It confuses Copilot",
+      "Single prompts are always better"
+    ],
+    correctAnswer: 1,
+    explanation: "Iterative prompting leverages conversational AI capabilities. You can refine outputs, add missing context, clarify misunderstandings, adjust tone or format, and progressively improve results. This conversation-based approach often produces better final outputs than trying to craft a perfect single prompt.",
+    domain: "Manage prompts and conversations by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 217,
+    question: "In Microsoft Teams, how can Copilot help with meeting productivity?",
+    options: [
+      "Only by recording meetings",
+      "Generate summaries, identify action items, highlight key decisions, answer questions about discussion topics, and create follow-up tasks",
+      "Exclusively by taking attendance",
+      "Only by scheduling meetings"
+    ],
+    correctAnswer: 1,
+    explanation: "Copilot in Teams enhances meeting productivity by generating intelligent summaries, identifying and organizing action items, highlighting key decisions, answering questions about discussed topics, suggesting follow-up tasks, and helping catch up on missed portions. It transforms meeting content into actionable insights.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 218,
+    question: "What is a best practice for managing Copilot adoption in your organization?",
+    options: [
+      "Deploy to everyone immediately without training",
+      "Provide training, establish guidelines, identify use cases, gather feedback, and iterate based on user experiences",
+      "Restrict access to executives only",
+      "Avoid any change management"
+    ],
+    correctAnswer: 1,
+    explanation: "Successful Copilot adoption requires thoughtful change management: provide comprehensive training, establish clear usage guidelines, identify relevant use cases for different roles, gather user feedback continuously, and iterate on guidelines and training based on real experiences. This ensures effective adoption and value realization.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Strategic"
+  },
+  {
+    id: 219,
+    question: "You want Copilot to analyze competitor information. What is an important ethical consideration?",
+    options: [
+      "No ethical considerations are needed for competitive analysis",
+      "Ensure all analyzed information was obtained legally and ethically, respecting intellectual property and confidentiality",
+      "Copy all competitor content without attribution",
+      "Use any information regardless of source"
+    ],
+    correctAnswer: 1,
+    explanation: "Ethical competitive analysis requires that all information was obtained legally and ethically (public sources, market research, legitimate channels). Respect intellectual property rights, don't use confidential information obtained improperly, and avoid copyright violations. Copilot doesn't bypass ethical or legal obligations.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Strategic"
+  },
+  {
+    id: 220,
+    question: "When using Copilot to create training materials, what enhances content quality?",
+    options: [
+      "Just the topic name",
+      "Target audience skill level, learning objectives, preferred format, time constraints, examples to include, and assessment methods",
+      "Only the title",
+      "No specific information needed"
+    ],
+    correctAnswer: 1,
+    explanation: "Quality training materials require comprehensive prompts including audience skill level, specific learning objectives, preferred format (video, document, hands-on), time constraints, relevant examples or scenarios, assessment methods, and any prerequisite knowledge. This context ensures appropriate, effective training content.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Strategic"
+  },
+  {
+    id: 221,
+    question: "What is the purpose of few-shot prompting with Copilot?",
+    options: [
+      "To limit Copilot to only a few responses",
+      "To provide examples in your prompt that demonstrate the desired output format or style",
+      "To reduce the quality of responses",
+      "To prevent Copilot from accessing data"
+    ],
+    correctAnswer: 1,
+    explanation: "Few-shot prompting involves providing examples in your prompt that demonstrate your desired output format, style, or structure. This helps Copilot understand your expectations more clearly than descriptions alone. For example, showing 2-3 examples of the desired summary format before asking for a new summary.",
+    domain: "Manage prompts and conversations by using AI",
+    difficulty: "Strategic"
+  },
+  {
+    id: 222,
+    question: "Your organization wants to measure Copilot's impact on productivity. What metrics should you track?",
+    options: [
+      "Only the number of prompts entered",
+      "Time saved on tasks, quality improvements, user satisfaction, task completion rates, and adoption metrics",
+      "Just total usage hours",
+      "Only cost per user"
+    ],
+    correctAnswer: 1,
+    explanation: "Comprehensive Copilot impact assessment requires tracking multiple metrics: time saved on specific tasks, output quality improvements, user satisfaction scores, task completion rates, adoption rates across departments, specific use case success, and productivity gains. This holistic view demonstrates true business value.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Strategic"
+  },
+  {
+    id: 223,
+    question: "When using Copilot for content creation, how should you handle citations and sources?",
+    options: [
+      "Never cite sources for AI-generated content",
+      "Review Copilot's suggested citations, verify accuracy, add appropriate sources, and ensure proper attribution",
+      "Copy citations without verification",
+      "Ignore all citation requirements"
+    ],
+    correctAnswer: 1,
+    explanation: "Proper citation practices require reviewing Copilot's suggested citations for accuracy, verifying source information, adding appropriate sources where Copilot provides information, and ensuring proper attribution. Users are responsible for citation accuracy and intellectual property compliance, not the AI tool.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 224,
+    question: "What is the role of prompt engineering in maximizing Copilot effectiveness?",
+    options: [
+      "It's unnecessary since Copilot understands everything",
+      "Crafting clear, specific, context-rich prompts significantly improves output quality, relevance, and usefulness",
+      "Prompts don't matter at all",
+      "Only technical experts can engineer prompts"
+    ],
+    correctAnswer: 1,
+    explanation: "Prompt engineering - crafting clear, specific, context-rich prompts - is crucial for Copilot effectiveness. Well-engineered prompts with proper context, constraints, examples, and clear goals produce significantly better outputs. Everyone can learn prompt engineering; it's a valuable skill for all Copilot users.",
+    domain: "Manage prompts and conversations by using AI",
+    difficulty: "Foundation"
+  },
+  {
+    id: 225,
+    question: "Your finance team wants to use Copilot to analyze budget variance reports. What approach ensures accurate analysis?",
+    options: [
+      "Let Copilot work without any specific instructions",
+      "Provide clear definitions of variance thresholds, categories to analyze, format for presenting findings, and specific focus areas",
+      "Only show Copilot raw numbers",
+      "Avoid providing any context"
+    ],
+    correctAnswer: 1,
+    explanation: "Accurate financial analysis requires specific instructions: define variance thresholds (what's significant), specify categories to analyze (department, project, time period), indicate desired output format, highlight specific focus areas, and provide relevant context about expected vs. actual performance. This ensures relevant, accurate analysis.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Strategic"
+  },
+  {
+    id: 226,
+    question: "What is the benefit of using Copilot's suggested prompts or starters?",
+    options: [
+      "They limit your ability to customize",
+      "They provide examples of effective prompt structures and common use cases to help users get started",
+      "They only work for simple tasks",
+      "They prevent access to advanced features"
+    ],
+    correctAnswer: 1,
+    explanation: "Copilot's suggested prompts and starters serve as learning tools, demonstrating effective prompt structures and common use cases. They help users understand how to ask effective questions, provide useful starting points, and can be customized for specific needs. They accelerate learning and adoption.",
+    domain: "Manage prompts and conversations by using AI",
+    difficulty: "Foundation"
+  },
+  {
+    id: 227,
+    question: "When should you consider creating a custom Copilot agent instead of using standard Copilot?",
+    options: [
+      "Never create custom agents",
+      "When you have specialized, recurring workflows or specific domain knowledge that would benefit from a dedicated, configured assistant",
+      "Only for simple, one-time tasks",
+      "For every single use case"
+    ],
+    correctAnswer: 1,
+    explanation: "Custom agents are valuable for specialized, recurring scenarios with specific domain knowledge, workflows, or business logic. Examples include IT helpdesk support, HR onboarding, sales enablement, or compliance checking. Agents provide specialized, consistent assistance for these defined use cases.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Strategic"
+  },
+  {
+    id: 228,
+    question: "In Microsoft Word, you want Copilot to maintain consistency with your brand voice. What is the best approach?",
+    options: [
+      "Manually edit everything Copilot generates",
+      "Provide examples of your brand voice, key terminology, tone guidelines, and specific phrases to use or avoid in your prompts",
+      "Let Copilot decide the voice randomly",
+      "Use a different tool entirely"
+    ],
+    correctAnswer: 1,
+    explanation: "Brand voice consistency requires providing Copilot with clear examples of your desired voice, key brand terminology, tone guidelines (formal, conversational, technical), specific phrases to use or avoid, and sample content that exemplifies your brand. This context helps Copilot generate on-brand content.",
+    domain: "Manage prompts and conversations by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 229,
+    question: "What is the primary purpose of the Copilot Studio platform?",
+    options: [
+      "Only to view usage statistics",
+      "To create, customize, and deploy custom Copilot agents and extend Copilot capabilities with organization-specific knowledge and workflows",
+      "Exclusively for developers to write code",
+      "To delete existing Copilot configurations"
+    ],
+    correctAnswer: 1,
+    explanation: "Copilot Studio is the platform for creating, customizing, and deploying custom Copilot agents. It enables organizations to extend Copilot with specific knowledge sources, custom workflows, integrations with business systems, and specialized capabilities tailored to their unique needs and processes.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Applied"
+  },
+  {
+    id: 230,
+    question: "Your customer service team wants to use Copilot to draft responses to common inquiries. What improves response quality?",
+    options: [
+      "Generic responses for all customers",
+      "Customer history, inquiry specifics, company policies, product information, and desired tone based on customer sentiment",
+      "Ignore customer details entirely",
+      "Use only pre-written templates"
+    ],
+    correctAnswer: 1,
+    explanation: "Quality customer service responses require context: customer history and past interactions, specific details of the current inquiry, relevant company policies, accurate product information, and appropriate tone based on customer sentiment (frustrated vs. satisfied). This enables personalized, helpful, policy-compliant responses.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 231,
+    question: "What is a key principle of responsible AI that applies to Copilot usage?",
+    options: [
+      "AI decisions should never be questioned",
+      "Transparency, accountability, and human oversight are essential - always review AI outputs and maintain human decision-making authority",
+      "Trust all AI outputs completely",
+      "AI eliminates the need for human judgment"
+    ],
+    correctAnswer: 1,
+    explanation: "Responsible AI principles require transparency about AI use, accountability for outputs, and human oversight. Users must review AI-generated content, maintain decision-making authority, verify accuracy, and take responsibility for final outputs. AI assists but doesn't replace human judgment and accountability.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Foundation"
+  },
+  {
+    id: 232,
+    question: "When using Copilot to summarize long documents, what improves summary quality?",
+    options: [
+      "No instructions needed",
+      "Specify desired length, key topics to emphasize, target audience, summary purpose, and format preferences",
+      "Just ask for 'a summary'",
+      "Let Copilot choose everything randomly"
+    ],
+    correctAnswer: 1,
+    explanation: "Quality summaries require clear instructions: desired length (brief executive summary vs. detailed overview), key topics to emphasize, target audience (influences depth and terminology), summary purpose (decision-making vs. information sharing), and format preferences (bullets, paragraphs, highlights). This context produces useful summaries.",
+    domain: "Manage prompts and conversations by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 233,
+    question: "Your legal team is concerned about using Copilot with contracts. What assurance should you provide?",
+    options: [
+      "Copilot can never access legal documents",
+      "Copilot respects all existing permissions, operates within compliance boundaries, and data isn't used to train public models",
+      "Legal documents bypass all security",
+      "No assurances are possible"
+    ],
+    correctAnswer: 1,
+    explanation: "Copilot operates within Microsoft 365's security and compliance framework, respecting all existing permissions and access controls. Organizational data isn't used to train public models. Legal can configure additional controls through compliance policies, DLP, and information protection as needed for sensitive content.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Strategic"
+  },
+  {
+    id: 234,
+    question: "What is the purpose of semantic indexing in Copilot's functionality?",
+    options: [
+      "To randomly organize data",
+      "To understand the meaning and relationships in your content, enabling more relevant, context-aware responses",
+      "To slow down search performance",
+      "To prevent data access"
+    ],
+    correctAnswer: 1,
+    explanation: "Semantic indexing enables Copilot to understand the meaning, context, and relationships within your organizational content rather than just matching keywords. This allows Copilot to provide more relevant, contextually appropriate responses by understanding concepts, relationships, and intent.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Applied"
+  },
+  {
+    id: 235,
+    question: "When using Copilot in Excel to generate formulas, what makes prompts most effective?",
+    options: [
+      "Just say 'create a formula'",
+      "Describe the calculation goal, input data locations, desired output, any conditions or criteria, and business logic in plain language",
+      "Use complex mathematical notation",
+      "Avoid describing what you want"
+    ],
+    correctAnswer: 1,
+    explanation: "Effective formula prompts use plain language to describe: the calculation goal (what you're trying to calculate), input data locations (which columns/cells), desired output, any conditions or criteria (if-then logic), and underlying business logic. Copilot translates this into proper Excel formulas.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 236,
+    question: "Your organization wants to use Copilot to improve meeting follow-through. What capabilities support this?",
+    options: [
+      "Copilot can only record meetings",
+      "Generate action item lists with owners, create follow-up task assignments, draft status update emails, and track commitments from discussions",
+      "Only create meeting transcripts",
+      "No follow-through capabilities exist"
+    ],
+    correctAnswer: 1,
+    explanation: "Copilot improves meeting follow-through by generating clear action item lists with assigned owners, creating follow-up task assignments, drafting status update emails, tracking commitments made during discussions, and helping ensure nothing falls through the cracks. It transforms discussions into accountable actions.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 237,
+    question: "What is the recommended approach when Copilot doesn't have enough context to provide a good answer?",
+    options: [
+      "Give up immediately",
+      "Provide additional context, reference specific documents or data sources, or rephrase your question with more details",
+      "Submit the same prompt repeatedly",
+      "Switch to a different application"
+    ],
+    correctAnswer: 1,
+    explanation: "When Copilot lacks sufficient context, provide additional background information, reference specific documents or data sources it should consider, or rephrase your question with more details about your goal, constraints, and situation. Building context through conversation improves response quality.",
+    domain: "Manage prompts and conversations by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 238,
+    question: "What type of business problems is Copilot most suitable for solving?",
+    options: [
+      "Only simple, repetitive tasks",
+      "Knowledge work tasks involving content creation, analysis, synthesis, communication, and information processing",
+      "Exclusively technical coding problems",
+      "Only executive-level strategic decisions"
+    ],
+    correctAnswer: 1,
+    explanation: "Copilot excels at knowledge work: content creation (documents, emails, presentations), analysis and synthesis of information, communication tasks, data interpretation, research and summarization, and information processing. It augments human expertise across roles by handling time-consuming cognitive tasks.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Foundation"
+  },
+  {
+    id: 239,
+    question: "When integrating Copilot into business processes, what change management consideration is most important?",
+    options: [
+      "No change management is needed",
+      "Clear communication about AI's role, training on effective use, managing expectations, and demonstrating value through relevant use cases",
+      "Force adoption without explanation",
+      "Hide Copilot from most employees"
+    ],
+    correctAnswer: 1,
+    explanation: "Successful integration requires comprehensive change management: clearly communicate AI's role as an assistant (not replacement), provide effective training, set realistic expectations about capabilities and limitations, demonstrate value through relevant use cases, and gather feedback to continuously improve adoption and usage patterns.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Strategic"
+  },
+  {
+    id: 240,
+    question: "Your project management team wants to use Copilot to track project risks. What information should prompts include?",
+    options: [
+      "No specific information needed",
+      "Project context, known risks, risk categories, impact criteria, mitigation strategies, and stakeholder concerns",
+      "Only the project name",
+      "Just a request to 'find risks'"
+    ],
+    correctAnswer: 1,
+    explanation: "Effective risk tracking requires comprehensive context: project scope and objectives, known risks and issues, relevant risk categories (technical, resource, schedule), impact and likelihood criteria, existing mitigation strategies, stakeholder concerns, and organizational risk tolerance. This enables meaningful risk identification and analysis.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Strategic"
+  },
+  {
+    id: 241,
+    question: "What is the advantage of using Copilot's slash commands (/) in Microsoft 365 apps?",
+    options: [
+      "They disable Copilot features",
+      "They provide quick access to common Copilot functions and templated actions specific to each application",
+      "They only work for administrators",
+      "They replace all other ways to interact with Copilot"
+    ],
+    correctAnswer: 1,
+    explanation: "Slash commands provide quick access to common, context-specific Copilot functions in each Microsoft 365 app. They're shortcuts to frequently used actions like /summarize, /rewrite, /visualize, etc., making Copilot more efficient to use while also serving as a discovery mechanism for available capabilities.",
+    domain: "Manage prompts and conversations by using AI",
+    difficulty: "Foundation"
+  },
+  {
+    id: 242,
+    question: "When should you reference specific documents in your Copilot prompts?",
+    options: [
+      "Never reference specific documents",
+      "When you want Copilot to ground responses in particular files, policies, or information rather than general knowledge",
+      "Only for public documents",
+      "Referencing documents doesn't affect outputs"
+    ],
+    correctAnswer: 1,
+    explanation: "Referencing specific documents (e.g., 'Based on the Q4 report in SharePoint...') grounds Copilot's responses in particular sources, ensuring accuracy and relevance. This is especially valuable for policy questions, data analysis, or when you need responses based on specific, authoritative organizational information.",
+    domain: "Manage prompts and conversations by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 243,
+    question: "Your compliance team wants to ensure Copilot usage aligns with regulatory requirements. What should they do?",
+    options: [
+      "Ban Copilot entirely",
+      "Configure Microsoft 365 compliance policies, data governance, retention policies, and audit logging to align with regulatory requirements",
+      "Trust Copilot to handle compliance automatically",
+      "Create separate systems for compliant data"
+    ],
+    correctAnswer: 1,
+    explanation: "Compliance is managed through Microsoft 365's existing framework. Configure compliance policies, data governance rules, retention policies, audit logging, eDiscovery capabilities, and information protection to align with regulatory requirements. Copilot operates within these controls, respecting all organizational compliance configurations.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Strategic"
+  },
+  {
+    id: 244,
+    question: "What is the benefit of using Copilot for competitive analysis and market research?",
+    options: [
+      "Copilot can steal competitor information",
+      "It can synthesize public information, identify trends, analyze market dynamics, and generate insights from multiple data sources",
+      "It only works for small markets",
+      "No benefits for competitive analysis"
+    ],
+    correctAnswer: 1,
+    explanation: "Copilot excels at synthesizing publicly available information, identifying market trends, analyzing competitive dynamics, summarizing research reports, comparing product features, and generating strategic insights from multiple data sources. It accelerates research and analysis while helping identify patterns humans might miss.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Strategic"
+  },
+  {
+    id: 245,
+    question: "When crafting prompts for Copilot, what is the recommended level of specificity?",
+    options: [
+      "Be as vague as possible",
+      "Provide specific, clear instructions with relevant context while avoiding unnecessary complexity",
+      "Use only one-word prompts",
+      "Include every possible detail regardless of relevance"
+    ],
+    correctAnswer: 1,
+    explanation: "Effective prompts balance specificity with clarity: provide specific instructions about your goal, relevant context, desired format, and key constraints, but avoid unnecessary complexity or irrelevant details. Clear, focused prompts with appropriate context produce the best results.",
+    domain: "Manage prompts and conversations by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 246,
+    question: "Your organization wants to measure ROI from Copilot investment. What factors should you consider?",
+    options: [
+      "Only the license cost",
+      "Time savings, productivity gains, quality improvements, employee satisfaction, faster time-to-market, and reduced rework",
+      "Just user adoption rates",
+      "Only technical metrics"
+    ],
+    correctAnswer: 1,
+    explanation: "Comprehensive ROI assessment includes time savings on specific tasks, productivity gains across teams, quality improvements in outputs, employee satisfaction and retention, faster time-to-market for projects, reduced rework and errors, and improved decision-making quality. ROI extends beyond simple cost-per-user calculations.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Strategic"
+  },
+  {
+    id: 247,
+    question: "In Microsoft Teams meetings, how can Copilot help participants who join late?",
+    options: [
+      "Copilot cannot help late joiners",
+      "Provide a summary of what's been discussed, key points raised, decisions made, and current discussion topic",
+      "Only show the meeting title",
+      "Restart the entire meeting"
+    ],
+    correctAnswer: 1,
+    explanation: "Copilot helps late joiners catch up by providing summaries of previous discussion, highlighting key points raised, noting decisions made, identifying action items assigned, and explaining the current discussion topic. This enables productive participation without disrupting the meeting or requiring extensive recaps.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 248,
+    question: "What is the purpose of feedback mechanisms in Copilot interactions?",
+    options: [
+      "Feedback has no purpose",
+      "To improve system performance, train better models, identify issues, and enhance user experience over time",
+      "Only to satisfy compliance requirements",
+      "To slow down Copilot responses"
+    ],
+    correctAnswer: 1,
+    explanation: "Feedback mechanisms (thumbs up/down, detailed comments) help improve Copilot's performance by identifying successful and problematic responses, training better models, surfacing issues, understanding user needs, and continuously enhancing the user experience. Your feedback contributes to system improvement.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Foundation"
+  },
+  {
+    id: 249,
+    question: "When using Copilot to draft policy documents, what ensures appropriate governance and tone?",
+    options: [
+      "Let Copilot decide everything",
+      "Provide templates, organizational standards, legal requirements, desired tone, stakeholder input, and review workflows",
+      "Use generic internet templates",
+      "Avoid any organizational context"
+    ],
+    correctAnswer: 1,
+    explanation: "Policy documents require careful governance: provide organizational templates and standards, specific legal or regulatory requirements, desired tone (authoritative, supportive), relevant stakeholder input, existing related policies for consistency, and proper review workflows. This ensures compliant, appropriate, well-governed policy documentation.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Strategic"
+  },
+  {
+    id: 250,
+    question: "What is the relationship between Copilot and Microsoft Graph?",
+    options: [
+      "They are completely separate systems",
+      "Microsoft Graph provides Copilot with access to organizational data across Microsoft 365, respecting all permissions and security",
+      "Copilot replaces Microsoft Graph",
+      "They only work together for email"
+    ],
+    correctAnswer: 1,
+    explanation: "Microsoft Graph is the underlying data layer that provides Copilot with access to organizational information across Microsoft 365 (emails, documents, meetings, chats, etc.) while respecting all existing permissions and security boundaries. Graph enables Copilot to provide relevant, context-aware responses grounded in organizational data.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Applied"
+  },
+  {
+    id: 251,
+    question: "Your sales team wants Copilot to help with deal qualification. What information improves qualification accuracy?",
+    options: [
+      "Only the company name",
+      "Company size, industry, budget signals, decision-making process, pain points, timeline, competition, and BANT/MEDDIC criteria",
+      "Just the contact email",
+      "No specific information needed"
+    ],
+    correctAnswer: 1,
+    explanation: "Accurate deal qualification requires comprehensive information: company size and industry, budget signals or financial capacity, decision-making process and stakeholders, identified pain points, purchase timeline, competitive situation, and relevant qualification criteria (BANT, MEDDIC, etc.). This enables meaningful qualification and prioritization.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Strategic"
+  },
+  {
+    id: 252,
+    question: "What is a key limitation of AI systems like Copilot that users should understand?",
+    options: [
+      "AI has no limitations",
+      "AI can make mistakes (hallucinations), lacks real-world experience, requires context, and needs human oversight for critical decisions",
+      "AI knows everything perfectly",
+      "AI never needs any input"
+    ],
+    correctAnswer: 1,
+    explanation: "Understanding AI limitations is crucial: AI can generate plausible but incorrect information (hallucinations), lacks real-world experience and common sense, requires context to provide useful answers, can reflect biases in training data, and always needs human oversight especially for critical decisions. AI assists but doesn't replace human judgment.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Foundation"
+  },
+  {
+    id: 253,
+    question: "When using Copilot for data analysis in Excel, what best practices ensure accurate insights?",
+    options: [
+      "Trust all outputs without verification",
+      "Verify data quality, validate analysis logic, cross-check results, understand limitations, and apply domain expertise",
+      "Ignore data preparation",
+      "Accept all suggestions automatically"
+    ],
+    correctAnswer: 1,
+    explanation: "Accurate data analysis requires: verifying source data quality and completeness, validating analysis logic and methods used, cross-checking results against known benchmarks, understanding analysis limitations, and applying domain expertise to interpret findings. AI accelerates analysis but doesn't replace analytical rigor.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 254,
+    question: "Your IT department wants to create a Copilot agent for technical support. What capabilities would be most valuable?",
+    options: [
+      "Only password reset instructions",
+      "Troubleshooting workflows, common solution knowledge base, ticket routing logic, system status information, and escalation criteria",
+      "Just a contact list",
+      "Only FAQ links"
+    ],
+    correctAnswer: 1,
+    explanation: "An effective IT support agent needs comprehensive capabilities: guided troubleshooting workflows, knowledge base of common solutions, intelligent ticket routing based on issue type, real-time system status information, escalation criteria and procedures, relevant documentation links, and the ability to create and track support tickets.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Strategic"
+  },
+  {
+    id: 255,
+    question: "What is the recommended approach for introducing Copilot to skeptical employees?",
+    options: [
+      "Force adoption without explanation",
+      "Demonstrate tangible value with relevant use cases, provide hands-on training, share success stories, and address concerns transparently",
+      "Ignore their concerns",
+      "Only deploy to enthusiastic early adopters"
+    ],
+    correctAnswer: 1,
+    explanation: "Address skepticism through: demonstrating tangible value with role-relevant use cases, providing hands-on training opportunities, sharing success stories from peers, addressing concerns about job security and AI capabilities transparently, starting with low-risk use cases, and gathering feedback to continuously improve the experience.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Strategic"
+  },
+  {
+    id: 256,
+    question: "When using Copilot to create presentations in PowerPoint, what makes prompts most effective?",
+    options: [
+      "Just the presentation topic",
+      "Topic, audience, purpose, key messages, desired slide count, visual preferences, data sources, and tone",
+      "Only the title",
+      "No details needed"
+    ],
+    correctAnswer: 1,
+    explanation: "Effective presentation prompts include: core topic and scope, target audience (influences depth and terminology), presentation purpose (inform, persuade, train), key messages to convey, desired slide count and structure, visual style preferences, relevant data sources to incorporate, and appropriate tone. Comprehensive context produces useful presentations.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 257,
+    question: "What principle should guide decisions about when to use Copilot versus human-only work?",
+    options: [
+      "Always use Copilot for everything",
+      "Use Copilot for repetitive, time-consuming tasks while reserving human judgment for strategic, creative, and relationship-critical work",
+      "Never use Copilot",
+      "Only use Copilot for simple tasks"
+    ],
+    correctAnswer: 1,
+    explanation: "The optimal approach uses Copilot for repetitive, time-consuming knowledge work (drafting, analyzing, summarizing, formatting) that frees humans for strategic thinking, creative problem-solving, relationship building, and complex judgment. Copilot augments rather than replaces human expertise and judgment.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Strategic"
+  },
+  {
+    id: 258,
+    question: "Your marketing team wants to use Copilot to analyze campaign performance. What data should they provide?",
+    options: [
+      "Only the campaign name",
+      "Campaign objectives, KPIs, performance metrics, target audience data, historical benchmarks, competitive context, and channel information",
+      "Just total spend",
+      "No data needed"
+    ],
+    correctAnswer: 1,
+    explanation: "Meaningful campaign analysis requires: original campaign objectives and goals, defined KPIs, actual performance metrics across channels, target audience information, historical performance benchmarks, competitive context, channel-specific data, timing information, and any anomalies. This enables comprehensive, actionable analysis.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Strategic"
+  },
+  {
+    id: 259,
+    question: "What is the purpose of Copilot's ability to work across multiple Microsoft 365 applications?",
+    options: [
+      "To confuse users",
+      "To provide seamless assistance that follows users across their workflow, maintaining context and enabling integrated productivity",
+      "Only for technical demonstrations",
+      "To duplicate functionality unnecessarily"
+    ],
+    correctAnswer: 1,
+    explanation: "Cross-application integration enables Copilot to provide seamless assistance throughout users' workflows: summarizing Teams discussions in Outlook, referencing Excel data in PowerPoint, using Word documents to inform email responses, etc. This integrated approach maximizes productivity and maintains context across tasks.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Applied"
+  },
+  {
+    id: 260,
+    question: "When should you use advanced prompt techniques like chain-of-thought prompting?",
+    options: [
+      "For every prompt",
+      "For complex problems requiring step-by-step reasoning, multi-step analysis, or when you need to understand the logic behind answers",
+      "Never use advanced techniques",
+      "Only for simple questions"
+    ],
+    correctAnswer: 1,
+    explanation: "Advanced techniques like chain-of-thought prompting (asking Copilot to 'think step-by-step' or 'explain your reasoning') are valuable for complex problems requiring sequential logic, multi-step analysis, debugging errors, or when understanding the reasoning process is important. They improve accuracy for complex tasks.",
+    domain: "Manage prompts and conversations by using AI",
+    difficulty: "Strategic"
+  },
+  {
+    id: 261,
+    question: "Your HR team wants to use Copilot for performance review assistance. What ethical considerations are paramount?",
+    options: [
+      "Let Copilot write all reviews automatically",
+      "Maintain human judgment, ensure fairness, verify accuracy, respect privacy, and use as a drafting tool only with manager oversight",
+      "Copy all AI suggestions directly",
+      "Use the same review for everyone"
+    ],
+    correctAnswer: 1,
+    explanation: "Performance reviews require careful ethical considerations: maintain human judgment and accountability, ensure fairness and avoid bias, verify all factual accuracy, respect employee privacy, use Copilot only as a drafting assistant, require thorough manager review and personalization, and never automate final decisions. Human oversight is essential.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Strategic"
+  },
+  {
+    id: 262,
+    question: "What capability does Copilot provide in Microsoft Outlook beyond simple email composition?",
+    options: [
+      "Only writing emails",
+      "Summarizing long threads, suggesting responses, scheduling assistance, priority identification, action item extraction, and meeting prep",
+      "Just spell checking",
+      "Only address book management"
+    ],
+    correctAnswer: 1,
+    explanation: "Copilot in Outlook offers comprehensive email productivity: summarizing long email threads, suggesting contextual responses, assisting with scheduling, identifying priority messages, extracting action items and commitments, preparing for meetings by summarizing relevant communications, and helping manage inbox overload intelligently.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 263,
+    question: "What is the significance of Copilot's conversational memory within a session?",
+    options: [
+      "It serves no purpose",
+      "It maintains context across multiple prompts, enabling progressive refinement and eliminating the need to repeat information",
+      "It only works for a single prompt",
+      "It forgets everything immediately"
+    ],
+    correctAnswer: 1,
+    explanation: "Conversational memory enables Copilot to maintain context throughout a session, remembering previous prompts, clarifications, and refinements. This allows progressive improvement of outputs ('make it more formal', 'add statistics'), eliminates repetition, and enables natural back-and-forth dialogue to achieve desired results.",
+    domain: "Manage prompts and conversations by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 264,
+    question: "Your product team wants to use Copilot for competitive feature analysis. What information produces the most valuable insights?",
+    options: [
+      "Only competitor names",
+      "Your features, competitor features, customer feedback, market positioning, pricing context, use cases, and differentiation goals",
+      "Just product names",
+      "No context needed"
+    ],
+    correctAnswer: 1,
+    explanation: "Valuable competitive analysis requires comprehensive context: your current features and roadmap, competitor feature sets, customer feedback on both products, market positioning, pricing and packaging context, key use cases, target segments, and your differentiation goals. This enables meaningful, actionable competitive intelligence.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Strategic"
+  },
+  {
+    id: 265,
+    question: "What is the recommended cadence for reviewing and updating Copilot usage guidelines in your organization?",
+    options: [
+      "Never update them",
+      "Regular reviews (quarterly or bi-annually) based on user feedback, new features, emerging use cases, and lessons learned",
+      "Update every day",
+      "Only update once at launch"
+    ],
+    correctAnswer: 1,
+    explanation: "Copilot guidelines should be living documents reviewed regularly (quarterly or bi-annually) based on: user feedback and experiences, new Copilot features and capabilities, emerging use cases and patterns, lessons learned, changing organizational needs, and evolving best practices. Continuous improvement ensures guidelines remain relevant and valuable.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Strategic"
+  },
+  {
+    id: 266,
+    question: "When using Copilot for meeting preparation, what information produces the most useful prep materials?",
+    options: [
+      "Just the meeting title",
+      "Meeting purpose, attendees, agenda topics, relevant background materials, desired outcomes, your role, and any sensitive topics",
+      "Only the time and location",
+      "No preparation information needed"
+    ],
+    correctAnswer: 1,
+    explanation: "Comprehensive meeting preparation requires: meeting purpose and objectives, attendee list and roles, detailed agenda topics, relevant background materials and previous discussions, desired outcomes, your role in the meeting, any sensitive or challenging topics, key decisions needed, and questions to address. This enables thorough, effective preparation.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 267,
+    question: "What is the role of plugins and connectors in extending Copilot capabilities?",
+    options: [
+      "They serve no purpose",
+      "They integrate third-party data sources, business systems, and specialized tools to expand Copilot's knowledge and functionality",
+      "They only slow down Copilot",
+      "They replace Microsoft 365 applications"
+    ],
+    correctAnswer: 1,
+    explanation: "Plugins and connectors extend Copilot by integrating third-party data sources (CRM, project management, business intelligence), connecting to business systems (ERP, HRIS), and adding specialized capabilities. This expands Copilot's knowledge beyond Microsoft 365 to encompass your complete business ecosystem.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Applied"
+  },
+  {
+    id: 268,
+    question: "Your finance team wants to use Copilot to create board presentations. What ensures appropriate executive-level quality?",
+    options: [
+      "Use any Copilot output without review",
+      "Provide executive context, specify key messages, include data validation, ensure visual polish, and conduct thorough review for accuracy and impact",
+      "Let Copilot make all decisions",
+      "Avoid any customization"
+    ],
+    correctAnswer: 1,
+    explanation: "Executive presentations require: clear context about board priorities and concerns, specified key messages and storyline, validated data and sources, attention to visual quality and polish, appropriate tone and depth, thorough accuracy review, and refinement for impact. Copilot accelerates creation but executive presentations demand careful human oversight.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Strategic"
+  },
+  {
+    id: 269,
+    question: "What is the benefit of using Copilot's suggested follow-up questions or actions?",
+    options: [
+      "They waste time",
+      "They help users discover additional relevant information, deepen understanding, and explore related topics they might not have considered",
+      "They only repeat the same information",
+      "They prevent further questions"
+    ],
+    correctAnswer: 1,
+    explanation: "Suggested follow-up questions and actions help users discover additional relevant information, deepen their understanding of topics, explore related areas they might not have considered, and make the most of Copilot's capabilities. They serve as a guided discovery mechanism for more comprehensive insights.",
+    domain: "Manage prompts and conversations by using AI",
+    difficulty: "Foundation"
+  },
+  {
+    id: 270,
+    question: "When implementing Copilot, what success criteria should organizations define upfront?",
+    options: [
+      "No success criteria needed",
+      "Clear adoption targets, productivity metrics, quality improvements, user satisfaction goals, ROI expectations, and specific use case outcomes",
+      "Only technical metrics",
+      "Just license utilization"
+    ],
+    correctAnswer: 1,
+    explanation: "Successful implementation requires defined success criteria: adoption targets across departments and roles, specific productivity metrics (time saved, tasks completed), quality improvement measures, user satisfaction and engagement goals, ROI expectations, and outcomes for priority use cases. Clear criteria enable effective measurement and continuous improvement.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Strategic"
+  },
+  {
+    id: 271,
+    question: "Your customer success team wants to use Copilot to identify at-risk accounts. What data and analysis would be most valuable?",
+    options: [
+      "Only account names",
+      "Usage patterns, support ticket trends, engagement metrics, contract renewal dates, stakeholder changes, satisfaction scores, and competitive signals",
+      "Just revenue data",
+      "No specific data needed"
+    ],
+    correctAnswer: 1,
+    explanation: "Identifying at-risk accounts requires analyzing: product usage patterns and trends, support ticket frequency and types, engagement metrics (meetings, communications), upcoming contract renewal dates, stakeholder changes or turnover, satisfaction scores or NPS, competitive signals or mentions, and historical churn indicators. Comprehensive data enables proactive intervention.",
+    domain: "Draft and analyze business content by using AI",
+    difficulty: "Strategic"
+  },
+  {
+    id: 272,
+    question: "What is the recommended approach for testing new Copilot use cases before broad rollout?",
+    options: [
+      "Deploy to everyone immediately",
+      "Start with a pilot group, gather feedback, refine prompts and workflows, document best practices, then expand based on lessons learned",
+      "Avoid any testing",
+      "Only test with executives"
+    ],
+    correctAnswer: 1,
+    explanation: "Effective rollout uses pilot programs: start with a motivated, representative pilot group, gather detailed feedback on effectiveness and challenges, refine prompts and workflows based on learnings, document best practices and common pitfalls, measure impact, then expand gradually based on proven value and lessons learned.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Strategic"
+  },
+  {
+    id: 273,
+    question: "When using Copilot in Microsoft Word for document editing, what types of requests are most effective?",
+    options: [
+      "Vague requests without context",
+      "Specific editing goals with clear criteria: 'Make this more concise while keeping key points' or 'Adjust tone to be more formal'",
+      "Just 'fix this'",
+      "No specific requests"
+    ],
+    correctAnswer: 1,
+    explanation: "Effective editing requests specify the goal and criteria: 'Make this section more concise while keeping all key statistics', 'Adjust the tone to be more formal for an executive audience', or 'Reorganize these points logically'. Specific instructions with clear criteria produce better editing results than vague requests.",
+    domain: "Manage prompts and conversations by using AI",
+    difficulty: "Applied"
+  },
+  {
+    id: 274,
+    question: "What distinguishes a well-designed Copilot agent from a poorly designed one?",
+    options: [
+      "Number of features only",
+      "Clear purpose, relevant knowledge, intuitive interaction, appropriate scope, regular updates, and measurable value for specific use cases",
+      "Technical complexity",
+      "Random capabilities"
+    ],
+    correctAnswer: 1,
+    explanation: "Well-designed agents have: a clearly defined purpose and scope, relevant, curated knowledge sources, intuitive interaction patterns, appropriate complexity for the use case, regular content and capability updates, measurable value delivery, user feedback integration, and clear success metrics. Design matters more than feature count.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Strategic"
+  },
+  {
+    id: 275,
+    question: "Your organization is concerned about employees over-relying on Copilot. What balanced guidance should you provide?",
+    options: [
+      "Ban Copilot entirely",
+      "Emphasize Copilot as an assistant requiring human oversight, verification of critical information, and maintaining professional judgment and expertise",
+      "Encourage complete reliance on AI",
+      "Ignore the concern"
+    ],
+    correctAnswer: 1,
+    explanation: "Balanced guidance emphasizes: Copilot as a productivity assistant, not a replacement for human judgment; the need to verify critical information and decisions; maintaining and developing professional expertise; using AI to augment rather than replace skills; appropriate use cases vs. areas requiring human-only work; and personal accountability for outputs.",
+    domain: "Understand generative AI fundamentals",
+    difficulty: "Strategic"
   }
 ];
 
